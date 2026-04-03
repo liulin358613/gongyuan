@@ -92,28 +92,91 @@
         .user-area {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px; /* 增加间距更美观 */
         }
+        /* 优化欢迎信息样式 */
         .welcome {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             color: var(--deep-gray);
-            padding: 8px 14px;
-            border-radius: 4px;
+            padding: 10px 18px;
+            border-radius: 8px;
             font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 3px solid var(--hermes-orange);
         }
+        /* 公司名称样式 */
+        .company-name {
+            color: var(--klein-blue);
+            font-weight: 600;
+        }
+        /* 登录者名称样式 */
+        .user-name {
+            color: var(--hermes-orange);
+        }
+        /* 退出按钮样式 */
+        .logout-btn {
+            color: #FF4D4F;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover {
+            background: #FFF1F0;
+            color: #F5222D;
+        }
+        /* 按钮通用样式优化 */
         .login {
             background: var(--white);
             color: var(--klein-blue);
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 18px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s, color 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
         }
         .login:hover {
             background: var(--hermes-orange);
             color: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+        .login:nth-child(3) {
+            background: #E6F7FF;
+            border: 1px solid var(--klein-blue);
+        }
+        .login:nth-child(3):hover {
+            background: var(--klein-blue);
+            color: var(--white);
+        }
+        .login:nth-child(2) {
+            position: relative;
+        }
+        /* 消息红点优化 */
+        .login:nth-child(2)::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #FF4D4F;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba(255,77,79,0.2);
+        }
+        /* 消息图标样式 */
+        .msg-icon {
+            font-size: 16px;
         }
 
         /* 头部区域 */
@@ -638,45 +701,7 @@
             line-height: 1.8;
         }
 
-        /* 响应式适配 */
-        @media (max-width: 992px) {
-            .case-know-row {
-                grid-template-columns: 1fr;
-            }
-
-            .tabs {
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .content-row {
-                flex-direction: column;
-            }
-
-            .filter {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-
-            .page-title {
-                font-size: 24px;
-            }
-
-            .tabs {
-                overflow-x: auto;
-                padding-bottom: 8px;
-                gap: 16px;
-            }
-
-            .tab-row {
-                flex-direction: column;
-                gap: 12px;
-                align-items: flex-start;
-            }
-        }
-
-       /* 登录弹窗样式 - 优化版 */
+        /* 登录弹窗样式 - 优化版 */
         .login-modal {
             position: fixed;
             top: 0;
@@ -1044,8 +1069,25 @@
         <div class="container">
             <div class="logo">LOGO · 智能</div>
             <div class="user-area">
-                <div class="welcome">欢迎使用智能生产力平台</div>
-                <button class="login">登录</button>
+                <!-- 优化欢迎信息结构 -->
+                <div class="welcome">
+                    <span>👋</span>
+                    <span>
+                        <span class="company-name">东莞嘉东科技有限公司</span> 
+                        <span class="user-name">林工</span> 
+                        欢迎您！
+                        <span class="logout-btn">[退出]</span>
+                    </span>
+                </div>
+                <!-- 消息按钮添加图标 -->
+                <button class="login">
+                    <span class="msg-icon">📩</span>
+                    <span>消息 12</span>
+                </button>
+                <button class="login">
+                    <span>🖥️</span>
+                    <span>我的工作台</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1231,427 +1273,7 @@
                     <div class="partner-logo" style="background-color: #0073b7;">F</div>
                     <div class="partner-name">FANUC 发那科</div>
                 </div>
-                <div class="partner-item">
-                    <div class="partner-logo" style="background-color: #ed1c24;">A</div>
-                    <div class="partner-name">ABB</div>
-                </div>
-                <div class="partner-item">
-                    <div class="partner-logo" style="background-color: #0066b3;">Y</div>
-                    <div class="partner-name">YASKAWA 安川电机</div>
-                </div>
-                <div class="partner-item">
-                    <div class="partner-logo" style="background-color: #00a1e4;">K</div>
-                    <div class="partner-name">KUKA 库卡</div>
-                </div>
-                <div class="partner-item">
-                    <div class="partner-logo" style="background-color: #e60012;">汇</div>
-                    <div class="partner-name">汇川技术</div>
-                </div>
-            </div>
         </div>
     </main>
-
-    <!-- 页脚 -->
-    <footer>
-        <div class="footer-wrap">
-            <div class="footer-col">
-                <h3>TECHBOT</h3>
-                <p>专注工业智能 · 让制造更高效</p>
-            </div>
-            <div class="footer-col">
-                <h3>快速入口</h3>
-                <p>
-                    生产力方案库<br>
-                    工业设备商城<br>
-                    智能知识库
-                </p>
-            </div>
-            <div class="footer-col">
-                <h3>联系我们</h3>
-                <p>
-                    商务合作：service@techbot.com<br>
-                    服务热线：400-888-9999
-                </p>
-            </div>
-            <div class="footer-col">
-                <h3>关于我们</h3>
-                <p>
-                    © 2026 工业智能生产力平台<br>
-                    版权所有
-                </p>
-            </div>
-        </div>
-    </footer>
-    <!-- 登录弹窗 -->
-    <div class="login-modal" id="loginModal">
-        <div class="modal-overlay" id="modalOverlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>账号登录</h2>
-                <button class="close-btn" id="closeBtn">×</button>
-            </div>
-            <div class="login-tabs">
-                <div class="login-tab active">密码登录</div>
-                <div class="login-tab">验证码登录</div>
-            </div>
-            <div class="login-form">
-                <input type="text" class="form-input" placeholder="请输入手机号/用户名">
-                <div class="password-input">
-                    <input type="password" class="form-input" placeholder="请输入密码">
-                    <button class="eye-btn">👁️</button>
-                </div>
-                <div class="code-input" style="display: none;">
-                    <input type="text" class="form-input" placeholder="请输入验证码">
-                    <button class="code-btn">获取验证码</button>
-                </div>
-                <button class="login-button">登录</button>
-            </div>
-            <div class="login-links">
-                <a href="#">忘记密码</a>
-                <span>|</span>
-                <a href="#">注册账号</a>
-            </div>
-            <div class="other-login">
-                <div class="other-login-line">
-                    <span>其他登录方式</span>
-                </div>
-                <div class="other-login-buttons">
-                    <button class="other-login-btn">微信</button>
-                    <button class="other-login-btn">支付宝</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // TAB切换功能
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(item => item.classList.remove('active'));
-                tab.classList.add('active');
-            });
-        });
-
-        // 推荐标签点击填入输入框
-        document.querySelectorAll('.ai-tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                const textarea = document.querySelector('.ai-input-box textarea');
-                textarea.value = tag.textContent;
-                // 触发输入事件，让输入框自动调整高度
-                textarea.dispatchEvent(new Event('input'));
-            });
-        });
-
-        // 输入框自动高度适配
-        const textarea = document.querySelector('.ai-input-box textarea');
-        textarea.addEventListener('input', () => {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
-        });
-
-        // 页面加载时初始化输入框高度
-        window.addEventListener('load', () => {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-        });
-
-        // 发送按钮点击跳转到AI页面
-        document.querySelector('.send-btn').addEventListener('click', () => {
-            window.location.href = 'ai.html';
-        });
-
-        // 根据URL参数选中对应tab并定位到tab栏位置
-        function selectTabByParam() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const tabParam = urlParams.get('tab');
-            
-            if (tabParam) {
-                // 选中对应tab
-                const tabs = document.querySelectorAll('.tab');
-                tabs.forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                
-                let tabIndex = 0;
-                switch(tabParam) {
-                    case 'industry':
-                        tabIndex = 1; // 制造业方案库
-                        break;
-                    case 'agriculture':
-                        tabIndex = 0; // 农业方案库
-                        break;
-                    case 'service':
-                        tabIndex = 2; // 服务业方案库
-                        break;
-                    case 'equipment':
-                        tabIndex = 3; // 设备商城
-                        break;
-                }
-                
-                if (tabs[tabIndex]) {
-                    tabs[tabIndex].classList.add('active');
-                    
-                    // 滚动到tab栏正好处于logo栏下面的位置
-                    setTimeout(() => {
-                        const tabContainer = document.querySelector('.tab-container');
-                        if (tabContainer) {
-                            // 计算tab栏顶部位置，设置滚动位置
-                            const tabTop = tabContainer.offsetTop;
-                            window.scrollTo({ 
-                                top: tabTop - 70, // 70px是logo栏的高度
-                                behavior: 'smooth'
-                            });
-                        }
-                    }, 100);
-                }
-            }
-        }
-
-        // 页面加载时执行
-        window.addEventListener('load', selectTabByParam);
-
-        // logo 点击回到 index 初始页面
-        document.querySelector('.logo').addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-
-        // 产业数据
-        const industryData = {
-            '农业方案库': [
-                { name: '种植业', sub: ['粮食作物', '经济作物', '蔬菜', '水果', '花卉'] },
-                { name: '养殖业', sub: ['畜牧业', '渔业', '家禽', '特种养殖'] },
-                { name: '农产品加工', sub: ['食品加工', '饮料制造', '纺织加工'] },
-                { name: '农业机械', sub: ['种植机械', '收获机械', '养殖设备', '加工设备'] },
-                { name: '智慧农业', sub: ['物联网', '无人机', '智能灌溉', '精准农业'] },
-                { name: '生态农业', sub: ['有机农业', '循环农业', '休闲农业'] }
-            ],
-            '制造业方案库': [
-                { name: '汽车制造', sub: ['整车制造', '零部件', '新能源汽车', '智能网联'] },
-                { name: '3C电子', sub: ['手机', '电脑', '家电', '智能设备'] },
-                { name: '机械加工', sub: ['金属加工', '模具制造', '精密加工'] },
-                { name: '新能源', sub: ['光伏', '风电', '锂电池', '氢能'] },
-                { name: '食品包装', sub: ['食品加工', '包装机械', '冷链物流'] },
-                { name: '物流仓储', sub: ['自动化仓储', 'AGV', '分拣系统'] },
-                { name: '化工', sub: ['基础化工', '精细化工', '新材料'] },
-                { name: '医药', sub: ['制药', '医疗器械', '生物工程'] }
-            ],
-            '服务业方案库': [
-                { name: '物流服务', sub: ['快递配送', '仓储服务', '供应链管理'] },
-                { name: '金融服务', sub: ['银行', '保险', '证券', '金融科技'] },
-                { name: '零售服务', sub: ['线下零售', '电商', '无人零售'] },
-                { name: '餐饮服务', sub: ['传统餐饮', '快餐', '外卖', '智慧餐厅'] },
-                { name: '酒店服务', sub: ['传统酒店', '民宿', '智慧酒店'] },
-                { name: '教育服务', sub: ['K12', '职业教育', '在线教育', '教育科技'] }
-            ],
-            '设备商城': [
-                { name: '工业机器人', sub: ['六轴机器人', 'SCARA机器人', '协作机器人'] },
-                { name: '自动化设备', sub: ['PLC', '传感器', '伺服系统', '视觉系统'] },
-                { name: '机床设备', sub: ['CNC机床', '加工中心', '车床', '铣床'] },
-                { name: '包装设备', sub: ['包装机', '贴标机', '灌装机'] },
-                { name: '检测设备', sub: ['无损检测', '精密测量', '环境监测'] },
-                { name: '物流设备', sub: ['AGV', '堆垛机', '分拣机'] }
-            ]
-        };
-
-        // 当前选中的tab
-        let currentTab = document.querySelector('.tab.active').textContent.trim();
-
-        // 生成产业列表
-        function generateIndustries(tabName) {
-            const industryFilter = document.getElementById('industry-filter');
-            // 保留"全部产业"选项
-            const allItem = industryFilter.querySelector('.filter-item');
-            industryFilter.innerHTML = '';
-            industryFilter.appendChild(allItem);
-            
-            // 为全部产业添加点击事件
-            allItem.addEventListener('click', () => {
-                document.getElementById('sub-filter').style.display = 'none';
-            });
-            
-            const industries = industryData[tabName] || [];
-            industries.forEach(industry => {
-                const item = document.createElement('div');
-                item.className = 'filter-item';
-                item.textContent = industry.name;
-                item.dataset.industry = industry.name;
-                item.dataset.sub = JSON.stringify(industry.sub);
-                
-                // 添加鼠标悬停事件
-                item.addEventListener('mouseenter', (e) => {
-                    showSubFilter(e.target);
-                });
-                
-                // 添加点击事件
-                item.addEventListener('click', () => {
-                    // 点击时显示三级筛选
-                    showSubFilter(item);
-                });
-                
-                industryFilter.appendChild(item);
-            });
-        }
-
-        // 显示三级筛选
-        function showSubFilter(item) {
-            const industry = item.dataset.industry;
-            const sub = JSON.parse(item.dataset.sub);
-            
-            const subFilter = document.getElementById('sub-filter');
-            if (industry) {
-                subFilter.style.display = 'block';
-                generateSubFilter(sub, item);
-            } else {
-                subFilter.style.display = 'none';
-            }
-        }
-
-        // 计算并调整三级筛选位置
-        function adjustSubFilterPosition(item) {
-            const subFilter = document.getElementById('sub-filter');
-            const rect = item.getBoundingClientRect();
-            const filterRect = document.querySelector('.filter').getBoundingClientRect();
-            
-            // 强制回流以获取正确的尺寸
-            subFilter.offsetHeight;
-            
-            const subFilterRect = subFilter.getBoundingClientRect();
-            
-            // 计算基础位置
-            let top = rect.top - filterRect.top;
-            
-            // 计算屏幕高度
-            const windowHeight = window.innerHeight;
-            
-            // 计算三级筛选框底部位置
-            const subFilterBottom = rect.top + subFilterRect.height;
-            
-            // 如果三级筛选框超出屏幕底部，调整位置
-            if (subFilterBottom > windowHeight - 20) { // 20px 底部边距
-                top = windowHeight - subFilterRect.height - filterRect.top - 20;
-                // 确保位置不会小于0
-                top = Math.max(0, top);
-            }
-            
-            subFilter.style.top = top + 'px';
-        }
-
-        // 生成三级筛选
-        function generateSubFilter(subItems, item) {
-            const subFilterItems = document.getElementById('sub-filter-items');
-            subFilterItems.innerHTML = '';
-            
-            subItems.forEach(sub => {
-                const subItem = document.createElement('div');
-                subItem.className = 'filter-item';
-                subItem.textContent = sub;
-                subItem.addEventListener('click', () => {
-                    // 点击时跳转到list页面
-                    window.location.href = 'list.html';
-                });
-                subFilterItems.appendChild(subItem);
-            });
-            
-            // 生成内容后调整位置
-            adjustSubFilterPosition(item);
-        }
-
-        // Tab切换事件
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // 移除其他tab的active状态
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                // 添加当前tab的active状态
-                tab.classList.add('active');
-                
-                // 更新当前tab
-                currentTab = tab.textContent.trim();
-                // 生成对应产业列表
-                generateIndustries(currentTab);
-                // 隐藏三级筛选
-                document.getElementById('sub-filter').style.display = 'none';
-            });
-        });
-
-        // 鼠标离开筛选区域时隐藏三级筛选
-        document.querySelector('.filter').addEventListener('mouseleave', () => {
-            setTimeout(() => {
-                if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
-                    document.getElementById('sub-filter').style.display = 'none';
-                }
-            }, 200);
-        });
-
-        // 鼠标悬停在三级筛选上时保持显示
-        document.querySelector('.sub-filter-popup').addEventListener('mouseenter', () => {
-            document.getElementById('sub-filter').style.display = 'block';
-        });
-
-        document.querySelector('.sub-filter-popup').addEventListener('mouseleave', () => {
-            setTimeout(() => {
-                if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
-                    document.getElementById('sub-filter').style.display = 'none';
-                }
-            }, 200);
-        });
-
-        // 初始化
-        generateIndustries(currentTab);
-    </script>
-
-    <script>
-        // 登录弹窗交互
-        const loginModal = document.getElementById('loginModal');
-        const loginBtns = document.querySelectorAll('.login');
-        const closeBtn = document.getElementById('closeBtn');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const loginTabs = document.querySelectorAll('.login-tab');
-        const passwordInput = document.querySelector('.password-input');
-        const codeInput = document.querySelector('.code-input');
-        const eyeBtn = document.querySelector('.eye-btn');
-        const passwordField = document.querySelector('.password-input .form-input');
-
-        // 打开弹窗
-        loginBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                loginModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        // 关闭弹窗
-        function closeModal() {
-            loginModal.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        closeBtn.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', closeModal);
-
-        // 登录方式切换
-        loginTabs.forEach((tab, index) => {
-            tab.addEventListener('click', () => {
-                loginTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                if (index === 0) {
-                    // 密码登录
-                    passwordInput.style.display = 'block';
-                    codeInput.style.display = 'none';
-                } else {
-                    // 验证码登录
-                    passwordInput.style.display = 'none';
-                    codeInput.style.display = 'flex';
-                }
-            });
-        });
-
-        // 密码显示/隐藏
-        eyeBtn.addEventListener('click', () => {
-            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', type);
-            eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
-        });
-    </script>
 </body>
 </html>

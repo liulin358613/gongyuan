@@ -100,6 +100,8 @@
             padding: 8px 14px;
             border-radius: 4px;
             font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .login {
             background: var(--white);
@@ -109,11 +111,36 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            transition: background-color 0.3s, color 0.3s;
+            transition: all 0.3s ease;
+            margin-left: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .login:hover {
             background: var(--hermes-orange);
             color: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        .login:nth-child(3) {
+            background: #E6F7FF;
+            border: 1px solid var(--klein-blue);
+        }
+        .login:nth-child(3):hover {
+            background: var(--klein-blue);
+            color: var(--white);
+        }
+        .login:nth-child(2) {
+            position: relative;
+        }
+        .login:nth-child(2)::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #FF4D4F;
+            border-radius: 50%;
         }
 
         /* 头部区域 */
@@ -1044,8 +1071,9 @@
         <div class="container">
             <div class="logo">LOGO · 智能</div>
             <div class="user-area">
-                <div class="welcome">欢迎使用智能生产力平台</div>
-                <button class="login">登录</button>
+                <div class="welcome">东莞嘉东科技有限公司 林工 欢迎您！[退出]</div>
+                <button class="login">消息 12</button>
+                <button class="login">我的工作台</button>
             </div>
         </div>
     </div>
@@ -1611,13 +1639,22 @@
         const eyeBtn = document.querySelector('.eye-btn');
         const passwordField = document.querySelector('.password-input .form-input');
 
-        // 打开弹窗
-        loginBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                loginModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
+        // 登录后状态，取消登录弹窗事件
+        // 为消息和工作台按钮添加新的点击事件
+        const messageBtn = document.querySelector('.login:nth-child(2)');
+        const workbenchBtn = document.querySelector('.login:nth-child(3)');
+        
+        if (messageBtn) {
+            messageBtn.addEventListener('click', () => {
+                alert('打开消息中心');
             });
-        });
+        }
+        
+        if (workbenchBtn) {
+            workbenchBtn.addEventListener('click', () => {
+                alert('打开工作台');
+            });
+        }
 
         // 关闭弹窗
         function closeModal() {

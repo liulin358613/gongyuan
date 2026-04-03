@@ -156,7 +156,7 @@
 
         /* 左侧历史对话栏 */
         .sidebar {
-            width: 220px;
+            width: 200px;
             background-color: #ffffff;
             border-right: 1px solid var(--border-gray);
             display: flex;
@@ -306,6 +306,36 @@
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 1.1;
+        }
+
+        /* 未读消息标签样式 */
+        .unread-badge {
+            background-color: var(--hermes-orange);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+            margin-left: 4px;
+        }
+
+        /* 好友未读消息图标样式 */
+        .team-member {
+            position: relative;
+        }
+
+        .member-unread-icon {
+            background-color: #FF3B30;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .history-title {
@@ -734,7 +764,7 @@
                             <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>
-                        我的朋友
+                        我的人类伙伴
                     </div>
                     <div class="collapse-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -758,6 +788,7 @@
                             <div class="member-name">张三</div>
                             <div class="member-time">2分钟前</div>
                         </div>
+                        <div class="member-unread-icon">2</div>
                     </div>
                     <div class="team-member">
                         <div class="member-avatar" style="background-color: #2196F3;">
@@ -788,6 +819,7 @@
                             <div class="member-name">欧阳娜娜(业务员)</div>
                             <div class="member-time">10分钟前</div>
                         </div>
+                        <div class="member-unread-icon">1</div>
                     </div>
                 </div>
             </div>
