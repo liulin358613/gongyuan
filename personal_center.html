@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工业智能生产力平台</title>
+    <style>
+        /* 基础重置与全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        :root {
+            /* 主色调 */
+            --klein-blue: #0051D9;
+            --hermes-orange: #F37021;
+            --deep-gray: #1D2129;
+            --light-bg: #F2F3F5;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+
+            /* AI对话框配色 */
+            --ai-chat-bg: #FFFFFF;
+            --ai-input-bg: #FFFFFF;
+            --ai-text: #1D2129;
+            --ai-desc: #86909C;
+            --ai-border: #E5E7EB;
+            --ai-send: #06b6d4;
+            --ai-tag-bg: #F2F3F5;
+            --ai-tag-hover: #E5E7EB;
+
+            /* 响应式断点 */
+            --breakpoint-md: 992px;
+            --breakpoint-sm: 768px;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: #333;
+            line-height: 1.5;
+            /* 给固定顶部留出空间，防止内容被遮挡 */
+            padding-top: 70px;
+        }
+
+        /* 通用容器 */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+         /* ========== 固定顶部导航栏（单独一行） ========== */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--klein-blue);
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        .fixed-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .logo {
+            width: 220px;
+            height: 50px;
+            background: var(--white);
+            color: var(--klein-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.9;
+        }
+         .user-area {
+            display: flex;
+            align-items: center;
+            gap: 16px; /* 增加间距更美观 */
+        }
+        /* 优化欢迎信息样式 */
+        .welcome {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--deep-gray);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        /* 公司名称样式 */
+        .company-name {
+            color: var(--klein-blue);
+            font-weight: 600;
+        }
+        /* 登录者名称样式 */
+        .user-name {
+            color: var(--hermes-orange);
+        }
+        /* 退出按钮样式 */
+        .logout-btn {
+            color: #FF4D4F;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover {
+            background: #FFF1F0;
+            color: #F5222D;
+        }
+        /* 按钮通用样式优化 */
+        .login {
+            background: var(--white);
+            color: var(--klein-blue);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+        .login:hover {
+            background: var(--hermes-orange);
+            color: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+        .login:nth-child(3) {
+            background: #E6F7FF;
+            border: 1px solid var(--klein-blue);
+        }
+        .login:nth-child(3):hover {
+            background: var(--klein-blue);
+            color: var(--white);
+        }
+        .login:nth-child(2) {
+            position: relative;
+        }
+        /* 消息红点优化 */
+        .login:nth-child(2)::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #FF4D4F;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba(255,77,79,0.2);
+        }
+        /* 消息图标样式 */
+        .msg-icon {
+            font-size: 16px;
+        }
+
+        /* 头部区域 */
+        header {
+            background: var(--klein-blue);
+            padding: 14px 0;
+            color: var(--white);
+        }
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        /* 标签导航容器 */
+        .tab-container {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* 导航标签栏 */
+        .tab-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 40px;
+        }
+
+        .tab {
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 4px;
+            transition: color 0.2s;
+        }
+
+        .tab.active {
+            color: var(--klein-blue);
+            font-weight: bold;
+            border-bottom: 3px solid var(--klein-blue);
+            padding-bottom: 10px;
+            width: 200px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--klein-blue);
+            opacity: 0.8;
+        }
+
+        .ai-team-btn {
+            background: var(--hermes-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.3s;
+        }
+
+        .ai-team-btn:hover {
+            background: #d55d10;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 992px) {
+            .tabs {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                overflow-x: auto;
+                padding-bottom: 8px;
+                gap: 16px;
+            }
+
+            .tab-row {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+
+        /* 页脚样式 */
+        footer {
+            background: var(--deep-gray);
+            color: var(--white);
+            padding: 40px 20px;
+            margin-top: 20px;
+        }
+
+        .footer-wrap {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-col h3 {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .footer-col p {
+            font-size: 13px;
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+
+        /* ========== 新增：个人管理模块样式 ========== */
+        .personal-manage {
+            max-width: 1300px;
+            margin: 6px auto;
+            padding: 0 20px;
+        }
+        .manage-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .edit-profile {
+            background: rgba(255,255,255,0.2);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .edit-profile:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .manage-body {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1px;
+            background: var(--border);
+        }
+        .manage-sidebar {
+            background: var(--white);
+        }
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+        .menu-item {
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--deep-gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            justify-content: space-between;
+        }
+        .menu-item:hover {
+            background-color: var(--light-bg);
+        }
+        .menu-item.active {
+            background-color: #EEF5FF;
+            color: var(--klein-blue);
+            font-weight: 600;
+        }
+        .menu-item-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .menu-icon {
+            font-size: 16px;
+        }
+        .collapse-icon {
+            transition: transform 0.3s ease;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--classic-gray);
+        }
+        .collapse-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        .team-members {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-left: 28px;
+            max-height: 200px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .team-members.collapsed {
+            max-height: 0;
+        }
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: var(--white);
+            height: 38px;
+        }
+        .team-member:hover {
+            background-color: var(--light-bg);
+        }
+        .team-member.active {
+            background-color: #EEF5FF;
+            color: var(--klein-blue);
+            font-weight: 600;
+        }
+        .member-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .member-name {
+            font-size: 13px;
+            color: var(--deep-gray);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+        .manage-content {
+            background: var(--white);
+            padding: 30px;
+        }
+        .content-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--deep-gray);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .profile-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--deep-gray);
+            font-weight: 500;
+        }
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 2px rgba(0,81,217,0.1);
+        }
+        .form-actions {
+            grid-column: span 2;
+            margin-top: 20px;
+        }
+        .save-btn {
+            background: var(--klein-blue);
+            color: var(--white);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .save-btn:hover {
+            background: #0047b3;
+        }
+        .cancel-btn {
+            background: var(--light-bg);
+            color: var(--deep-gray);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        .cancel-btn:hover {
+            background: var(--border);
+        }
+        /* 个人管理模块响应式适配 */
+        @media (max-width: 992px) {
+            .manage-body {
+                grid-template-columns: 200px 1fr;
+            }
+            .profile-form {
+                grid-template-columns: 1fr;
+            }
+            .form-actions {
+                grid-column: span 1;
+            }
+        }
+        @media (max-width: 768px) {
+            .manage-body {
+                grid-template-columns: 1fr;
+            }
+            .manage-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+   <!-- ========== 固定在顶部的 Logo 导航栏 ========== -->
+    <div class="fixed-header">
+        <div class="container">
+            <div class="logo">LOGO · 智能</div>
+            <div class="user-area">
+                <!-- 优化欢迎信息结构 -->
+                <div class="welcome">
+                    <span>👋</span>
+                    <span>
+                        <span class="company-name">东莞嘉东科技有限公司</span> 
+                        <span class="user-name">林工</span> 
+                        欢迎您！
+                        <span class="logout-btn">[退出]</span>
+                    </span>
+                </div>
+                <!-- 消息按钮添加图标 -->
+                <button class="login">
+                    <span class="msg-icon">📩</span>
+                    <span>消息 12</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 标签导航 -->
+    <div class="tab-container">
+        <div class="container">
+            <div class="tab-row">
+                <div class="tabs">
+                    <div class="tab active">我的工作台</div>
+                </div>
+                <button class="ai-team-btn">我的AI团队</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 新增：个人管理模块 ========== -->
+    <div class="personal-manage">
+        <div class="manage-card">
+            <div class="manage-body">
+                <div class="manage-sidebar">
+                    <div class="sidebar-menu">
+                        <div class="menu-item active">
+                            <div class="menu-item-content">
+                                <span class="menu-icon">📊</span>
+                                <span>个人中心</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item" id="menu1">
+                            <div class="menu-item-content">
+                                <span class="menu-icon">👤</span>
+                                <span>代办事项</span>
+                            </div>
+                            <div class="collapse-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-members" id="members1">
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">我的任务</div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">组织任务</div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">我的考核</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item" id="menu2">
+                            <div class="menu-item-content">
+                                <span class="menu-icon">🔒</span>
+                                <span>BI数据中心</span>
+                            </div>
+                            <div class="collapse-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-members" id="members2">
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">数据看板</div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">数据报表</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item" id="menu3">
+                            <div class="menu-item-content">
+                                <span class="menu-icon">📱</span>
+                                <span>订单管理</span>
+                            </div>
+                            <div class="collapse-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-members" id="members3">
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">工位需求</div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">工位订单</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item" id="menu4">
+                            <div class="menu-item-content">
+                                <span class="menu-icon">⚙️</span>
+                                <span>方案管理</span>
+                            </div>
+                            <div class="collapse-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-members" id="members4">
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">方案管理</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <div class="menu-item" id="menu5">
+                            <div class="menu-item-content">
+                                <span class="menu-icon">⚙️</span>
+                                <span>系统设置</span>
+                            </div>
+                            <div class="collapse-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-members" id="members5">
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">账号管理</div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-info">
+                                    <div class="member-name">权限管理</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="manage-content">
+                    <div class="content-title">基本信息</div>
+                    <form class="profile-form">
+                        <div class="form-group">
+                            <label class="form-label">姓名</label>
+                            <input type="text" class="form-input" value="林工" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">性别</label>
+                            <input type="text" class="form-input" value="男" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">所属公司</label>
+                            <input type="text" class="form-input" value="东莞嘉东科技有限公司" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">职位</label>
+                            <input type="text" class="form-input" value="工程师" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">入职时间</label>
+                            <input type="text" class="form-input" value="2023-01-15" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">所属部门</label>
+                            <input type="text" class="form-input" value="技术研发部" readonly>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="save-btn">保存修改</button>
+                            <button type="button" class="cancel-btn">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-col">
+                <h3>TECHBOT</h3>
+                <p>专注工业智能 · 让制造更高效</p>
+            </div>
+            <div class="footer-col">
+                <h3>快速入口</h3>
+                <p>
+                    生产力方案库<br>
+                    工业设备商城<br>
+                    智能知识库
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>联系我们</h3>
+                <p>
+                    商务合作：service@techbot.com<br>
+                    服务热线：400-888-9999
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>关于我们</h3>
+                <p>
+                    © 2026 工业智能生产力平台<br>
+                    版权所有
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // TAB切换功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // 团队成员折叠功能
+        function initCollapse(menuId, membersId) {
+            const menu = document.getElementById(menuId);
+            const members = document.getElementById(membersId);
+            const icon = menu.querySelector('.collapse-icon');
+            
+            // 默认折叠状态
+            members.classList.add('collapsed');
+            icon.classList.add('collapsed');
+            
+            // 点击切换折叠状态
+            menu.addEventListener('click', () => {
+                members.classList.toggle('collapsed');
+                icon.classList.toggle('collapsed');
+            });
+        }
+        
+        // 初始化所有菜单的折叠功能
+        initCollapse('menu1', 'members1');
+        initCollapse('menu2', 'members2');
+        initCollapse('menu3', 'members3');
+        initCollapse('menu4', 'members4');
+        initCollapse('menu5', 'members5');
+        
+        // 菜单项点击事件
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // 移除所有菜单项的激活状态
+                document.querySelectorAll('.menu-item').forEach(menu => menu.classList.remove('active'));
+                // 激活当前菜单项
+                item.classList.add('active');
+            });
+        });
+        
+        // 团队成员点击事件
+        document.querySelectorAll('.team-member').forEach(item => {
+            item.addEventListener('click', (e) => {
+                // 阻止事件冒泡，避免触发父菜单的点击事件
+                e.stopPropagation();
+                
+                // 移除所有团队成员的激活状态
+                document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
+                // 激活当前团队成员
+                item.classList.add('active');
+            });
+        });
+
+        // 新增：编辑按钮切换输入框只读状态
+        const editBtn = document.querySelector('.edit-profile');
+        const formInputs = document.querySelectorAll('.form-input');
+        let isEdit = false;
+        
+        editBtn.addEventListener('click', () => {
+            isEdit = !isEdit;
+            formInputs.forEach(input => {
+                input.readOnly = !isEdit;
+                if (isEdit) {
+                    input.style.borderColor = 'var(--klein-blue)';
+                    editBtn.textContent = '取消编辑';
+                    editBtn.style.background = 'rgba(255,255,255,0.3)';
+                } else {
+                    input.style.borderColor = 'var(--border)';
+                    editBtn.textContent = '编辑个人信息';
+                    editBtn.style.background = 'rgba(255,255,255,0.2)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

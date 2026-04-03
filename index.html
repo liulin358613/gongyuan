@@ -1652,6 +1652,11 @@
             passwordField.setAttribute('type', type);
             eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
         });
+
+        // 登录按钮点击跳转到 index_login 页面
+        document.querySelector('.login-button').addEventListener('click', () => {
+            window.location.href = 'index_login.html';
+        });
     </script>
 </body>
 </html>

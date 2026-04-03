@@ -89,37 +89,66 @@
         .logo:hover {
             opacity: 0.9;
         }
-        .user-area {
+         .user-area {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px; /* 增加间距更美观 */
         }
+        /* 优化欢迎信息样式 */
         .welcome {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             color: var(--deep-gray);
-            padding: 8px 14px;
-            border-radius: 4px;
+            padding: 10px 18px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+        /* 公司名称样式 */
+        .company-name {
+            color: var(--klein-blue);
+            font-weight: 600;
+        }
+        /* 登录者名称样式 */
+        .user-name {
+            color: var(--hermes-orange);
+        }
+        /* 退出按钮样式 */
+        .logout-btn {
+            color: #FF4D4F;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover {
+            background: #FFF1F0;
+            color: #F5222D;
+        }
+        /* 按钮通用样式优化 */
         .login {
             background: var(--white);
             color: var(--klein-blue);
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 18px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             transition: all 0.3s ease;
-            margin-left: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
         }
         .login:hover {
             background: var(--hermes-orange);
             color: var(--white);
             transform: translateY(-1px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
         .login:nth-child(3) {
             background: #E6F7FF;
@@ -132,15 +161,21 @@
         .login:nth-child(2) {
             position: relative;
         }
+        /* 消息红点优化 */
         .login:nth-child(2)::after {
             content: '';
             position: absolute;
-            top: 2px;
+            top: 6px;
             right: 8px;
             width: 8px;
             height: 8px;
             background: #FF4D4F;
             border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba(255,77,79,0.2);
+        }
+        /* 消息图标样式 */
+        .msg-icon {
+            font-size: 16px;
         }
 
         /* 头部区域 */
@@ -1071,9 +1106,25 @@
         <div class="container">
             <div class="logo">LOGO · 智能</div>
             <div class="user-area">
-                <div class="welcome">东莞嘉东科技有限公司 林工 欢迎您！[退出]</div>
-                <button class="login">消息 12</button>
-                <button class="login">我的工作台</button>
+                <!-- 优化欢迎信息结构 -->
+                <div class="welcome">
+                    <span>👋</span>
+                    <span>
+                        <span class="company-name">东莞嘉东科技有限公司</span> 
+                        <span class="user-name">林工</span> 
+                        欢迎您！
+                        <span class="logout-btn">[退出]</span>
+                    </span>
+                </div>
+                <!-- 消息按钮添加图标 -->
+                <button class="login">
+                    <span class="msg-icon">📩</span>
+                    <span>消息 12</span>
+                </button>
+                <button class="login">
+                    <span>🖥️</span>
+                    <span>我的工作台</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1443,6 +1494,11 @@
             window.location.href = 'index.html';
         });
 
+        // 消息按钮点击跳转到 AI 页面
+        document.querySelectorAll('.login')[0].addEventListener('click', () => {
+            window.location.href = 'ai.html';
+        });
+
         // 产业数据
         const industryData = {
             '农业方案库': [
@@ -1643,13 +1699,7 @@
         // 为消息和工作台按钮添加新的点击事件
         const messageBtn = document.querySelector('.login:nth-child(2)');
         const workbenchBtn = document.querySelector('.login:nth-child(3)');
-        
-        if (messageBtn) {
-            messageBtn.addEventListener('click', () => {
-                alert('打开消息中心');
-            });
-        }
-        
+    
         if (workbenchBtn) {
             workbenchBtn.addEventListener('click', () => {
                 alert('打开工作台');
