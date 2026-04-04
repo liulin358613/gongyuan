@@ -268,6 +268,12 @@
             background-color: var(--hover-gray);
         }
 
+        .team-member.active {
+            background-color: var(--light-gray);
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 2px rgba(0, 81, 217, 0.1);
+        }
+
         .member-avatar {
             width: 24px; /* 进一步缩小头像 */
             height: 24px;
@@ -436,6 +442,15 @@
 
         .chat-message.ai {
             justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        /* AI消息头部：头像和名称 */
+        .ai-message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
         .message-avatar {
@@ -451,25 +466,40 @@
         }
 
         .user .message-avatar {
-            background-color: var(--klein-blue);
+            display: none;
         }
 
         .ai .message-avatar {
             background-color: var(--hermes-orange);
         }
 
+        .ai-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--deep-gray);
+        }
+
+        .ai-message-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: calc(70% - 52px);
+        }
+
         .message-content {
-            max-width: 70%;
-            padding: 16px 20px;
+            max-width: 100%;
+            padding: 12px 16px;
             border-radius: 12px;
             font-size: 15px;
-            line-height: 1.6;
+            line-height: 1.5;
+            word-wrap: break-word;
         }
 
         .user .message-content {
             background-color: var(--klein-blue);
             color: white;
             border-bottom-right-radius: 4px;
+            max-width: 70%;
         }
 
         .ai .message-content {
@@ -479,15 +509,48 @@
             border-bottom-left-radius: 4px;
         }
 
-        .empty-chat {
-            flex: 1;
+        .welcome-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            padding-top: 30%;
+            height: 100%;
+            width: 100%;
+        }
+
+        .empty-chat {
             font-size: 28px;
             font-weight: bold;
             color: var(--deep-gray);
             opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        /* 推荐标签样式 */
+        .recommended-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 40px;
+            justify-content: center;
+            max-width: 800px;
+        }
+
+        .recommended-tag {
+            background-color: var(--light-gray);
+            color: var(--deep-gray);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .recommended-tag:hover {
+            background-color: var(--border-gray);
+            color: var(--klein-blue);
         }
 
         /* 底部输入框 */
@@ -541,18 +604,19 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex: 1;
+            flex-wrap: wrap;
         }
 
         .upload-btn {
             color: var(--classic-gray);
-            font-size: 20px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            flex-shrink: 0;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
             transition: all 0.3s;
         }
 
@@ -567,7 +631,7 @@
         .divider {
             color: var(--border-gray);
             font-size: 16px;
-            padding: 0 4px;
+            padding-right: 8px;
         }
 
         .input-tags {
@@ -593,6 +657,34 @@
             background: var(--border-gray);
         }
 
+        /* 模型标签样式 */
+        .model-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .model-tag {
+            background: var(--light-gray);
+            color: var(--deep-gray);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .model-tag:hover {
+            background: var(--border-gray);
+            color: var(--klein-blue);
+        }
+
+        .model-tag.active {
+            background: var(--klein-blue);
+            color: white;
+        }
+
         .send-btn {
             background: #06b6d4;
             color: var(--white);
@@ -612,6 +704,55 @@
         .send-btn:hover {
             background: #04a4be;
         }
+
+        /* 图片模态框样式 */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+
+        .image-modal.show {
+            display: flex;
+        }
+
+        .modal-image {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100000;
+        }
+
+        .close-modal:hover {
+            color: #ccc;
+        }
+
+        .chat-image {
+            max-width: 200px;
+        }
+
+        .chat-image:hover img {
+            transform: scale(1.02);
+        }
+
+
 
         /* 响应式适配 */
         @media (max-width: 1200px) {
@@ -708,7 +849,7 @@
                 </div>
                 <!-- 团队成员 -->
                 <div class="team-members" id="teamMembers1">
-                    <div class="team-member">
+                    <div class="team-member" data-member-id="admin" data-member-name="行政助理" data-avatar-color="#4CAF50">
                         <div class="member-avatar" style="background-color: #4CAF50;">
                             <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#4CAF50"/>
@@ -723,7 +864,7 @@
                             <div class="member-time">2分钟前</div>
                         </div>
                     </div>
-                    <div class="team-member">
+                    <div class="team-member" data-member-id="sales" data-member-name="销售工程师" data-avatar-color="#2196F3">
                         <div class="member-avatar" style="background-color: #2196F3;">
                             <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#2196F3"/>
@@ -738,7 +879,7 @@
                             <div class="member-time">5分钟前</div>
                         </div>
                     </div>
-                    <div class="team-member">
+                    <div class="team-member" data-member-id="support" data-member-name="售后工程师" data-avatar-color="#FF9800">
                         <div class="member-avatar" style="background-color: #FF9800;">
                             <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#FF9800"/>
@@ -902,15 +1043,19 @@
                     <div class="message-content">
                         您好，我们工厂是做汽车零部件生产的，目前生产线效率偏低，次品率大概在3%左右，想通过智能生产方案提升效率并降低次品率，请问有什么具体的解决方案？
                     </div>
-                    <div class="message-avatar">用</div>
                 </div>
 
                 <!-- AI回答1 -->
                 <div class="chat-message ai">
                     <div class="message-avatar">AI</div>
-                    <div class="message-content">
-                        您好，针对汽车零部件生产的效率提升和次品率降低需求，我们提供以下智能生产解决方案：<br>
-                        1. <strong>生产过程智能化监控</strong>：部署工业视觉检测系统，在关键工序设置AI视觉摄像头，00ms，检测准确率可达99.8%以上；<br>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">工元智能</span>
+                        </div>
+                        <div class="message-content">
+                            您好，针对汽车零部件生产的效率提升和次品率降低需求，我们提供以下智能生产解决方案：<br>
+                            1. <strong>生产过程智能化监控</strong>：部署工业视觉检测系统，在关键工序设置AI视觉摄像头，00ms，检测准确率可达99.8%以上；<br>
+                        </div>
                     </div>
                 </div>
 
@@ -919,18 +1064,22 @@
                     <div class="message-content">
                         这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
                     </div>
-                    <div class="message-avatar">用</div>
                 </div>
 
                 <!-- AI回答2 -->
                 <div class="chat-message ai">
                     <div class="message-avatar">AI</div>
-                    <div class="message-content">
-                        针对您的问题，具体解答如下：<br>
-                        一、<strong>实施成本</strong>：<br>
-                        按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础：<br>
-                        二、<strong>回报周期</strong>：<br>
-                        按效率提升15%、次品率从3%降至1%计算，单台设备年均可增加产值约15万元，20台合计300万元，扣除人工、能耗等成本节省，整体回报周期约8-12个月。<br>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">工元智能</span>
+                        </div>
+                        <div class="message-content">
+                            针对您的问题，具体解答如下：<br>
+                            一、<strong>实施成本</strong>：<br>
+                            按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础：<br>
+                            二、<strong>回报周期</strong>：<br>
+                            按效率提升15%、次品率从3%降至1%计算，单台设备年均可增加产值约15万元，20台合计300万元，扣除人工、能耗等成本节省，整体回报周期约8-12个月。<br>
+                        </div>
                     </div>
                 </div>
 
@@ -947,12 +1096,14 @@
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
                             </svg>
+                            上传文件
                         </label>
                         <span class="divider">|</span>
-                        <div class="input-tags">
-                            <div class="input-tag">汽车制造</div>
-                            <div class="input-tag">3C电子</div>
-                            <div class="input-tag">新能源</div>
+                        <div class="model-tags">
+                            <div class="model-tag" data-function="draw">画示意图</div>
+                            <div class="model-tag" data-function="image">生成图片</div>
+                            <div class="model-tag" data-function="video">生成视频</div>
+                            <div class="model-tag" data-function="file">生成文件</div>
                         </div>
                     </div>
                     <button class="send-btn">↑</button>
@@ -961,16 +1112,13 @@
         </div>
     </div>
 
-    <script>
-        // 标签点击填入输入框
-        document.querySelectorAll('.input-tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                const textarea = document.querySelector('.input-box textarea');
-                textarea.value = tag.textContent;
-                textarea.dispatchEvent(new Event('input'));
-            });
-        });
+    <!-- 图片查看模态框 -->
+    <div class="image-modal" id="imageModal">
+        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+        <img class="modal-image" id="modalImage" src="">
+    </div>
 
+    <script>
         // 输入框自动高度适配
         const textarea = document.querySelector('.input-box textarea');
         textarea.addEventListener('input', () => {
@@ -982,13 +1130,248 @@
         window.addEventListener('load', () => {
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
+            // 页面加载时显示模型标签和分割符号
+            document.querySelector('.model-tags').style.display = 'flex';
+            document.querySelector('.divider').style.display = 'inline';
+        });
+
+        // 标签点击填入输入框
+        document.querySelectorAll('.input-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                textarea.value = tag.textContent;
+                textarea.dispatchEvent(new Event('input'));
+            });
+        });
+
+        // 模型标签点击事件
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('model-tag')) {
+                document.querySelectorAll('.model-tag').forEach(tag => tag.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+
+        // 团队成员点击事件
+        document.addEventListener('click', (e) => {
+            const teamMember = e.target.closest('.team-member');
+            if (teamMember) {
+                // 移除其他团队成员的选中状态
+                document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
+                // 添加当前团队成员的选中状态
+                teamMember.classList.add('active');
+                
+                // 隐藏模型标签和分割符号
+                document.querySelector('.model-tags').style.display = 'none';
+                document.querySelector('.divider').style.display = 'none';
+                
+                // 获取成员信息
+                const memberId = teamMember.dataset.memberId;
+                const memberName = teamMember.dataset.memberName;
+                const avatarColor = teamMember.dataset.avatarColor;
+                
+                // 生成聊天记录
+                let chatContent = '';
+                
+                // 根据成员ID生成不同的聊天记录
+                if (memberId === 'admin') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，请问公司的请假流程是怎样的？
+                            </div>
+                        </div>
+                        
+                        <!-- 行政助理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">助</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    您好！公司的请假流程如下：<br>
+                                    1. 登录OA系统<br>
+                                    2. 进入"请假申请"模块<br>
+                                    3. 填写请假原因、时间等信息<br>
+                                    4. 提交审批<br>
+                                    5. 等待主管审批通过
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                好的，谢谢！另外，公司的福利政策有哪些？
+                            </div>
+                        </div>
+                        
+                        <!-- 行政助理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">助</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    公司福利政策包括：<br>
+                                    - 五险一金<br>
+                                    - 带薪年假<br>
+                                    - 节日福利<br>
+                                    - 定期体检<br>
+                                    - 员工培训
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 默认打招呼效果 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">助</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    有什么我能帮你的吗？
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'sales') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，我想了解一下我们的智能生产线解决方案的价格。
+                            </div>
+                        </div>
+                        
+                        <!-- 销售工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">销</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    您好！我们的智能生产线解决方案价格根据具体配置和规模而定，大致在80-150万元之间。
+                                    我们可以根据您的具体需求提供详细的报价方案。
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 销售工程师发送图片 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">销</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    这是我们的智能生产线解决方案示意图：<br>
+                                    <div class="chat-image" onclick="openImageModal('https://picsum.photos/800/500?random=2')" style="cursor: pointer; margin-top: 10px;">
+                                        <img src="https://picsum.photos/800/500?random=2" alt="智能手表高精度装配检测" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 默认打招呼效果 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">销</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    有什么我能帮你的吗？
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'support') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，我们的设备出现了故障，需要技术支持。
+                            </div>
+                        </div>
+                        
+                        <!-- 售后工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">售</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    您好！请描述一下设备的具体故障情况，我们的技术团队会尽快为您提供支持。
+                                    您也可以拨打我们的技术支持热线：400-123-4567
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                设备启动时显示错误代码E102，无法正常运行。
+                            </div>
+                        </div>
+                        
+                        <!-- 售后工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">售</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    错误代码E102通常表示传感器连接异常。
+                                    请检查传感器的连接线是否松动，或者传感器本身是否损坏。
+                                    如果问题仍然存在，我们可以安排技术人员上门维修。
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 默认打招呼效果 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">售</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    有什么我能帮你的吗？
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 更新对话区
+                document.querySelector('.chat-content').innerHTML = chatContent;
+                
+                // 清空输入框
+                textarea.value = '';
+                textarea.style.height = 'auto';
+                
+                // 移除历史对话的选中状态
+                document.querySelectorAll('.history-item').forEach(item => item.classList.remove('active'));
+            }
         });
 
         // 历史对话项点击切换激活状态
         document.querySelectorAll('.history-item').forEach(item => {
             item.addEventListener('click', () => {
                 document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
                 item.classList.add('active');
+                // 显示模型标签和分割符号
+                document.querySelector('.model-tags').style.display = 'flex';
+                document.querySelector('.divider').style.display = 'inline';
+
             });
         });
 
@@ -997,7 +1380,34 @@
             textarea.value = '';
             textarea.style.height = 'auto';
             document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
-            document.querySelector('.chat-content').innerHTML = '<div class="empty-chat">开始新的智能生产方案咨询</div>';
+            document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
+            // 显示模型标签和分割符号
+            document.querySelector('.model-tags').style.display = 'flex';
+            document.querySelector('.divider').style.display = 'inline';
+
+            document.querySelector('.chat-content').innerHTML = `
+                <div class="welcome-container">
+                    <div class="empty-chat">有什么我能帮你的吗?</div>
+                    <div class="recommended-tags">
+                        <div class="recommended-tag">智能生产线改造方案</div>
+                        <div class="recommended-tag">设备预测性维护</div>
+                        <div class="recommended-tag">生产质量检测系统</div>
+                        <div class="recommended-tag">工厂能耗智能监控</div>
+                        <div class="recommended-tag">仓储物流自动化</div>
+                        <div class="recommended-tag">柔性生产线搭建</div>
+                    </div>
+                </div>
+            `;
+            
+            // 为推荐标签添加点击事件
+            setTimeout(() => {
+                document.querySelectorAll('.recommended-tag').forEach(tag => {
+                    tag.addEventListener('click', () => {
+                        textarea.value = tag.textContent;
+                        textarea.dispatchEvent(new Event('input'));
+                    });
+                });
+            }, 100);
         });
 
         // 发送按钮点击交互（可后续对接API）
@@ -1009,7 +1419,6 @@
                 userMessage.className = 'chat-message user';
                 userMessage.innerHTML = `
                     <div class="message-content">${content}</div>
-                    <div class="message-avatar">用</div>
                 `;
                 document.querySelector('.chat-content').appendChild(userMessage);
                 
@@ -1019,9 +1428,14 @@
                     aiMessage.className = 'chat-message ai';
                     aiMessage.innerHTML = `
                         <div class="message-avatar">AI</div>
-                        <div class="message-content">
-                            感谢您的提问，我们的专业团队会根据您的具体需求，为您定制专属的智能生产解决方案。
-                            如需进一步沟通，可拨打我们的服务热线：400-123-4567，或留下您的联系方式，我们将尽快与您联系。
+                        <div class="ai-message-wrapper">
+                            <div class="ai-message-header">
+                                <span class="ai-name">工元智能</span>
+                            </div>
+                            <div class="message-content">
+                                感谢您的提问，我们的专业团队会根据您的具体需求，为您定制专属的智能生产解决方案。
+                                如需进一步沟通，可拨打我们的服务热线：400-123-4567，或留下您的联系方式，我们将尽快与您联系。
+                            </div>
                         </div>
                     `;
                     document.querySelector('.chat-content').appendChild(aiMessage);
@@ -1069,6 +1483,28 @@
         // 页面加载时滚动到对话底部
         window.addEventListener('load', () => {
             document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
+        });
+
+        // 图片模态框功能
+        function openImageModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageUrl;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 点击模态框背景关闭
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeImageModal();
+            }
         });
 
         // 团队成员折叠功能
