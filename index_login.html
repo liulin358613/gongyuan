@@ -1123,7 +1123,7 @@
                 </button>
                 <button class="login">
                     <span>🖥️</span>
-                    <span>我的工作台</span>
+                    <span>个人中心</span>
                 </button>
             </div>
         </div>
@@ -1696,13 +1696,13 @@
         const passwordField = document.querySelector('.password-input .form-input');
 
         // 登录后状态，取消登录弹窗事件
-        // 为消息和工作台按钮添加新的点击事件
+        // 为消息和个人中心按钮添加新的点击事件
         const messageBtn = document.querySelector('.login:nth-child(2)');
         const workbenchBtn = document.querySelector('.login:nth-child(3)');
     
         if (workbenchBtn) {
             workbenchBtn.addEventListener('click', () => {
-                alert('打开工作台');
+                alert('打开个人中心');
             });
         }
 
