@@ -195,8 +195,112 @@
             }
         }
     </style>
+    <!-- 退出确认对话框样式 -->
+    <style>
+        /* 退出确认对话框样式 */
+        .logout-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            background-color: rgba(29, 33, 41, 0.6);
+            backdrop-filter: blur(2px);
+        }
+
+        .logout-modal.show {
+            display: flex;
+        }
+
+        .logout-modal-content {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            padding: 30px 36px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            text-align: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logout-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1D2129;
+            margin-bottom: 16px;
+        }
+
+        .logout-modal-message {
+            font-size: 14px;
+            color: #86909C;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .logout-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .logout-modal-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+        }
+
+        .logout-modal-btn.cancel {
+            background-color: #FFFFFF;
+            color: #1D2129;
+        }
+
+        .logout-modal-btn.cancel:hover {
+            background-color: #F7F8FA;
+        }
+
+        .logout-modal-btn.confirm {
+            background-color: #F37021;
+            color: #FFFFFF;
+            border-color: #F37021;
+        }
+
+        .logout-modal-btn.confirm:hover {
+            background-color: #e0631d;
+            border-color: #e0631d;
+        }
+    </style>
 </head>
 <body>
+    <!-- 退出确认对话框 -->
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <h3 class="logout-modal-title">确认退出</h3>
+            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
+            <div class="logout-modal-buttons">
+                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
+                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
+            </div>
+        </div>
+    </div>
     <!-- ========== 固定在顶部的 Logo 导航栏 ========== -->
     <div class="fixed-header">
         <div class="container">
@@ -209,7 +313,7 @@
                         <span class="company-name">东莞嘉东科技有限公司</span> 
                         <span class="user-name">林工</span> 
                         欢迎您！
-                        <span class="logout-btn">[退出]</span>
+                        <span class="logout-btn" onclick="showLogoutConfirm()">[退出]</span>
                     </span>
                 </div>
                 <!-- 消息按钮添加图标 -->
@@ -233,16 +337,109 @@
         </div>
     </div>
     <script>
-        // 跳转到登录后首页函数 - 支持iframe内外跳转
+        // 跳转到首页函数 - 支持iframe内外跳转
         function goToIndex() {
             // 检查是否在iframe中
             if (window.parent !== window) {
                 // 在iframe中，让父页面跳转
-                window.parent.location.href = 'index_login.html';
+                window.parent.location.href = 'index.html';
             } else {
                 // 不在iframe中，直接跳转
-                window.location.href = 'index_login.html';
+                window.location.href = 'index.html';
             }
+        }
+
+        // 获取主窗口对象（如果在iframe中，则获取父窗口）
+        const mainWindow = window.parent !== window ? window.parent : window;
+        const mainDocument = mainWindow.document;
+
+        // 显示退出确认对话框
+        function showLogoutConfirm() {
+            // 检查是否在iframe中
+            if (window.parent !== window) {
+                // 在iframe中，通过postMessage与父页面通信
+                window.parent.postMessage({ type: 'SHOW_LOGOUT_MODAL' }, '*');
+            } else {
+                // 不在iframe中，直接显示对话框
+                const logoutModal = document.getElementById('logoutModal');
+                if (logoutModal) {
+                    logoutModal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        }
+
+        // 隐藏退出确认对话框
+        function hideLogoutConfirm() {
+            const logoutModal = document.getElementById('logoutModal');
+            if (logoutModal) {
+                logoutModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // 退出登录函数 - 支持iframe内外跳转
+        function logout() {
+            try {
+                // 清除登录状态
+                mainWindow.localStorage.removeItem('isLoggedIn');
+                
+                // 跳转到登录页面或首页
+                mainWindow.location.href = 'index.html';
+            } catch (error) {
+                console.error('退出登录时出错:', error);
+                // 出错时也跳转到首页
+                mainWindow.location.href = 'index.html';
+            }
+        }
+
+        // 初始化退出确认对话框
+        function initLogoutModal() {
+            // 检查是否在iframe中
+            if (window.parent !== window) {
+                // 在iframe中，不需要初始化
+                return;
+            }
+
+            const logoutModal = document.getElementById('logoutModal');
+            const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+            const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+
+            if (logoutCancelBtn) {
+                // 处理取消按钮点击
+                logoutCancelBtn.addEventListener('click', hideLogoutConfirm);
+            }
+
+            if (logoutConfirmBtn) {
+                // 处理确认按钮点击
+                logoutConfirmBtn.addEventListener('click', function() {
+                    hideLogoutConfirm();
+                    logout();
+                });
+            }
+
+            if (logoutModal) {
+                // 点击对话框外部关闭
+                logoutModal.addEventListener('click', function(e) {
+                    if (e.target === logoutModal) {
+                        hideLogoutConfirm();
+                    }
+                });
+
+                // 按ESC键关闭对话框
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && logoutModal.classList.contains('show')) {
+                        hideLogoutConfirm();
+                    }
+                });
+            }
+        }
+
+        // 在DOM内容加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLogoutModal);
+        } else {
+            initLogoutModal();
         }
     </script>
 </body>

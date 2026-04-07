@@ -4,6 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>工业智能生产力平台</title>
+    <script>
+        // 检查登录状态并显示相应的头部内容
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态，实际项目中应从localStorage或cookie中获取
+            // 确保localStorage.getItem返回的值被正确转换为布尔值
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            // 获取用户区域元素
+            const userArea = document.querySelector('.user-area');
+            
+            if (isLoggedIn) {
+                // 已登录状态，显示欢迎信息和退出按钮
+                userArea.innerHTML = `
+                    <div class="welcome">
+                        <span>👋</span>
+                        <span>
+                            <span class="company-name">东莞嘉东科技有限公司</span> 
+                            <span class="user-name">林工</span> 
+                            欢迎您！
+                            <span class="logout-btn" onclick="logout()">[退出]</span>
+                        </span>
+                    </div>
+                    <!-- 消息按钮添加图标 -->
+                    <button class="login">
+                        <span class="msg-icon">📩</span>
+                        <span>消息 12</span>
+                    </button>
+                    <button class="login">
+                        <span>👤</span>
+                        <span>个人中心</span>
+                    </button>
+                    <div class="location">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="city-name">北京</span>
+                        <span class="switch-city">[切换城市]</span>
+                    </div>
+                `;
+            } else {
+                // 未登录状态，显示登录和注册按钮
+                userArea.innerHTML = `
+                    <button class="login">登录</button>
+                    <button class="login">注册</button>
+                    <div class="location">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="city-name">北京</span>
+                        <span class="switch-city">[切换城市]</span>
+                    </div>
+                `;
+            }
+        });
+
+        // 退出登录函数
+        function logout() {
+            // 清除登录状态
+            localStorage.removeItem('isLoggedIn');
+            
+            // 刷新页面，显示未登录的头部
+            window.location.reload();
+        }
+    </script>
     <style>
         /* 基础重置与全局样式 */
         * {
@@ -184,14 +250,18 @@
 
         .upload-btn {
             color: var(--ai-desc);
-            font-size: 20px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            flex-shrink: 0;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            color: var(--klein-blue);
         }
 
         .upload-btn input {
@@ -225,6 +295,34 @@
 
         .ai-tag:hover {
             background: var(--ai-tag-hover);
+        }
+
+        /* 模型标签样式 */
+        .model-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .model-tag {
+            background: var(--light-bg);
+            color: var(--deep-gray);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .model-tag:hover {
+            background: var(--border);
+            color: var(--klein-blue);
+        }
+
+        .model-tag.active {
+            background: var(--klein-blue);
+            color: white;
         }
 
         .send-btn {
@@ -1052,8 +1150,21 @@
 </head>
 
 <body>
-    <!-- ========== 固定在顶部的 Logo 导航栏 (引用未登录状态的公共头部) ========== -->
-    <iframe src="header_unlogged.html" frameborder="0" width="100%" height="70px" style="position: fixed; top: 0; left: 0; z-index: 9999;"></iframe>
+    <!-- ========== 固定在顶部的 Logo 导航栏 (根据登录状态动态引入) ========== -->
+    <div id="header-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 70px; z-index: 9999;"></div>
+    <script>
+        // 根据登录状态动态引入头部
+        function loadHeader() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const headerSrc = isLoggedIn ? 'header_logged.html' : 'header_unlogged.html';
+            
+            const headerContainer = document.getElementById('header-container');
+            headerContainer.innerHTML = `<iframe src="${headerSrc}" frameborder="0" width="100%" height="70px"></iframe>`;
+        }
+        
+        // 页面加载时加载头部
+        window.addEventListener('DOMContentLoaded', loadHeader);
+    </script>
 
     <!-- 头部区域 -->
     <header>
@@ -1069,13 +1180,14 @@
                     <div class="ai-tool-left">
                         <label class="upload-btn">
                             <input type="file">
-                            <span>📎</span>
+                            <span>📎</span> 上传文件
                         </label>
                         <span class="divider">|</span>
-                        <div class="ai-tags">
-                            <div class="ai-tag">汽车制造</div>
-                            <div class="ai-tag">3C电子</div>
-                            <div class="ai-tag">新能源</div>
+                        <div class="model-tags">
+                            <div class="model-tag" data-function="draw">画示意图</div>
+                            <div class="model-tag" data-function="image">生成图片</div>
+                            <div class="model-tag" data-function="video">生成视频</div>
+                            <div class="model-tag" data-function="file">生成文件</div>
                         </div>
                     </div>
                     <button class="send-btn">↑</button>
@@ -1354,14 +1466,12 @@
             });
         });
 
-        // 推荐标签点击填入输入框
-        document.querySelectorAll('.ai-tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                const textarea = document.querySelector('.ai-input-box textarea');
-                textarea.value = tag.textContent;
-                // 触发输入事件，让输入框自动调整高度
-                textarea.dispatchEvent(new Event('input'));
-            });
+        // 模型标签点击事件
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('model-tag')) {
+                document.querySelectorAll('.model-tag').forEach(tag => tag.classList.remove('active'));
+                e.target.classList.add('active');
+            }
         });
 
         // 输入框自动高度适配
@@ -1774,9 +1884,14 @@
             eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
         });
 
-        // 登录按钮点击跳转到 index_login 页面
+        // 登录按钮点击事件
         document.querySelector('.login-button').addEventListener('click', () => {
-            window.location.href = 'index_login.html';
+            // 设置登录状态为已登录
+            localStorage.setItem('isLoggedIn', 'true');
+            // 关闭登录弹窗
+            closeModal();
+            // 重新加载页面，停留当前页面
+            window.location.reload();
         });
 
         // 处理来自iframe的postMessage消息
@@ -1784,8 +1899,182 @@
             if (event.data.type === 'SHOW_LOGIN_MODAL') {
                 loginModal.classList.add('show');
                 document.body.style.overflow = 'hidden';
+            } else if (event.data.type === 'SHOW_LOGOUT_MODAL') {
+                showLogoutConfirm();
             }
         });
+
+        // 显示退出确认对话框
+        function showLogoutConfirm() {
+            // 检查是否已经存在退出确认对话框
+            let logoutModal = document.getElementById('logoutModal');
+            if (!logoutModal) {
+                // 创建对话框HTML结构
+                const modalHTML = `
+                    <div id="logoutModal" class="logout-modal">
+                        <div class="logout-modal-content">
+                            <h3 class="logout-modal-title">确认退出</h3>
+                            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
+                            <div class="logout-modal-buttons">
+                                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
+                                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // 创建样式元素
+                const styleContent = `
+                        /* 退出确认对话框样式 */
+                        .logout-modal {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            display: none;
+                            z-index: 99999;
+                            background-color: rgba(29, 33, 41, 0.6);
+                            backdrop-filter: blur(2px);
+                        }
+
+                        .logout-modal.show {
+                            display: block;
+                        }
+
+                        .logout-modal-content {
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: #FFFFFF;
+                            border-radius: 12px;
+                            padding: 30px 36px;
+                            width: 400px;
+                            max-width: 90%;
+                            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+                            text-align: center;
+                            z-index: 100000;
+                        }
+
+                        .logout-modal-title {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1D2129;
+                            margin-bottom: 16px;
+                        }
+
+                        .logout-modal-message {
+                            font-size: 14px;
+                            color: #86909C;
+                            margin-bottom: 24px;
+                            line-height: 1.5;
+                        }
+
+                        .logout-modal-buttons {
+                            display: flex;
+                            gap: 12px;
+                            justify-content: center;
+                        }
+
+                        .logout-modal-btn {
+                            padding: 10px 24px;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            border: 1px solid #E5E7EB;
+                        }
+
+                        .logout-modal-btn.cancel {
+                            background-color: #FFFFFF;
+                            color: #1D2129;
+                        }
+
+                        .logout-modal-btn.cancel:hover {
+                            background-color: #F7F8FA;
+                        }
+
+                        .logout-modal-btn.confirm {
+                            background-color: #F37021;
+                            color: #FFFFFF;
+                            border-color: #F37021;
+                        }
+
+                        .logout-modal-btn.confirm:hover {
+                            background-color: #e0631d;
+                            border-color: #e0631d;
+                        }
+                `;
+
+                // 将样式添加到头部
+                const styleElement = document.createElement('style');
+                styleElement.innerHTML = styleContent;
+                document.head.appendChild(styleElement);
+
+                // 将对话框添加到body的最前面，确保置顶显示
+                const modalElement = document.createElement('div');
+                modalElement.innerHTML = modalHTML;
+                if (document.body.firstChild) {
+                    document.body.insertBefore(modalElement, document.body.firstChild);
+                } else {
+                    document.body.appendChild(modalElement);
+                }
+
+                // 获取新创建的对话框元素
+                logoutModal = document.getElementById('logoutModal');
+                const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+                const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+
+                // 处理取消按钮点击
+                if (logoutCancelBtn) {
+                    logoutCancelBtn.addEventListener('click', function() {
+                        // 隐藏对话框
+                        logoutModal.classList.remove('show');
+                        document.body.style.overflow = '';
+                        // 页面保持不变
+                    });
+                }
+
+                // 处理确认按钮点击
+                if (logoutConfirmBtn) {
+                    logoutConfirmBtn.addEventListener('click', function() {
+                        // 清除登录状态
+                        localStorage.removeItem('isLoggedIn');
+                        
+                        // 隐藏对话框
+                        logoutModal.classList.remove('show');
+                        document.body.style.overflow = '';
+                        
+                        // 重新加载页面，显示未登录状态
+                        window.location.reload();
+                    });
+                }
+
+                // 点击对话框外部关闭
+                if (logoutModal) {
+                    logoutModal.addEventListener('click', function(e) {
+                        if (e.target === logoutModal) {
+                            logoutModal.classList.remove('show');
+                            document.body.style.overflow = '';
+                        }
+                    });
+
+                    // 按ESC键关闭对话框
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && logoutModal.classList.contains('show')) {
+                            logoutModal.classList.remove('show');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+            }
+
+            // 显示对话框
+            logoutModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
     </script>
 </body>
 </html>

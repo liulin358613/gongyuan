@@ -54,11 +54,10 @@
         .top-nav-right {
             display: flex;
             align-items: center;
-            gap: 16px;
         }
 
         .logo {
-            width: 200px;
+            width: 220px;
             height: 50px;
             background: var(--white);
             color: var(--klein-blue);
@@ -80,6 +79,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-wrap: nowrap;
         }
 
         .welcome {
@@ -172,19 +172,89 @@
                         <span>👤</span>
                         <span>登录</span>
                     </button>
-                </div>
-                <div class="location">
-                    <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    <span class="city-name">北京</span>
-                    <span class="switch-city">[切换城市]</span>
+                    <div class="location">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="city-name">北京</span>
+                        <span class="switch-city">[切换城市]</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
+        // 检查登录状态并显示相应的头部内容
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态，实际项目中应从localStorage或cookie中获取
+            // 确保localStorage.getItem返回的值被正确转换为布尔值
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            // 获取用户区域元素
+            const userArea = document.querySelector('.user-area');
+            
+            if (isLoggedIn) {
+                // 已登录状态，显示欢迎信息和退出按钮
+                userArea.innerHTML = `
+                    <div class="welcome">
+                        <span>👋</span>
+                        <span>
+                            <span class="company-name">东莞嘉东科技有限公司</span> 
+                            <span class="user-name">林工</span> 
+                            欢迎您！
+                            <span class="logout-btn" onclick="logout()" style="margin-left: 10px; color: #0051D9; cursor: pointer;">[退出]</span>
+                        </span>
+                    </div>
+                    <button class="login-btn">
+                        <span class="msg-icon">📩</span>
+                        <span>消息 12</span>
+                    </button>
+                    <button class="login-btn">
+                        <span>👤</span>
+                        <span>个人中心</span>
+                    </button>
+                    <div class="location">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="city-name">北京</span>
+                        <span class="switch-city">[切换城市]</span>
+                    </div>
+                `;
+            } else {
+                // 未登录状态，显示登录和注册按钮
+                userArea.innerHTML = `
+                    <div class="welcome">
+                        <span>👋</span>
+                        <span>欢迎使用智能生产力平台</span>
+                    </div>
+                    <button class="login-btn" onclick="showLoginModal()">
+                        <span>👤</span>
+                        <span>登录</span>
+                    </button>
+                    <div class="location">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="city-name">北京</span>
+                        <span class="switch-city">[切换城市]</span>
+                    </div>
+                `;
+            }
+        });
+
+        // 退出登录函数
+        function logout() {
+            // 清除登录状态
+            localStorage.removeItem('isLoggedIn');
+            
+            // 刷新页面，显示未登录的头部
+            window.location.reload();
+        }
+
         // 跳转到首页函数 - 支持iframe内外跳转
         function goToIndex() {
             // 检查是否在iframe中

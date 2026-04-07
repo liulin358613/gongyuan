@@ -4,6 +4,237 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能生产力平台 - 对话页</title>
+    <script>
+        // 检查登录状态并加载相应的头部
+        function loadHeader() {
+            try {
+                // 检查登录状态，实际项目中应从localStorage或cookie中获取
+                // 确保localStorage.getItem返回的值被正确转换为布尔值
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                
+                // 动态创建头部iframe
+                const headerIframe = document.createElement('iframe');
+                headerIframe.className = 'header-iframe';
+                headerIframe.src = isLoggedIn ? 'header_logged.html' : 'header_unlogged.html';
+                headerIframe.style.position = 'fixed';
+                headerIframe.style.top = '0';
+                headerIframe.style.left = '0';
+                headerIframe.style.width = '100%';
+                headerIframe.style.height = '70px';
+                headerIframe.style.border = 'none';
+                headerIframe.style.zIndex = '9999';
+                
+                // 移除旧的头部iframe
+                const oldHeaderIframe = document.querySelector('.header-iframe');
+                if (oldHeaderIframe) {
+                    oldHeaderIframe.remove();
+                }
+                
+                // 将iframe添加到body的最前面
+                if (document.body.firstChild) {
+                    document.body.insertBefore(headerIframe, document.body.firstChild);
+                } else {
+                    document.body.appendChild(headerIframe);
+                }
+            } catch (error) {
+                console.error('加载头部时出错:', error);
+                // 出错时默认加载未登录头部
+                const headerIframe = document.createElement('iframe');
+                headerIframe.className = 'header-iframe';
+                headerIframe.src = 'header_unlogged.html';
+                headerIframe.style.position = 'fixed';
+                headerIframe.style.top = '0';
+                headerIframe.style.left = '0';
+                headerIframe.style.width = '100%';
+                headerIframe.style.height = '70px';
+                headerIframe.style.border = 'none';
+                headerIframe.style.zIndex = '9999';
+                
+                // 移除旧的头部iframe
+                const oldHeaderIframe = document.querySelector('.header-iframe');
+                if (oldHeaderIframe) {
+                    oldHeaderIframe.remove();
+                }
+                
+                document.body.appendChild(headerIframe);
+            }
+        }
+
+        // 页面加载时加载头部
+        document.addEventListener('DOMContentLoaded', loadHeader);
+
+        // 显示退出确认对话框
+        function showLogoutConfirm() {
+            // 检查是否已经存在退出确认对话框
+            let logoutModal = document.getElementById('logoutModal');
+            if (!logoutModal) {
+                // 创建对话框HTML结构
+                const modalHTML = `
+                    <div id="logoutModal" class="logout-modal">
+                        <div class="logout-modal-content">
+                            <h3 class="logout-modal-title">确认退出</h3>
+                            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
+                            <div class="logout-modal-buttons">
+                                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
+                                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // 创建样式元素
+                const styleContent = `
+                        /* 退出确认对话框样式 */
+                        .logout-modal {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            display: none;
+                            z-index: 99999;
+                            background-color: rgba(29, 33, 41, 0.6);
+                            backdrop-filter: blur(2px);
+                        }
+
+                        .logout-modal.show {
+                            display: block;
+                        }
+
+                        .logout-modal-content {
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: #FFFFFF;
+                            border-radius: 12px;
+                            padding: 30px 36px;
+                            width: 400px;
+                            max-width: 90%;
+                            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+                            text-align: center;
+                            z-index: 100000;
+                        }
+
+                        .logout-modal-title {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1D2129;
+                            margin-bottom: 16px;
+                        }
+
+                        .logout-modal-message {
+                            font-size: 14px;
+                            color: #86909C;
+                            margin-bottom: 24px;
+                            line-height: 1.5;
+                        }
+
+                        .logout-modal-buttons {
+                            display: flex;
+                            gap: 12px;
+                            justify-content: center;
+                        }
+
+                        .logout-modal-btn {
+                            padding: 10px 24px;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            border: 1px solid #E5E7EB;
+                        }
+
+                        .logout-modal-btn.cancel {
+                            background-color: #FFFFFF;
+                            color: #1D2129;
+                        }
+
+                        .logout-modal-btn.cancel:hover {
+                            background-color: #F7F8FA;
+                        }
+
+                        .logout-modal-btn.confirm {
+                            background-color: #F37021;
+                            color: #FFFFFF;
+                            border-color: #F37021;
+                        }
+
+                        .logout-modal-btn.confirm:hover {
+                            background-color: #e0631d;
+                            border-color: #e0631d;
+                        }
+                `;
+
+                // 将样式添加到头部
+                const styleElement = document.createElement('style');
+                styleElement.innerHTML = styleContent;
+                document.head.appendChild(styleElement);
+
+                // 将对话框添加到body的最前面，确保置顶显示
+                const modalElement = document.createElement('div');
+                modalElement.innerHTML = modalHTML;
+                if (document.body.firstChild) {
+                    document.body.insertBefore(modalElement, document.body.firstChild);
+                } else {
+                    document.body.appendChild(modalElement);
+                }
+
+                // 获取新创建的对话框元素
+                logoutModal = document.getElementById('logoutModal');
+                const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+                const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+
+                // 处理取消按钮点击
+                if (logoutCancelBtn) {
+                    logoutCancelBtn.addEventListener('click', function() {
+                        // 隐藏对话框
+                        logoutModal.classList.remove('show');
+                        document.body.style.overflow = '';
+                        // 页面保持不变
+                    });
+                }
+
+                // 处理确认按钮点击
+                if (logoutConfirmBtn) {
+                    logoutConfirmBtn.addEventListener('click', function() {
+                        // 清除登录状态
+                        localStorage.removeItem('isLoggedIn');
+                        
+                        // 隐藏对话框
+                        logoutModal.classList.remove('show');
+                        document.body.style.overflow = '';
+                        
+                        // 重新加载头部，显示未登录的头部
+                        loadHeader();
+                    });
+                }
+
+                // 点击对话框外部关闭
+                if (logoutModal) {
+                    logoutModal.addEventListener('click', function(e) {
+                        if (e.target === logoutModal) {
+                            logoutModal.classList.remove('show');
+                            document.body.style.overflow = '';
+                        }
+                    });
+
+                    // 按ESC键关闭对话框
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && logoutModal.classList.contains('show')) {
+                            logoutModal.classList.remove('show');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+            }
+
+            // 显示对话框
+            logoutModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    </script>
     <style>
         /* 全局样式重置与变量定义 */
         * {
@@ -118,8 +349,8 @@
             border-right: 1px solid var(--border-gray);
             display: flex;
             flex-direction: column;
-            padding: 16px;
-            overflow-y: hidden;
+            padding: 12px 4px;
+            overflow-y: auto;
             flex-shrink: 0;
             margin-right: 0;
             height: 100%;
@@ -157,7 +388,7 @@
 
         /* 我的AI团队样式 - 添加折叠功能 */
         .menu-item {
-            padding: 10px 12px;
+            padding: 10px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
@@ -209,8 +440,7 @@
             display: flex;
             flex-direction: column;
             gap: 3px; /* 进一步减小成员间距 */
-            margin-left: 28px;
-            max-height: 200px; /* 限制最大高度 */
+            margin-left: 14px;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
@@ -475,7 +705,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            max-width: calc(70% - 52px);
+            max-width: calc(80% - 52px);
         }
 
         .message-content {
@@ -491,7 +721,7 @@
             background-color: var(--klein-blue);
             color: white;
             border-bottom-right-radius: 4px;
-            max-width: 70%;
+            max-width: 80%;
         }
 
         .ai .message-content {
@@ -514,7 +744,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 30%;
+            padding-top: 40%;
             height: 100%;
             width: 100%;
         }
@@ -793,7 +1023,77 @@
             transform: scale(1.02);
         }
 
-
+        /* 右侧快捷入口样式 */
+        .quick-access {
+            width: 180px;
+            background-color: #ffffff;
+            border-left: 1px solid var(--border-gray);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 16px;
+            box-shadow: -2px 0 12px rgba(0, 0, 0, 0.08);
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .quick-access-item {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: var(--deep-gray);
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quick-access-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--klein-blue), var(--hermes-orange));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .quick-access-item:hover {
+            background: linear-gradient(135deg, #e6f0ff 0%, #f0f7ff 100%);
+            color: var(--klein-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 81, 217, 0.15);
+        }
+        
+        .quick-access-item:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .quick-access-item svg {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-access-item:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .quick-access-item span {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.2;
+        }
 
         /* 登录弹窗样式 */
         .login-modal {
@@ -1196,8 +1496,8 @@
     </style>
 </head>
 <body>
-    <!-- 顶部导航栏 - 引用header_unlogged.html -->
-    <iframe class="header-iframe" src="header_unlogged.html" scrolling="no"></iframe>
+    <!-- 顶部导航栏 - 引用已登录的公共头部 header_logged.html -->
+    <iframe class="header-iframe" src="header_logged.html" scrolling="no"></iframe>
 
     <!-- 登录弹窗 -->
     <div class="login-modal" id="loginModal">
@@ -1258,12 +1558,19 @@
             <div class="sidebar">
             <div class="sidebar-top">
                 <button class="new-chat-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                    </svg>
-                    新对话
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: auto;">
-                        <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
+                    <div class="member-avatar" style="background-color: #9C27B0; width: 32px; height: 32px;">
+                        <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="20" fill="#9C27B0"/>
+                            <circle cx="15" cy="18" r="2" fill="white"/>
+                            <circle cx="25" cy="18" r="2" fill="white"/>
+                            <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                            <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                        </svg>
+                    </div>
+                    我的顾问
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: auto;">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                 </button>
             </div>
@@ -1286,10 +1593,10 @@
                 </div>
                 <!-- 团队成员 -->
                 <div class="team-members" id="teamMembers1">
-                    <div class="team-member" data-member-id="admin" data-member-name="行政助理" data-avatar-color="#4CAF50">
-                        <div class="member-avatar" style="background-color: #4CAF50;">
+                    <!-- <div class="team-member" data-member-id="advisor" data-member-name="我的顾问" data-avatar-color="#9C27B0">
+                        <div class="member-avatar" style="background-color: #9C27B0;">
                             <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="20" cy="20" r="20" fill="#4CAF50"/>
+                                <circle cx="20" cy="20" r="20" fill="#9C27B0"/>
                                 <circle cx="15" cy="18" r="2" fill="white"/>
                                 <circle cx="25" cy="18" r="2" fill="white"/>
                                 <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
@@ -1297,8 +1604,38 @@
                             </svg>
                         </div>
                         <div class="member-info">
-                            <div class="member-name">行政助理</div>
+                            <div class="member-name">我的顾问</div>
                             <div class="member-time">2分钟前</div>
+                        </div>
+                    </div> -->
+                    <div class="team-member" data-member-id="secretary" data-member-name="我的秘书" data-avatar-color="#E91E63">
+                        <div class="member-avatar" style="background-color: #E91E63;">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#E91E63"/>
+                                <circle cx="15" cy="18" r="2" fill="white"/>
+                                <circle cx="25" cy="18" r="2" fill="white"/>
+                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">我的秘书</div>
+                            <div class="member-time">3分钟前</div>
+                        </div>
+                    </div>
+                    <div class="team-member" data-member-id="pm" data-member-name="项目经理" data-avatar-color="#FF5722">
+                        <div class="member-avatar" style="background-color: #FF5722;">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#FF5722"/>
+                                <circle cx="15" cy="18" r="2" fill="white"/>
+                                <circle cx="25" cy="18" r="2" fill="white"/>
+                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">项目经理</div>
+                            <div class="member-time">4分钟前</div>
                         </div>
                     </div>
                     <div class="team-member" data-member-id="sales" data-member-name="销售工程师" data-avatar-color="#2196F3">
@@ -1314,6 +1651,36 @@
                         <div class="member-info">
                             <div class="member-name">销售工程师</div>
                             <div class="member-time">5分钟前</div>
+                        </div>
+                    </div>
+                    <div class="team-member" data-member-id="solution" data-member-name="方案工程师" data-avatar-color="#4CAF50">
+                        <div class="member-avatar" style="background-color: #4CAF50;">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#4CAF50"/>
+                                <circle cx="15" cy="18" r="2" fill="white"/>
+                                <circle cx="25" cy="18" r="2" fill="white"/>
+                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">方案工程师</div>
+                            <div class="member-time">6分钟前</div>
+                        </div>
+                    </div>
+                    <div class="team-member" data-member-id="product" data-member-name="产品经理" data-avatar-color="#FFC107">
+                        <div class="member-avatar" style="background-color: #FFC107;">
+                            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#FFC107"/>
+                                <circle cx="15" cy="18" r="2" fill="white"/>
+                                <circle cx="25" cy="18" r="2" fill="white"/>
+                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
+                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">产品经理</div>
+                            <div class="member-time">7分钟前</div>
                         </div>
                     </div>
                     <div class="team-member" data-member-id="support" data-member-name="售后工程师" data-avatar-color="#FF9800">
@@ -1352,18 +1719,17 @@
                 </div>
                 <!-- 团队成员 -->
                 <div class="team-members" id="teamMembers2">
-                    <div class="team-member" data-member-id="zhangsan" data-member-name="张三" data-avatar-color="#4CAF50">
-                        <div class="member-avatar" style="background-color: #4CAF50;">
+                    <div class="team-member" data-member-id="zhangsan" data-member-name="RaaS开发群" data-avatar-color="#4CAF50">
+                        <div class="member-avatar" style="background-color: #4CAF50; position: relative;">
                             <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="20" cy="20" r="20" fill="#4CAF50"/>
-                                <circle cx="15" cy="18" r="2" fill="white"/>
-                                <circle cx="25" cy="18" r="2" fill="white"/>
-                                <path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/>
-                                <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
+                                <circle cx="15" cy="15" r="10" fill="#2196F3"/>
+                                <circle cx="25" cy="15" r="10" fill="#FF9800"/>
+                                <circle cx="15" cy="25" r="10" fill="#9C27B0"/>
+                                <circle cx="25" cy="25" r="10" fill="#E91E63"/>
                             </svg>
                         </div>
                         <div class="member-info">
-                            <div class="member-name">张三</div>
+                            <div class="member-name">RaaS开发群</div>
                             <div class="member-time">2分钟前</div>
                         </div>
                         <div class="member-unread-icon">2</div>
@@ -1514,8 +1880,14 @@
                             针对您的问题，具体解答如下：<br>
                             一、<strong>实施成本</strong>：<br>
                             按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础：<br>
-                            二、<strong>回报周期</strong>：<br>
-                            按效率提升15%、次品率从3%降至1%计算，单台设备年均可增加产值约15万元，20台合计300万元，扣除人工、能耗等成本节省，整体回报周期约8-12个月。<br>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <div class="chat-image" onclick="openImageModal('https://picsum.photos/800/500?random=3')" style="cursor: pointer; flex: 1;">
+                                    <img src="https://picsum.photos/800/500?random=3" alt="智能工厂实施成本示例1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                </div>
+                                <div class="chat-image" onclick="openImageModal('https://picsum.photos/800/500?random=4')" style="cursor: pointer; flex: 1;">
+                                    <img src="https://picsum.photos/800/500?random=4" alt="智能工厂实施成本示例2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                </div>
+                            </div><br>
                         </div>
                     </div>
                 </div>
@@ -1523,8 +1895,8 @@
             </div>
             <!-- AI团队成员信息（输入框上方） -->
             <div class="ai-member-info" id="aiMemberInfo">
-                <div class="member-avatar" id="aiMemberAvatar">助</div>
-                <span class="member-name" id="aiMemberName">行政助理</span>
+                <div class="member-avatar" id="aiMemberAvatar" style="background-color: #E91E63;">秘</div>
+                <span class="member-name" id="aiMemberName">我的秘书</span>
                 <span class="welcome-text">我在</span>
             </div>
 
@@ -1554,6 +1926,23 @@
                 </div>
             </div>
         </div>
+        
+        <!-- 右侧快捷入口 -->
+        <div class="quick-access">
+            <div class="quick-access-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"></path>
+                    <path d="M19 9l-5 5-4-4-3 3"></path>
+                </svg>
+                <span>BI中心</span>
+            </div>
+            <div class="quick-access-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>设备监控</span>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -1578,6 +1967,8 @@
             // 页面加载时显示模型标签和分割符号
             document.querySelector('.model-tags').style.display = 'flex';
             document.querySelector('.divider').style.display = 'inline';
+            // 显示AI团队成员信息区域
+            document.getElementById('aiMemberInfo').classList.add('show');
         });
 
         // 标签点击填入输入框
@@ -1615,7 +2006,7 @@
                 const avatarColor = teamMember.dataset.avatarColor;
                 
                 // AI团队成员ID列表
-                const aiMemberIds = ['admin', 'sales', 'support'];
+                const aiMemberIds = ['advisor', 'secretary', 'pm', 'sales', 'solution', 'product', 'support'];
                 const isAiMember = aiMemberIds.includes(memberId);
                 
                 // 更新AI团队成员信息区域（输入框上方）
@@ -1625,9 +2016,13 @@
                 
                 if (isAiMember) {
                     // 设置头像文字
-                    let avatarText = '助';
-                    if (memberId === 'sales') avatarText = '销';
-                    if (memberId === 'support') avatarText = '售';
+                let avatarText = '顾';
+                if (memberId === 'secretary') avatarText = '秘';
+                if (memberId === 'pm') avatarText = '项';
+                if (memberId === 'sales') avatarText = '销';
+                if (memberId === 'solution') avatarText = '方';
+                if (memberId === 'product') avatarText = '产';
+                if (memberId === 'support') avatarText = '售';
                     
                     aiMemberAvatar.textContent = avatarText;
                     aiMemberAvatar.style.backgroundColor = avatarColor;
@@ -1641,30 +2036,25 @@
                 let chatContent = '';
                 
                 // 根据成员ID生成不同的聊天记录
-                if (memberId === 'admin') {
+                if (memberId === 'advisor') {
                     chatContent = `
                         <!-- 用户提问 -->
                         <div class="chat-message user">
                             <div class="message-content">
-                                您好，请问公司的请假流程是怎样的？
+                                您好，我想咨询一下关于公司发展战略的问题。
                                 <span class="message-time">06-05 14:30</span>
                             </div>
                         </div>
                         
-                        <!-- 行政助理回答 -->
+                        <!-- 我的顾问回答 -->
                         <div class="chat-message ai">
-                            <div class="message-avatar" style="background-color: ${avatarColor};">助</div>
+                            <div class="message-avatar" style="background-color: ${avatarColor};">顾</div>
                             <div class="ai-message-wrapper">
                                 <div class="ai-message-header">
                                     <span class="ai-name">${memberName}</span>
                                 </div>
                                 <div class="message-content">
-                                    您好！公司的请假流程如下：<br>
-                                    1. 登录OA系统<br>
-                                    2. 进入"请假申请"模块<br>
-                                    3. 填写请假原因、时间等信息<br>
-                                    4. 提交审批<br>
-                                    5. 等待主管审批通过
+                                    您好！很高兴为您提供战略咨询。请问您具体想了解哪方面的战略问题？例如市场拓展、产品定位、竞争策略等。
                                     <span class="message-time">06-05 14:31</span>
                                 </div>
                             </div>
@@ -1673,31 +2063,221 @@
                         <!-- 用户提问 -->
                         <div class="chat-message user">
                             <div class="message-content">
-                                好的，谢谢！另外，公司的福利政策有哪些？
+                                我想了解如何拓展国际市场。
                                 <span class="message-time">06-05 14:32</span>
                             </div>
                         </div>
                         
-                        <!-- 行政助理回答 -->
+                        <!-- 我的顾问回答 -->
                         <div class="chat-message ai">
-                            <div class="message-avatar" style="background-color: ${avatarColor};">助</div>
+                            <div class="message-avatar" style="background-color: ${avatarColor};">顾</div>
                             <div class="ai-message-wrapper">
                                 <div class="ai-message-header">
                                     <span class="ai-name">${memberName}</span>
                                 </div>
                                 <div class="message-content">
-                                    公司福利政策包括：<br>
-                                    - 五险一金<br>
-                                    - 带薪年假<br>
-                                    - 节日福利<br>
-                                    - 定期体检<br>
-                                    - 员工培训
+                                    拓展国际市场需要考虑以下几个方面：<br>
+                                    1. 市场调研：了解目标市场的需求、竞争情况和法规环境<br>
+                                    2. 本地化策略：根据当地文化和消费习惯调整产品和服务<br>
+                                    3. 渠道建设：建立适合当地市场的销售和分销网络<br>
+                                    4. 品牌建设：提升品牌在国际市场的知名度和认可度<br>
+                                    5. 风险管理：制定应对汇率波动、政治风险等的策略
                                     <span class="message-time">06-05 14:33</span>
                                 </div>
                             </div>
                         </div>
+                    `;
+                } else if (memberId === 'secretary') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，帮我安排一下明天的会议。
+                                <span class="message-time">06-05 10:00</span>
+                            </div>
+                        </div>
                         
-
+                        <!-- 我的秘书回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">秘</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    好的，请问会议的具体时间、地点、参会人员和议程安排是什么？
+                                    <span class="message-time">06-05 10:01</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                明天下午2点，在会议室A，参会人员包括部门经理和项目负责人，议程是讨论下季度工作计划。
+                                <span class="message-time">06-05 10:02</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 我的秘书回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">秘</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    已安排明天下午2点在会议室A的会议，参会人员包括部门经理和项目负责人，议程是讨论下季度工作计划。我会发送会议邀请给相关人员。
+                                    <span class="message-time">06-05 10:03</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'pm') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，项目进展如何了？
+                                <span class="message-time">06-05 09:30</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 项目经理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">项</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    您好！项目进展顺利，目前已完成需求分析和设计阶段，正在进行开发工作。预计将在下周完成核心功能的开发，然后进入测试阶段。
+                                    <span class="message-time">06-05 09:31</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                有没有遇到什么问题需要解决？
+                                <span class="message-time">06-05 09:32</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 项目经理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">项</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    目前遇到的主要问题是技术团队人手不足，可能会影响开发进度。我们正在考虑招聘临时人员或者调整开发计划来解决这个问题。
+                                    <span class="message-time">06-05 09:33</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'solution') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，我需要一个智能工厂的解决方案。
+                                <span class="message-time">06-05 11:00</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 方案工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">方</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    您好！很高兴为您提供智能工厂解决方案。请问您的工厂规模如何？主要生产什么产品？目前面临的主要挑战是什么？
+                                    <span class="message-time">06-05 11:01</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                我们是一家中型制造企业，主要生产汽车零部件，目前面临的主要挑战是生产效率低和次品率高。
+                                <span class="message-time">06-05 11:02</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 方案工程师回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">方</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    针对您的情况，我们可以提供以下智能工厂解决方案：<br>
+                                    1. 生产过程智能化监控：部署工业视觉检测系统，实时监控生产质量<br>
+                                    2. 设备联网与数据分析：通过IoT技术实现设备状态实时监控和预测性维护<br>
+                                    3. 生产调度优化：使用AI算法优化生产计划和调度<br>
+                                    4. 质量管理系统：建立全流程质量管理体系，降低次品率
+                                    <span class="message-time">06-05 11:03</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (memberId === 'product') {
+                    chatContent = `
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                您好，我们需要开发一款新的工业设备管理软件。
+                                <span class="message-time">06-05 13:00</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品经理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">产</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    您好！很高兴为您提供产品开发服务。请问这款工业设备管理软件的主要功能需求是什么？目标用户是谁？
+                                    <span class="message-time">06-05 13:01</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 用户提问 -->
+                        <div class="chat-message user">
+                            <div class="message-content">
+                                主要功能包括设备状态监控、维护计划管理、故障预警和数据分析，目标用户是工厂的设备管理人员。
+                                <span class="message-time">06-05 13:02</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品经理回答 -->
+                        <div class="chat-message ai">
+                            <div class="message-avatar" style="background-color: ${avatarColor};">产</div>
+                            <div class="ai-message-wrapper">
+                                <div class="ai-message-header">
+                                    <span class="ai-name">${memberName}</span>
+                                </div>
+                                <div class="message-content">
+                                    明白了，基于您的需求，我们可以设计一款工业设备管理软件，包括以下核心功能：<br>
+                                    1. 设备实时监控面板：显示所有设备的运行状态和关键参数<br>
+                                    2. 维护计划管理：自动生成维护计划并发送提醒<br>
+                                    3. 故障预警系统：基于数据分析预测设备故障<br>
+                                    4. 数据分析报告：提供设备运行效率和维护成本分析
+                                    <span class="message-time">06-05 13:03</span>
+                                </div>
+                            </div>
+                        </div>
                     `;
                 } else if (memberId === 'sales') {
                     chatContent = `
@@ -2238,9 +2818,16 @@
             eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
         });
 
-        // 登录按钮点击跳转到 ai_login 页面
+        // 登录按钮点击事件
         document.querySelector('.login-button').addEventListener('click', () => {
-            window.location.href = 'ai_login.html';
+            // 设置登录状态为已登录
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            // 关闭登录弹窗
+            closeLoginModal();
+            
+            // 重新加载头部，显示已登录的头部
+            loadHeader();
         });
 
         // 监听iframe发送的消息
@@ -2248,6 +2835,8 @@
             // 安全检查：验证消息来源
             if (event.data && event.data.type === 'SHOW_LOGIN_MODAL') {
                 openLoginModal();
+            } else if (event.data && event.data.type === 'SHOW_LOGOUT_MODAL') {
+                showLogoutConfirm();
             }
         });
     </script>
