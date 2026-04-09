@@ -13,6 +13,80 @@
             font-family: "Microsoft Yahei", sans-serif;
         }
 
+        /* 美化滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--light-gray);
+        }
+
+        /* 侧边栏滚动条 */
+        .manage-sidebar ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .manage-sidebar ::-webkit-scrollbar-track {
+            background: var(--white);
+        }
+
+        .manage-sidebar ::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
+
+        .manage-sidebar ::-webkit-scrollbar-thumb:hover {
+            background: var(--light-gray);
+        }
+
+        /* 内容区域滚动条 */
+        .manage-content ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .manage-content ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        .manage-content ::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
+
+        .manage-content ::-webkit-scrollbar-thumb:hover {
+            background: var(--light-gray);
+        }
+
+        /* 其他浏览器滚动条样式 */
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) var(--light-bg);
+        }
+
+        /* Firefox 侧边栏 */
+        .manage-sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) var(--white);
+        }
+
+        /* Firefox 内容区域 */
+        .manage-content {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) var(--light-bg);
+        }
+
         :root {
             /* 主色调 */
             --klein-blue: #0051D9;
@@ -212,6 +286,8 @@
         }
         .manage-sidebar {
             background: var(--white);
+            overflow-y: auto;
+            max-height: calc(100vh - 190px);
         }
         .sidebar-menu {
             display: flex;
@@ -306,6 +382,8 @@
         .manage-content {
             background: var(--white);
             padding: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 190px);
         }
         .content-title {
             font-size: 18px;

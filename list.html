@@ -223,7 +223,7 @@
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 8px 16px;
+            padding: 8px 20px;
             cursor: pointer;
             font-size: 14px;
             white-space: nowrap;
@@ -336,6 +336,41 @@
             .filter-label { width: 44px; }
         }
 
+        /* 滚动条美化 */
+        /* 全局滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        /* 滚动条轨道 */
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+            border-radius: 4px;
+        }
+
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            background: var(--light-gray);
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        /* 滚动条滑块悬停 */
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--klein-blue);
+        }
+
+        /* 滚动条角落 */
+        ::-webkit-scrollbar-corner {
+            background: var(--light-bg);
+        }
+
+        /* Firefox 滚动条 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--light-gray) var(--light-bg);
+        }
 
     </style>
 </head>

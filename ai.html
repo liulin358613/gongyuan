@@ -406,7 +406,7 @@
             color: var(--klein-blue);
             font-weight: bold;
             border-bottom-color: var(--klein-blue);
-            width: 220px;
+            width: 240px;
             font-size: 20px;
             text-align: center;
             justify-content: center; /* 水平居中 */
@@ -444,12 +444,12 @@
 
         /* 左侧历史对话栏 */
         .sidebar {
-            width: 220px;
+            width: 240px;
             background-color: #ffffff;
             border-right: 1px solid var(--border-gray);
             display: flex;
             flex-direction: column;
-            padding: 12px 6px;
+            padding: 12px 10px;
             overflow-y: auto;
             flex-shrink: 0;
             margin-right: 0;
@@ -819,8 +819,7 @@
         }
 
         .user .message-content {
-            background-color: var(--klein-blue);
-            color: white;
+            background-color: #edf3fe;
             border-bottom-right-radius: 4px;
             max-width: 80%;
         }
@@ -1234,6 +1233,103 @@
             flex: 1;
             padding: 16px;
             overflow-y: auto;
+        }
+
+        /* 预览内容包装器 - 包含预览内容和工具栏 */
+        .preview-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 预览区底部工具栏 - PS风格美化 */
+        .preview-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-top: 1px solid var(--border-gray);
+            gap: 4px;
+            background-color: #f8f8f8;
+            box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .toolbar-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--deep-gray);
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            position: relative;
+        }
+
+        .toolbar-item:hover {
+            background-color: #f0f6ff;
+            color: var(--klein-blue);
+            border-color: var(--klein-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 81, 217, 0.15);
+        }
+
+        .toolbar-item:active {
+            transform: translateY(0);
+            background-color: #e6f0ff;
+        }
+
+        .toolbar-item.active {
+            background-color: var(--klein-blue);
+            color: white;
+            border-color: var(--klein-blue);
+            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.3);
+        }
+
+        .toolbar-item.active:hover {
+            background-color: #0047c9;
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 24px;
+            background-color: #e0e0e0;
+            margin: 0 6px;
+        }
+
+        /* 工具栏tooltip样式 */
+        .toolbar-item[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 6px 10px;
+            background-color: rgba(29, 33, 41, 0.9);
+            color: white;
+            font-size: 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .toolbar-item[data-tooltip]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(29, 33, 41, 0.9);
+            margin-bottom: -4px;
+            z-index: 1000;
         }
 
         /* 全屏布局样式 */
@@ -2181,6 +2277,11 @@
                 <div class="chat-message user">
                     <div class="message-content">
                         这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
+                        <div style="margin-top: 10px; cursor: pointer;" onclick="openImageModal('images/equipment1.png')">
+                            <div class="chat-image">
+                                <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -2237,9 +2338,6 @@
                         <span class="divider">|</span>
                         <div class="model-tags">
                             <div class="model-tag" data-function="draw">画示意图</div>
-                            <div class="model-tag" data-function="image">生成图片</div>
-                            <div class="model-tag" data-function="video">生成视频</div>
-                            <div class="model-tag" data-function="file">生成文件</div>
                         </div>
                     </div>
                     <button class="send-btn">↑</button>
@@ -2262,8 +2360,66 @@
                     <!-- 文件列表将通过JavaScript动态添加 -->
                 </div>
                 <!-- 右侧预览内容 -->
-                <div class="preview-content" id="previewContent">
-                    <!-- 预览内容将通过JavaScript动态添加 -->
+                <div class="preview-content-wrapper">
+                    <div class="preview-content" id="previewContent">
+                        <!-- 预览内容将通过JavaScript动态添加 -->
+                    </div>
+                    <!-- 底部工具栏 - 位于预览内容区下方 -->
+                    <div class="preview-toolbar">
+                        <button class="toolbar-item" data-tooltip="矩形标记">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="4" width="16" height="16"/>
+                            </svg>
+                        </button>
+                        <button class="toolbar-item" data-tooltip="圆形标记">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="8"/>
+                            </svg>
+                        </button>
+                        <button class="toolbar-item" data-tooltip="箭头标记">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                <polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </button>
+                        <button class="toolbar-item" data-tooltip="文字输入">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 7h12v2H6z"/>
+                                <path d="M8 7v10h2V7H8z"/>
+                                <path d="M14 7v10h2V7h-2z"/>
+                            </svg>
+                        </button>
+                        <button class="toolbar-item" data-tooltip="裁剪">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="6" cy="6" r="3"/>
+                                <circle cx="6" cy="18" r="3"/>
+                                <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                                <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                                <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                            </svg>
+                        </button>
+                        <button class="toolbar-item" data-tooltip="马赛克">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                        </button>
+                        <div class="toolbar-divider"></div>
+                        <button class="toolbar-item" data-tooltip="撤销">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 14L4 9l5-5"/>
+                                <path d="M4 9h10c4 0 7 3 7 7s-3 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="toolbar-item" data-tooltip="重做">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 14l5-5-5-5"/>
+                                <path d="M20 9H10c-4 0-7 3-7 7s3 7 7 7"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2337,10 +2493,6 @@
                 // 添加当前团队成员的选中状态
                 teamMember.classList.add('active');
                 
-                // 隐藏模型标签和分割符号
-                document.querySelector('.model-tags').style.display = 'none';
-                document.querySelector('.divider').style.display = 'none';
-                
                 // 获取成员信息
                 const memberId = teamMember.dataset.memberId;
                 const memberName = teamMember.dataset.memberName;
@@ -2349,6 +2501,17 @@
                 // AI团队成员ID列表
                 const aiMemberIds = ['advisor', 'secretary', 'pm', 'sales', 'solution', 'product', 'support'];
                 const isAiMember = aiMemberIds.includes(memberId);
+                
+                // 根据成员类型决定是否显示模型标签
+                if (isAiMember) {
+                    // AI员工：显示模型标签和分割符号
+                    document.querySelector('.model-tags').style.display = 'flex';
+                    document.querySelector('.divider').style.display = 'inline';
+                } else {
+                    // 人类伙伴：隐藏模型标签和分割符号
+                    document.querySelector('.model-tags').style.display = 'none';
+                    document.querySelector('.divider').style.display = 'none';
+                }
                 
                 // 更新AI团队成员信息区域（输入框上方）
                 const aiMemberInfo = document.getElementById('aiMemberInfo');
@@ -3160,28 +3323,23 @@
             mainContainer.classList.add('fullscreen');
             document.body.classList.add('fullscreen-preview');
             
-            // 检查是否已经存在相同的图片
-            const existingFileIndex = previewFiles.findIndex(file => file.url === imageUrl);
+            // 清空现有文件列表，只保留当前对话的文件
+            previewFiles = [];
             
-            if (existingFileIndex === -1) {
-                // 添加新文件
-                previewFiles.push({
-                    url: imageUrl,
-                    name: `图片 ${previewFiles.length + 1}`,
-                    type: 'image'
-                });
-                currentPreviewFileIndex = previewFiles.length - 1;
-            } else {
-                // 切换到已存在的文件
-                currentPreviewFileIndex = existingFileIndex;
-            }
+            // 添加当前图片
+            previewFiles.push({
+                url: imageUrl,
+                name: '图片 1',
+                type: 'image'
+            });
+            currentPreviewFileIndex = 0;
             
             // 更新文件列表
             updateFileList();
             
             // 在右侧预览区显示图片
             document.querySelector('.preview-title').textContent = '查看预览';
-            showFilePreview(previewFiles[currentPreviewFileIndex]);
+            showFilePreview(previewFiles[0]);
             
             // 向头部 iframe 发送消息
             sendMessageToHeader();
@@ -3194,7 +3352,7 @@
             mainContainer.classList.add('fullscreen');
             document.body.classList.add('fullscreen-preview');
             
-            // 清空现有文件列表
+            // 清空现有文件列表，只保留当前对话的文件
             previewFiles = [];
             
             // 添加所有图片
