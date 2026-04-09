@@ -298,7 +298,39 @@
         // 页面加载完成后发送初始状态
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(sendMessageToHeader, 1000);
+            
+            // 初始化历史对话列表项
+            initHistoryItems();
         });
+        
+        // 初始化历史对话列表项
+        function initHistoryItems() {
+            const historyItems = document.querySelectorAll('.history-item');
+            historyItems.forEach(item => {
+                // 为图标添加history-icon类
+                const svg = item.querySelector('svg');
+                if (svg) {
+                    const iconContainer = document.createElement('div');
+                    iconContainer.className = 'history-icon';
+                    svg.parentNode.insertBefore(iconContainer, svg);
+                    iconContainer.appendChild(svg);
+                }
+                
+                // 为文本内容添加span标签
+                const textNodes = [];
+                item.childNodes.forEach(node => {
+                    if (node.nodeType === 3 && node.textContent.trim() !== '') {
+                        textNodes.push(node);
+                    }
+                });
+                
+                textNodes.forEach(node => {
+                    const span = document.createElement('span');
+                    span.textContent = node.textContent.trim();
+                    node.parentNode.replaceChild(span, node);
+                });
+            });
+        }
     </script>
     <style>
         /* 全局样式重置与变量定义 */
@@ -406,7 +438,7 @@
             color: var(--klein-blue);
             font-weight: bold;
             border-bottom-color: var(--klein-blue);
-            width: 240px;
+            width: 260px;
             font-size: 20px;
             text-align: center;
             justify-content: center; /* 水平居中 */
@@ -414,7 +446,7 @@
 
         /* 全屏状态下的选中tab样式 */
         body.fullscreen-preview .sub-nav-item.active {
-            width: 280px;
+            width: 260px;
             text-align: center;
             justify-content: center; /* 水平居中 */
         }
@@ -444,12 +476,12 @@
 
         /* 左侧历史对话栏 */
         .sidebar {
-            width: 240px;
+            width: 260px;
             background-color: #ffffff;
             border-right: 1px solid var(--border-gray);
             display: flex;
             flex-direction: column;
-            padding: 12px 10px;
+            padding: 12px 8px;
             overflow-y: auto;
             flex-shrink: 0;
             margin-right: 0;
@@ -559,7 +591,7 @@
             transition: all 0.3s;
             background-color: var(--white);
             border: 1px solid var(--border-gray);
-            height: 40px; /* 进一步降低高度 */
+            height: 44px; /* 进一步降低高度 */
         }
 
         .team-member:hover {
@@ -569,7 +601,6 @@
         .team-member.active {
             border-color: var(--klein-blue);
             box-shadow: 0 2px 8px rgba(0, 81, 217, 0.3);
-            transform: translateX(4px);
             background-color: #e4edfd;
         }
 
@@ -610,7 +641,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            line-height: 1.4;
+            line-height: 1.8;
         }
 
         .member-time {
@@ -619,7 +650,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            line-height: 1.1;
+            line-height: 1.2;
         }
 
         /* 未读消息标签样式 */
@@ -667,21 +698,41 @@
         }
 
         .history-item {
-            padding: 8px 0px; /* 减小内边距 */
+            padding: 8px 10px; /* 调整内边距 */
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
             color: var(--deep-gray);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
-            height: 40px; /* 固定历史对话项高度 */
+            height: 44px; /* 固定历史对话项高度 */
             line-height: 1.4; /* 优化行高 */
             border: 2px solid transparent;
+            position: relative;
+        }
+
+        .history-item .history-icon {
+            transition: all 0.3s;
+            flex-shrink: 0;
+            width: 14px;
+            height: 14px;
+        }
+
+        .history-item span {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+            width: 0;
+        }
+
+        .history-item:hover .history-icon,
+        .history-item.active .history-icon {
+            opacity: 1;
+            visibility: visible;
         }
 
         .history-item:hover {
@@ -697,7 +748,7 @@
              color: #3b7ef4; 
         }
 
-        .history-item svg {
+        .history-item .history-icon svg {
             stroke: var(--deep-gray);
             width: 14px;
             height: 14px;
@@ -705,9 +756,28 @@
             flex-shrink: 0;
         }
         
-        .history-item.active svg {
+        .history-item.active .history-icon svg {
             stroke: #3b7ef4;
         }
+
+        /* 历史对话列表项HTML结构示例 */
+        /*
+        <div class="history-item">
+            <div class="history-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <span>对话标题</span>
+            <button class="menu-button" onclick="toggleDropdown(this)">...</button>
+            <div class="dropdown-menu">
+                <div class="dropdown-item" onclick="renameChat(this)">✏️ 重命名</div>
+                <div class="dropdown-item" onclick="pinChat(this)">📌 置顶</div>
+                <div class="dropdown-item" onclick="shareChat(this)">📤 分享</div>
+                <div class="dropdown-item delete" onclick="deleteChat(this)">🗑️ 删除</div>
+            </div>
+        </div>
+        */
 
         .sidebar-footer {
             margin-top: auto;
@@ -1347,7 +1417,7 @@
         }
 
         .main-container.fullscreen .sidebar {
-            width: 280px;
+            width: 260px;
         }
 
         .main-container.fullscreen .chat-area {
@@ -2206,7 +2276,7 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    智能工厂MES系统部署方案
+                    智能工厂MES系统部署系统部署方案
                 </div>
                 <div class="history-item">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2263,16 +2333,31 @@
                     </div>
                 </div>
 
-                <!-- AI回答1 -->
+                <!-- 方案工程师回答 -->
                 <div class="chat-message ai">
-                    <div class="message-avatar">AI</div>
+                    <div class="message-avatar" style="background-color: #4CAF50;">工</div>
                     <div class="ai-message-wrapper">
                         <div class="ai-message-header">
-                            <span class="ai-name">工元智能</span>
+                            <span class="ai-name">方案工程师</span>
                         </div>
                         <div class="message-content">
                             您好，针对汽车零部件生产的效率提升和次品率降低需求，我们提供以下智能生产解决方案：<br>
-                            1. <strong>生产过程智能化监控</strong>：部署工业视觉检测系统，在关键工序设置AI视觉摄像头，00ms，检测准确率可达99.8%以上；<br>
+                            1. <strong>生产过程智能化监控</strong>：部署工业视觉检测系统，在关键工序设置AI视觉摄像头，检测准确率可达99.8%以上；<br>
+                            2. <strong>设备状态预测性维护</strong>：安装传感器实时监测设备运行状态，预测故障并提前维护；<br>
+                            3. <strong>生产数据分析优化</strong>：建立MES系统，收集分析生产数据，优化生产流程。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目经理回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="background-color: #FF5722;">项</div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">项目经理</span>
+                        </div>
+                        <div class="message-content">
+                            方案工程师的建议很全面。我们可以根据您工厂的具体情况，制定分阶段实施计划，先从最关键的工序开始改造，逐步扩展到整个生产线。
                         </div>
                     </div>
                 </div>
@@ -2289,17 +2374,52 @@
                     </div>
                 </div>
 
-                <!-- AI回答2 -->
+                <!-- 销售工程师回答 -->
                 <div class="chat-message ai">
-                    <div class="message-avatar">AI</div>
+                    <div class="message-avatar" style="background-color: #2196F3;">销</div>
                     <div class="ai-message-wrapper">
                         <div class="ai-message-header">
-                            <span class="ai-name">工元智能</span>
+                            <span class="ai-name">销售工程师</span>
                         </div>
                         <div class="message-content">
                             针对您的问题，具体解答如下：<br>
                             一、<strong>实施成本</strong>：<br>
-                            按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础：<br>
+                            按20台加工中心的规模，整体方案（视觉检测+MES系统+设备传感器+AI算法部署）的实施成本约80-120万元，具体取决于现有设备的数字化基础。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 售后工程师回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="background-color: #FF9800;">售</div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">售后工程师</span>
+                        </div>
+                        <div class="message-content">
+                            二、<strong>回报周期</strong>：<br>
+                            根据我们的项目经验，一般情况下，投资回报周期在12-18个月左右，主要来自于：<br>
+                            1. 次品率降低带来的成本节约（按3%次品率计算，每年可节约大量成本）<br>
+                            2. 生产效率提升带来的产量增加（预计可提升15-20%的生产效率）<br>
+                            3. 设备故障减少带来的维护成本降低
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 产品经理回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="background-color: #FFC107;">产</div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">产品经理</span>
+                        </div>
+                        <div class="message-content">
+                            三、<strong>改造难度</strong>：<br>
+                            对于20台加工中心的改造，难度适中。我们会采用模块化设计，分阶段实施，确保改造过程中不影响正常生产。具体步骤：<br>
+                            1. 前期评估和方案设计（1-2周）<br>
+                            2. 设备传感器安装和网络搭建（2-3周）<br>
+                            3. 系统调试和人员培训（2周）<br>
+                            4. 试运行和优化（1-2周）
                             <div style="margin-top: 10px;">
                                 <div style="display: flex; gap: 10px; cursor: pointer;" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">
                                     <div class="chat-image" style="flex: 1;">
@@ -2313,6 +2433,47 @@
                                     <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
                                 </div>
                             </div><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 我的秘书回答 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="background-color: #E91E63;">秘</div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">我的秘书</span>
+                        </div>
+                        <div class="message-content">
+                            您好，我已经为您整理了以上方案的详细资料，包括实施计划、成本明细和预期收益分析。如果您需要进一步了解，我可以安排我们的技术团队上门为您做更详细的评估和演示。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 用户提问3 -->
+                <div class="chat-message user">
+                    <div class="message-content">
+                        非常感谢各位的详细解答！我对这个方案很感兴趣，想了解一下实施过程中需要我们工厂配合做哪些工作？另外，是否可以提供一些成功案例参考？
+                    </div>
+                </div>
+
+                <!-- 方案工程师回答2 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="background-color: #4CAF50;">工</div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">方案工程师</span>
+                        </div>
+                        <div class="message-content">
+                            实施过程中，需要贵工厂配合的工作包括：<br>
+                            1. 安排专人负责项目对接和协调<br>
+                            2. 提供设备相关技术资料和生产工艺信息<br>
+                            3. 为施工和调试提供必要的场地和时间窗口<br>
+                            4. 组织相关人员参加培训
+
+                            关于成功案例，我们在汽车零部件行业有多个成功实施的项目，例如：<br>
+                            - 某汽车发动机零部件制造商：实施后次品率从2.8%降低到0.5%，生产效率提升18%<br>
+                            - 某汽车底盘零部件企业：实施后设备故障率降低60%，维护成本减少40%
                         </div>
                     </div>
                 </div>
