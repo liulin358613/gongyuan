@@ -27,7 +27,7 @@
 
         /* 通用容器 */
         .container {
-            width: 1300px;
+            width: 1440px;
             margin: 0 auto;
         }
 
@@ -48,7 +48,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 1300px;
         }
         .logo {
             width: 200px;
@@ -363,7 +362,13 @@
 
         // 获取主窗口对象（如果在iframe中，则获取父窗口）
         const mainWindow = window.parent !== window ? window.parent : window;
-        const mainDocument = mainWindow.document;
+        let mainDocument;
+        try {
+            mainDocument = mainWindow.document;
+        } catch (error) {
+            console.error('无法访问父窗口document:', error);
+            mainDocument = document;
+        }
 
         // 显示退出确认对话框
         function showLogoutConfirm() {
@@ -446,6 +451,27 @@
                 });
             }
         }
+
+        // 监听来自父窗口的消息
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'SET_FULLSCREEN_STATUS') {
+                const isFullscreen = e.data.isFullscreen;
+                console.log('收到预览状态:', isFullscreen);
+                const containerWidth = isFullscreen ? 1630 : 1440;
+                console.log('设置容器宽度:', containerWidth);
+                
+                const container = document.querySelector('.container');
+                if (container) {
+                    container.style.width = containerWidth + 'px';
+                    console.log('容器宽度已设置:', container.style.width);
+                }
+                const fixedHeaderContainer = document.querySelector('.fixed-header .container');
+                if (fixedHeaderContainer) {
+                    fixedHeaderContainer.style.width = containerWidth + 'px';
+                    console.log('固定头部容器宽度已设置:', fixedHeaderContainer.style.width);
+                }
+            }
+        });
 
         // 在DOM内容加载完成后初始化
         if (document.readyState === 'loading') {
