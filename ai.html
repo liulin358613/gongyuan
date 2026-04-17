@@ -278,14 +278,18 @@
                 previewTitle.textContent = title;
             }
             
-            // 预览区有内容时，平分除历史对话区域的右边区域
+            // 预览区有内容时，只有在首次创建时设置默认宽度
             const previewArea = document.getElementById('previewArea');
             const chatArea = document.querySelector('.chat-area');
             const container = document.querySelector('.main-container-inner');
             if (container) {
-                // 对话区域和预览区域各占50%
-                chatArea.style.flexBasis = '50%';
-                previewArea.style.flexBasis = '50%';
+                // 检查是否已经有flexBasis设置，如果没有则设置默认值
+                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                    // 对话区域和预览区域各占50%
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
+                }
+                // 否则保持当前设置
             }
             
             // 更新预览内容
@@ -1385,7 +1389,39 @@
             background-color: #f8f9fa;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .chat-tab-toggle-sidebar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            margin-left: 16px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .chat-tab-toggle-sidebar:hover {
+            background-color: #f0f6ff;
+            border-color: var(--klein-blue);
+            color: var(--klein-blue);
+        }
+
+        .chat-tab-toggle-sidebar svg {
+            width: 16px;
+            height: 16px;
+            color: var(--deep-gray);
+            transition: color 0.2s ease;
+        }
+
+        .chat-tab-toggle-sidebar:hover svg {
+            color: var(--klein-blue);
         }
         
         .chat-tab-title-container {
@@ -1415,6 +1451,7 @@
             border-radius: 6px;
             background-color: white;
             cursor: pointer;
+            flex-shrink: 0;
             transition: all 0.2s ease;
         }
         
@@ -1428,6 +1465,15 @@
             display: flex;
             align-items: center;
             margin-right: 16px;
+            flex-shrink: 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .chat-tab-functions::-webkit-scrollbar {
+            display: none;
         }
         
         .chat-tab-function-item {
@@ -2248,7 +2294,6 @@
         }
 
         .main-container.fullscreen .preview-content {
-            padding: 20px;
             overflow-y: auto;
         }
 
@@ -3434,6 +3479,12 @@
         <div class="chat-area">
             <!-- 顶部tab栏 -->
             <div class="chat-tab-bar">
+                <button class="chat-tab-toggle-sidebar" id="toggleSidebarBtn" title="隐藏/展示侧边栏">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="8" height="18" rx="1"></rect>
+                        <rect x="13" y="3" width="8" height="18" rx="1"></rect>
+                    </svg>
+                </button>
                 <div class="chat-tab-title-container">
                     <!-- 标题将通过JavaScript动态添加 -->
                 </div>
@@ -3679,20 +3730,20 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </div>
                     <div class="tab-add-dropdown" id="tabAddDropdown">
-                        <div class="dropdown-menu-item" onclick="showBICenter()">
+                        <div class="dropdown-menu-item" onclick="showBICenter(); closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M3 3v18h18"></path>
                                 <path d="M19 9l-5 5-4-4-3 3"></path>
                             </svg>
                             <span>BI中心</span>
                         </div>
-                        <div class="dropdown-menu-item">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                             </svg>
                             <span>设备监控</span>
                         </div>
-                        <div class="dropdown-menu-item">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                 <polyline points="14 2 14 8 20 8"></polyline>
@@ -3701,14 +3752,14 @@
                             </svg>
                             <span>3D软件</span>
                         </div>
-                        <div class="dropdown-menu-item">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                 <polyline points="14 2 14 8 20 8"></polyline>
                             </svg>
                             <span>文档编辑</span>
                         </div>
-                        <div class="dropdown-menu-item">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -3716,14 +3767,14 @@
                             </svg>
                             <span>图片设计</span>
                         </div>
-                        <div class="dropdown-menu-item">
+                        <div class="dropdown-menu-item" onclick="closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <polygon points="23 7 16 12 23 17 23 7"></polygon>
                                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                             </svg>
                             <span>视频制作</span>
                         </div>
-                        <div class="dropdown-menu-item">
+                        <div class="dropdown-menu-item" onclick="showFileManagement(); closeTabAddDropdown()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -3790,7 +3841,7 @@
                                     </svg>
                                     <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
                                 </div>
-                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showFileManagement()">
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                         <polyline points="7 10 12 15 17 10"></polyline>
@@ -3980,14 +4031,18 @@
             document.querySelector('.preview-file-list').style.display = 'none';
             document.querySelector('.preview-toolbar').style.display = 'none';
             
-            // 预览区有内容时，平分除历史对话区域的右边区域
+            // 预览区有内容时，只有在首次创建时设置默认宽度
             const previewArea = document.getElementById('previewArea');
             const chatArea = document.querySelector('.chat-area');
             const container = document.querySelector('.main-container-inner');
             if (container) {
-                // 对话区域和预览区域各占50%
-                chatArea.style.flexBasis = '50%';
-                previewArea.style.flexBasis = '50%';
+                // 检查是否已经有flexBasis设置，如果没有则设置默认值
+                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                    // 对话区域和预览区域各占50%
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
+                }
+                // 否则保持当前设置
             }
             
             // 显示分隔线
@@ -4012,8 +4067,11 @@
             // 激活当前Tab
             activateTab(tabId);
             
-            // 添加选中效果
-            document.getElementById('biCenterBtn').classList.add('active');
+            // 添加选中效果（如果元素存在）
+            const biCenterBtn = document.getElementById('biCenterBtn');
+            if (biCenterBtn) {
+                biCenterBtn.classList.add('active');
+            }
         }
         
         // 更新Tab栏
@@ -4101,6 +4159,12 @@
                 dropdown.classList.remove('show');
             }
         });
+        
+        // 关闭Tab添加下拉菜单
+        function closeTabAddDropdown() {
+            const dropdown = document.getElementById('tabAddDropdown');
+            dropdown.classList.remove('show');
+        }
         
         // 为Tab容器添加鼠标拖动滚动功能
         const tabsScrollContainer = document.querySelector('.tabs-scroll-container');
@@ -4209,6 +4273,12 @@
                     document.querySelector('.preview-toolbar').style.display = 'none';
                     // 更新预览内容
                     updateSecretaryBoardContent(tabId);
+                } else if (currentTab.title === '文件管理') {
+                    // 隐藏图片列表区域和工具栏
+                    document.querySelector('.preview-file-list').style.display = 'none';
+                    document.querySelector('.preview-toolbar').style.display = 'none';
+                    // 更新预览内容
+                    updateFileManagementContent(tabId);
                 }
             } else {
                 console.log('没有找到当前Tab');
@@ -4219,6 +4289,8 @@
         function updatePreviewContent(tabId) {
             // 清空预览内容并添加美化样式
             const previewContent = document.getElementById('previewContent');
+            // 恢复默认内边距
+            previewContent.style.paddingBottom = '16px';
             previewContent.innerHTML = `
                 <div style="width: 100%; height: 100%;">
                     <!-- 总标题 -->
@@ -4658,7 +4730,7 @@
                                 </svg>
                                 <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
                             </div>
-                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showFileManagement()">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                     <polyline points="7 10 12 15 17 10"></polyline>
@@ -4670,14 +4742,18 @@
                     </div>
                 `;
                 
-                // 保持预览区50%宽度
+                // 保持预览区宽度设置
                 const previewArea = document.getElementById('previewArea');
                 const chatArea = document.querySelector('.chat-area');
                 const container = document.querySelector('.main-container-inner');
                 if (container) {
-                    // 设置宽度为50%
-                    chatArea.style.flexBasis = '50%';
-                    previewArea.style.flexBasis = '50%';
+                    // 检查是否已经有flexBasis设置，如果没有则设置默认值
+                    if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                        // 设置宽度为50%
+                        chatArea.style.flexBasis = '50%';
+                        previewArea.style.flexBasis = '50%';
+                    }
+                    // 否则保持当前设置
                 }
                 
                 // 显示分隔线
@@ -4771,14 +4847,18 @@
             document.querySelector('.preview-file-list').style.display = 'none';
             document.querySelector('.preview-toolbar').style.display = 'none';
             
-            // 预览区有内容时，平分除历史对话区域的右边区域
+            // 预览区有内容时，只有在首次创建时设置默认宽度
             const previewArea = document.getElementById('previewArea');
             const chatArea = document.querySelector('.chat-area');
             const container = document.querySelector('.main-container-inner');
             if (container) {
-                // 对话区域和预览区域各占50%
-                chatArea.style.flexBasis = '50%';
-                previewArea.style.flexBasis = '50%';
+                // 检查是否已经有flexBasis设置，如果没有则设置默认值
+                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                    // 对话区域和预览区域各占50%
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
+                }
+                // 否则保持当前设置
             }
             
             // 显示分隔线
@@ -4804,9 +4884,89 @@
             activateTab(tabId);
         }
         
+        // 显示文件管理
+        function showFileManagement() {
+            // 检查是否已经存在文件管理tab
+            const existingTab = previewTabs.find(tab => tab.title === '文件管理');
+            if (existingTab) {
+                // 激活已存在的tab
+                activateTab(existingTab.id);
+                return;
+            }
+            
+            // 切换到全屏布局
+            const mainContainer = document.querySelector('.main-container');
+            mainContainer.classList.add('fullscreen');
+            document.body.classList.add('fullscreen-preview');
+            
+            // 显示预览区标题栏（包含Tab栏）
+            const previewHeader = document.querySelector('.preview-header');
+            if (previewHeader) {
+                previewHeader.style.display = 'flex';
+            }
+            
+            // 隐藏图片列表区域和工具栏
+            document.querySelector('.preview-file-list').style.display = 'none';
+            document.querySelector('.preview-toolbar').style.display = 'none';
+            
+            // 预览区有内容时，只有在首次创建时设置默认宽度
+            const previewArea = document.getElementById('previewArea');
+            const chatArea = document.querySelector('.chat-area');
+            const container = document.querySelector('.main-container-inner');
+            if (container) {
+                // 检查是否已经有flexBasis设置，如果没有则设置默认值
+                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                    // 对话区域和预览区域各占50%
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
+                }
+                // 否则保持当前设置
+            }
+            
+            // 显示分隔线
+            const resizer = document.getElementById('resizer');
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            
+            // 创建新Tab
+            const tabId = 'tab_' + Date.now();
+            const tabTitle = '文件管理';
+            
+            // 添加到tabs数组
+            previewTabs.push({
+                id: tabId,
+                title: tabTitle
+            });
+            
+            // 更新Tab栏
+            updateTabs();
+            
+            // 激活当前Tab
+            activateTab(tabId);
+        }
+        
+        // 更新文件管理内容
+        function updateFileManagementContent(tabId) {
+            const previewContent = document.getElementById('previewContent');
+            // 移除下内边距
+            previewContent.style.paddingBottom = '0';
+            // 移除上内边距
+            previewContent.style.paddingTop = '0';
+            // 移除右内边距
+            previewContent.style.paddingRight = '0';
+            previewContent.innerHTML = `
+                <div style="width: 100%; height: 100%; box-sizing: border-box;">
+                    <iframe src="file-management.html" style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+            `;
+        }
+        
         // 更新秘书看板内容
         function updateSecretaryBoardContent(tabId) {
             const previewContent = document.getElementById('previewContent');
+            // 恢复默认内边距
+            previewContent.style.paddingBottom = '16px';
             previewContent.innerHTML = `
                 <div style="width: 100%; height: 100%; box-sizing: border-box;">
                     <!-- 我的日程 -->
@@ -5070,6 +5230,9 @@
                             }
                             // 确保对话弹窗显示
                             chatWindow.classList.add('show');
+                            // 显示背景覆盖层
+                            const chatBackdrop = document.getElementById('aiChatBackdrop');
+                            chatBackdrop.classList.add('show');
                         }
                     }
                     return; // 点击了图标，不执行其他操作
@@ -6104,6 +6267,12 @@
         document.querySelector('.send-btn').addEventListener('click', () => {
             const content = textarea.value.trim();
             if (content) {
+                // 清空欢迎文案
+                const welcomeContainer = document.querySelector('.welcome-container');
+                if (welcomeContainer) {
+                    welcomeContainer.remove();
+                }
+                
                 // 获取当前时间
                 const now = new Date();
                 const month = (now.getMonth() + 1).toString().padStart(2, '0');
@@ -6294,14 +6463,18 @@
             document.querySelector('.preview-file-list').style.display = 'block';
             document.querySelector('.preview-toolbar').style.display = 'flex';
             
-            // 预览区有内容时，平分除历史对话区域的右边区域
+            // 预览区有内容时，只有在首次创建时设置默认宽度
             const previewArea = document.getElementById('previewArea');
             const chatArea = document.querySelector('.chat-area');
             const container = document.querySelector('.main-container-inner');
             if (container) {
-                // 对话区域和预览区域各占50%
-                chatArea.style.flexBasis = '50%';
-                previewArea.style.flexBasis = '50%';
+                // 检查是否已经有flexBasis设置，如果没有则设置默认值
+                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                    // 对话区域和预览区域各占50%
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
+                }
+                // 否则保持当前设置
             }
             
             // 显示分隔线
@@ -6362,14 +6535,18 @@
             document.querySelector('.preview-file-list').style.display = 'block';
             document.querySelector('.preview-toolbar').style.display = 'flex';
             
-            // 预览区有内容时，平分除历史对话区域的右边区域
+            // 预览区有内容时，只有在首次创建时设置默认宽度
             const previewArea = document.getElementById('previewArea');
             const chatArea = document.querySelector('.chat-area');
             const container = document.querySelector('.main-container-inner');
             if (container) {
-                // 对话区域和预览区域各占50%
-                chatArea.style.flexBasis = '50%';
-                previewArea.style.flexBasis = '50%';
+                // 检查是否已经有flexBasis设置，如果没有则设置默认值
+                if (!chatArea.style.flexBasis || !previewArea.style.flexBasis) {
+                    // 对话区域和预览区域各占50%
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
+                }
+                // 否则保持当前设置
             }
             
             // 显示分隔线
@@ -6607,6 +6784,12 @@
                 document.body.style.cursor = 'col-resize';
                 document.body.style.userSelect = 'none';
                 resizer.classList.add('dragging');
+                
+                // 禁用所有iframe的指针事件，防止捕获鼠标事件
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    iframe.style.pointerEvents = 'none';
+                });
             });
             
             document.addEventListener('mousemove', (e) => {
@@ -6640,6 +6823,12 @@
                     document.body.style.cursor = '';
                     document.body.style.userSelect = '';
                     resizer.classList.remove('dragging');
+                    
+                    // 恢复所有iframe的指针事件
+                    const iframes = document.querySelectorAll('iframe');
+                    iframes.forEach(iframe => {
+                        iframe.style.pointerEvents = '';
+                    });
                 }
             });
         }
@@ -7066,7 +7255,26 @@
             initResizer();
             initHistoryMenu();
             showBICenter();//默认打开BI中心
+            initSidebarToggle();
         });
+
+        // 侧边栏隐藏/展示功能
+        function initSidebarToggle() {
+            const toggleBtn = document.getElementById('toggleSidebarBtn');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', () => {
+                    if (sidebar.style.display === 'none') {
+                        // 显示侧边栏
+                        sidebar.style.display = 'flex';
+                    } else {
+                        // 隐藏侧边栏
+                        sidebar.style.display = 'none';
+                    }
+                });
+            }
+        }
 
         // 监听iframe发送的消息
         window.addEventListener('message', (event) => {
@@ -7157,6 +7365,7 @@
     </div>
 
     <!-- AI对话窗口 -->
+    <div class="ai-chat-backdrop" id="aiChatBackdrop"></div>
     <div class="ai-chat-window" id="aiChatWindow">
         <div class="ai-chat-header">
             <div class="ai-chat-title">
@@ -7222,7 +7431,9 @@
 
         function closeAIChat() {
             const chatWindow = document.getElementById('aiChatWindow');
+            const chatBackdrop = document.getElementById('aiChatBackdrop');
             chatWindow.classList.remove('show');
+            chatBackdrop.classList.remove('show');
         }
 
         // 发送消息功能
@@ -7331,8 +7542,8 @@
                 }
             });
 
-            // 点击弹窗外区域关闭弹窗
-            document.addEventListener('click', function(e) {
+            // 双击弹窗外区域关闭弹窗
+            document.addEventListener('dblclick', function(e) {
                 // 排除对话icon图标
                 if (e.target.closest('.team-member-action')) {
                     return;
@@ -7342,6 +7553,10 @@
                 }
             });
 
+            // 为背景覆盖层添加双击事件
+            const chatBackdrop = document.getElementById('aiChatBackdrop');
+            chatBackdrop.addEventListener('dblclick', closeAIChat);
+
             // 默认隐藏对话窗口
             // chatWindow.classList.add('show');
         });
@@ -7349,10 +7564,25 @@
 
     <style>
         /* AI对话窗口样式 */
+        .ai-chat-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            z-index: 9998;
+            display: none;
+        }
+
+        .ai-chat-backdrop.show {
+            display: block;
+        }
+
         .ai-chat-window {
             position: fixed;
-            top: 70%;
-            left: 37%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%) translateY(100%);
             width: 600px;
             height: 500px;
@@ -7361,7 +7591,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 81, 217, 0.1);
             display: flex;
             flex-direction: column;
-            z-index: 9999;
+            z-index: -1;
             opacity: 0;
             border: 2px solid #2f2e2e;
         }
@@ -7369,6 +7599,7 @@
         .ai-chat-window.show {
             transform: translate(-50%, -50%) translateY(0);
             opacity: 1;
+            z-index: 9999;
         }
 
         .ai-chat-header {
