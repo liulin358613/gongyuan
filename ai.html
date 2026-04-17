@@ -1786,6 +1786,7 @@
             line-height: 1;
             min-width: 36px;
             min-height: 36px;
+            z-index: 9999;
         }
 
         .send-btn:hover {
@@ -3722,6 +3723,14 @@
                             </svg>
                             <span>视频制作</span>
                         </div>
+                        <div class="dropdown-menu-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>文件管理</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3780,6 +3789,14 @@
                                         <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                                     </svg>
                                     <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
+                                </div>
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
                                 </div>
                             </div>
                         </div>
@@ -4640,6 +4657,14 @@
                                     <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                                 </svg>
                                 <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
+                            </div>
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
                             </div>
                         </div>
                     </div>
@@ -6431,6 +6456,14 @@
                             </svg>
                             <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
                         </div>
+                        <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文件管理</span>
+                        </div>
                     </div>
                 </div>
             `;
@@ -7298,6 +7331,17 @@
                 }
             });
 
+            // 点击弹窗外区域关闭弹窗
+            document.addEventListener('click', function(e) {
+                // 排除对话icon图标
+                if (e.target.closest('.team-member-action')) {
+                    return;
+                }
+                if (chatWindow.classList.contains('show') && !chatWindow.contains(e.target)) {
+                    closeAIChat();
+                }
+            });
+
             // 默认隐藏对话窗口
             // chatWindow.classList.add('show');
         });
@@ -7307,8 +7351,8 @@
         /* AI对话窗口样式 */
         .ai-chat-window {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 70%;
+            left: 37%;
             transform: translate(-50%, -50%) translateY(100%);
             width: 600px;
             height: 500px;
@@ -7319,7 +7363,7 @@
             flex-direction: column;
             z-index: 9999;
             opacity: 0;
-            border: 1px solid #e0e0e0;
+            border: 2px solid #2f2e2e;
         }
 
         .ai-chat-window.show {
