@@ -313,6 +313,11 @@
             // 初始化拖动功能
             initResizer();
             
+            // 初始化预览区Tab栏，确保+图标显示
+            updateTabs();
+            
+            // 为添加按钮添加点击事件 - 现在在updateTabs函数中动态添加
+            
             // 为预览区关闭按钮添加点击事件
             const previewCloseBtn = document.getElementById('previewCloseBtn');
             if (previewCloseBtn) {
@@ -781,6 +786,11 @@
             cursor: pointer;
             transition: all 0.2s ease;
             color: var(--deep-gray);
+            opacity: 0;
+        }
+
+        .team-member:hover .team-member-action {
+            opacity: 1;
         }
 
         .team-member-action:hover {
@@ -788,6 +798,16 @@
             color: var(--klein-blue);
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(0, 81, 217, 0.15);
+        }
+
+        .team-member-action.active {
+            opacity: 1;
+            color: var(--klein-blue);
+        }
+
+        .team-member-action.active svg {
+            width: 18px;
+            height: 18px;
         }
 
         .team-member-settings {
@@ -834,7 +854,6 @@
             cursor: pointer;
             font-size: 13px;
             color: var(--deep-gray);
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -875,21 +894,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            transition: all 0.2s ease;
             flex-shrink: 0;
-        }
-
-        /* 操作按钮默认显示 */
-        .history-item-menu {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--deep-gray);
         }
 
         /* 置顶图标默认显示 */
@@ -900,7 +905,6 @@
             width: 24px;
             height: 24px;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
         .history-item-pin:hover {
@@ -917,7 +921,6 @@
             height: 20px;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s ease;
             color: var(--deep-gray);
         }
 
@@ -1269,10 +1272,95 @@
             overflow: hidden;
             margin-left: 0;
         }
+        
+        /* 对话区顶部tab栏 */
+        .chat-tab-bar {
+            height: 42px;
+            border-bottom: 1px solid var(--border-gray);
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chat-tab-title-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        
+        .chat-tab-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--deep-gray);
+        }
+        
+        .chat-tab-marker {
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .chat-tab-marker:hover {
+            background-color: #f0f6ff;
+            border-color: var(--klein-blue);
+            color: var(--klein-blue);
+        }
+        
+        .chat-tab-functions {
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+        }
+        
+        .chat-tab-function-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            margin-right: 8px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            color: var(--deep-gray);
+        }
+        
+        .chat-tab-function-item:last-child {
+            margin-right: 0;
+        }
+        
+        .chat-tab-function-item svg {
+            margin-right: 6px;
+        }
+        
+        .chat-tab-function-item:hover {
+            background-color: #f0f6ff;
+            border-color: var(--klein-blue);
+            color: var(--klein-blue);
+        }
+        
+        /* 预览区tab栏高度调整 */
+        .preview-header {
+            height: 42px;
+        }
 
         .chat-content {
             flex: 1;
-            padding: 40px 40px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -1362,10 +1450,12 @@
         /* 消息时间戳样式 */
         .message-time {
             font-size: 11px;
-            color: var(--classic-gray);
+            color: #666666;
             text-align: right;
-            margin-top: 4px;
+            margin-top: 8px;
             display: block;
+            clear: both;
+            line-height: 1;
         }
 
         .welcome-container {
@@ -1491,12 +1581,7 @@
             display: none;
         }
 
-        .divider {
-            color: var(--border-gray);
-            font-size: 16px;
-            padding-right: 8px;
-            flex-shrink: 0;
-        }
+
 
         .input-tags {
             display: flex;
@@ -1533,7 +1618,7 @@
             align-items: center;
             gap: 8px;
             margin: 0 0 10px;
-            padding: 8px 16px;
+            padding: 6px 16px;
             width: fit-content;
             box-sizing: border-box;
             border-radius: 20px;
@@ -1552,8 +1637,8 @@
         }
 
         .ai-member-info .member-avatar {
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1576,36 +1661,7 @@
             margin-left: 4px;
         }
 
-        /* 模型标签样式 */
-        .model-tags {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
 
-        .model-tag {
-            background: var(--light-gray);
-            color: var(--deep-gray);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .model-tag:hover {
-            background: var(--border-gray);
-            color: var(--klein-blue);
-        }
-
-        .model-tag.active {
-            background: var(--klein-blue);
-            color: white;
-        }
 
         .send-btn {
             background: #06b6d4;
@@ -1678,109 +1734,11 @@
             transform: scale(1.02);
         }
 
-        /* 右侧快捷浮标样式 */
-        .quick-float {
-            position: fixed;
-            right: 10px;
-            top: 85%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            z-index: 1000;
-        }
 
-        .quick-float-item {
-            width: 64px;
-            height: 64px;
-            background-color: #ffffff;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-gray);
-        }
-
-        .quick-float-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #4a6cf7 0%, #6b8aff 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-
-        .quick-float-item:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 20px rgba(74, 108, 247, 0.3);
-            border-color: #4a6cf7;
-        }
-
-        .quick-float-item:hover::before {
-            opacity: 1;
-        }
-
-        .quick-float-item svg {
-            width: 28px;
-            height: 28px;
-            color: #4a6cf7;
-            margin-bottom: 4px;
-            z-index: 2;
-            transition: all 0.3s ease;
-        }
-
-        .quick-float-item:hover svg {
-            color: var(--white);
-            transform: scale(1.1);
-        }
-
-        .quick-float-item span {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--deep-gray);
-            z-index: 2;
-            transition: all 0.3s ease;
-            text-align: center;
-            line-height: 14px;
-            width: 100%;
-        }
-
-        .quick-float-item:hover span {
-            color: var(--white);
-        }
-
-        .quick-float-item.active {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 20px rgba(74, 108, 247, 0.3);
-            border-color: #4a6cf7;
-        }
-
-        .quick-float-item.active::before {
-            opacity: 1;
-        }
-
-        .quick-float-item.active svg {
-            color: var(--white);
-            transform: scale(1.1);
-        }
-
-        .quick-float-item.active span {
-            color: var(--white);
-        }
 
         /* 右侧预览区样式 */
         .preview-area {
-            width: 200px;
+            width: 50%;
             background-color: #ffffff;
             border-left: 1px solid var(--border-gray);
             display: flex;
@@ -1790,12 +1748,28 @@
 
         /* 预览区标题栏 */
         .preview-header {
-            padding: 12px 16px;
+            height: 42px;
+            padding: 0 16px;
             border-bottom: 1px solid var(--border-gray);
-            display: none;
-            justify-content: space-between;
+            display: flex;
             align-items: center;
             background-color: #f8f9fa;
+        }
+        
+        .tabs-scroll-container {
+            /* max-width: 80%; */
+            flex-shrink: 1;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+            /* gap: 8px; */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .tabs-scroll-container::-webkit-scrollbar {
+            display: none;
         }
 
         .preview-title {
@@ -1822,6 +1796,72 @@
         .preview-close:hover {
             background-color: var(--light-gray);
             color: #dc3545;
+        }
+        
+        .tab-add {
+            margin-left: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tab-add:hover {
+            background-color: #f0f6ff;
+            border-color: var(--klein-blue);
+            color: var(--klein-blue);
+        }
+
+        .tab-add-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .tab-add-dropdown {
+            position: absolute;
+            top: 100%;
+            margin-top: 8px;
+            background: white;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 8px 0;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            min-width: 160px;
+        }
+
+        .tab-add-dropdown.show {
+            display: flex;
+        }
+
+        .dropdown-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            color: var(--deep-gray);
+        }
+
+        .dropdown-menu-item:hover {
+            background-color: #f0f6ff;
+            color: var(--klein-blue);
+        }
+
+        .dropdown-menu-item svg {
+            flex-shrink: 0;
         }
 
 
@@ -1879,6 +1919,12 @@
             overflow-y: auto;
         }
 
+        .quick-entry-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #4a6cf7;
+        }
+
         /* 预览内容包装器 - 包含预览内容和工具栏 */
         .preview-content-wrapper {
             flex: 1;
@@ -1902,20 +1948,31 @@
 
         /* Tab样式 */
         .preview-header {
+            height: 42px;
             padding: 0;
         }
 
         .tabs-container {
             display: flex;
+            align-items: center;
             overflow-x: auto;
-            border-bottom: 1px solid var(--border-gray);
+            white-space: nowrap;
+            flex: 1;
+        }
+        
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tabs-container {
+            scrollbar-width: none;
         }
 
         .tab-item {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            padding: 8px 16px;
-            margin-right: 4px;
+            padding: 8px 8px 8px 10px;
+            /* margin-right: 4px; */
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: all 0.2s ease;
@@ -1944,6 +2001,33 @@
             transition: all 0.2s ease;
         }
 
+        .tab-add {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            margin-left: 14px;
+            margin-right: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            border: 1px dashed #0051BA;
+            font-size: 20px;
+            font-weight: 300;
+            color: #0051BA;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-add:hover {
+            background-color: #0051BA;
+            border-color: #0051BA;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 81, 186, 0.3);
+            transform: translateY(-1px);
+        }
+
         .tab-close:hover {
             background-color: #dc3545;
             color: white;
@@ -1953,8 +2037,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
+            min-width: 36px;
             height: 36px;
+            padding: 0 12px;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -2571,7 +2656,7 @@
                 width: 80%;
             }
             .chat-content {
-                padding: 40px 20px;
+                padding: 20px;
             }
         }
 
@@ -2597,6 +2682,7 @@
                 max-width: 85%;
             }
         }
+
     </style>
 </head>
 <body>
@@ -2670,7 +2756,7 @@
                             <rect x="13" y="20" width="14" height="8" rx="4" fill="white"/>
                         </svg>
                     </div>
-                    我的顾问
+                    我的全能顾问
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: auto;">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -2707,7 +2793,7 @@
                 </div>
                 <!-- 团队成员 -->
                 <div class="team-members" id="teamMembers1">
-                    <!-- <div class="team-member" data-member-id="advisor" data-member-name="我的顾问" data-avatar-color="#9C27B0">
+                    <!-- <div class="team-member" data-member-id="advisor" data-member-name="我的全能顾问" data-avatar-color="#9C27B0">
                         <div class="member-avatar" style="background-color: #9C27B0;">
                             <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="20" cy="20" r="20" fill="#9C27B0"/>
@@ -2718,11 +2804,11 @@
                             </svg>
                         </div>
                         <div class="member-info">
-                            <div class="member-name">我的顾问</div>
+                            <div class="member-name">我的全能顾问</div>
                             <div class="member-time">2分钟前</div>
                         </div>
                     </div> -->
-                    <div class="team-member" data-member-id="secretary" data-member-name="我的秘书" data-avatar-color="#E91E63">
+                    <div class="team-member" data-member-id="secretary" data-member-name="我的秘书" data-avatar-color="#E91E63" data-avatar-svg='<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#E91E63"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>'>
                         <div class="team-member-content">
                             <div class="member-avatar" style="background-color: #E91E63;">
                                 <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2740,6 +2826,14 @@
                         </div>
                         <div class="team-member-actions">
                             <div class="unread-badge" style="display: none;"></div>
+                            <div class="team-member-action" title="发起单聊">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    <line x1="12" y1="10" x2="12" y2="10"></line>
+                                    <line x1="8" y1="10" x2="8" y2="10"></line>
+                                    <line x1="16" y1="10" x2="16" y2="10"></line>
+                                </svg>
+                            </div>
                             <div class="team-member-settings" title="设置">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2749,7 +2843,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="team-member" data-member-id="pm" data-member-name="项目经理" data-avatar-color="#FF5722">
+                    <div class="team-member" data-member-id="pm" data-member-name="项目经理" data-avatar-color="#FF5722" data-avatar-svg='<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#FF5722"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>'>
                         <div class="team-member-content">
                             <div class="member-avatar" style="background-color: #FF5722;">
                                 <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2767,6 +2861,14 @@
                         </div>
                         <div class="team-member-actions">
                             <div class="unread-badge" style="display: none;"></div>
+                            <div class="team-member-action" title="发起单聊">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    <line x1="12" y1="10" x2="12" y2="10"></line>
+                                    <line x1="8" y1="10" x2="8" y2="10"></line>
+                                    <line x1="16" y1="10" x2="16" y2="10"></line>
+                                </svg>
+                            </div>
                             <div class="team-member-settings" title="设置">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2776,7 +2878,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="team-member" data-member-id="sales" data-member-name="销售工程师" data-avatar-color="#2196F3">
+                    <div class="team-member" data-member-id="sales" data-member-name="销售工程师" data-avatar-color="#2196F3" data-avatar-svg='<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#2196F3"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>'>
                         <div class="team-member-content">
                             <div class="member-avatar" style="background-color: #2196F3;">
                                 <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2794,6 +2896,14 @@
                         </div>
                         <div class="team-member-actions">
                             <div class="unread-badge" style="display: none;"></div>
+                            <div class="team-member-action" title="发起单聊">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    <line x1="12" y1="10" x2="12" y2="10"></line>
+                                    <line x1="8" y1="10" x2="8" y2="10"></line>
+                                    <line x1="16" y1="10" x2="16" y2="10"></line>
+                                </svg>
+                            </div>
                             <div class="team-member-settings" title="设置">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2803,7 +2913,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="team-member" data-member-id="solution" data-member-name="方案工程师" data-avatar-color="#4CAF50">
+                    <div class="team-member" data-member-id="solution" data-member-name="方案工程师" data-avatar-color="#4CAF50" data-avatar-svg='<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#4CAF50"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>'>
                         <div class="team-member-content">
                             <div class="member-avatar" style="background-color: #4CAF50;">
                                 <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2821,6 +2931,14 @@
                         </div>
                         <div class="team-member-actions">
                             <div class="unread-badge" style="display: none;"></div>
+                            <div class="team-member-action" title="发起单聊">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    <line x1="12" y1="10" x2="12" y2="10"></line>
+                                    <line x1="8" y1="10" x2="8" y2="10"></line>
+                                    <line x1="16" y1="10" x2="16" y2="10"></line>
+                                </svg>
+                            </div>
                             <div class="team-member-settings" title="设置">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2830,7 +2948,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="team-member" data-member-id="product" data-member-name="产品经理" data-avatar-color="#FFC107">
+                    <div class="team-member" data-member-id="product" data-member-name="产品经理" data-avatar-color="#FFC107" data-avatar-svg='<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#FFC107"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>'>
                         <div class="team-member-content">
                             <div class="member-avatar" style="background-color: #FFC107;">
                                 <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2848,6 +2966,14 @@
                         </div>
                         <div class="team-member-actions">
                             <div class="unread-badge" style="display: none;"></div>
+                            <div class="team-member-action" title="发起单聊">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    <line x1="12" y1="10" x2="12" y2="10"></line>
+                                    <line x1="8" y1="10" x2="8" y2="10"></line>
+                                    <line x1="16" y1="10" x2="16" y2="10"></line>
+                                </svg>
+                            </div>
                             <div class="team-member-settings" title="设置">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2857,7 +2983,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="team-member" data-member-id="support" data-member-name="售后工程师" data-avatar-color="#FF9800">
+                    <div class="team-member" data-member-id="support" data-member-name="售后工程师" data-avatar-color="#FF9800" data-avatar-svg='<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#FF9800"/><circle cx="15" cy="18" r="2" fill="white"/><circle cx="25" cy="18" r="2" fill="white"/><path d="M15 25 Q20 30 25 25" stroke="white" stroke-width="2" fill="none"/><rect x="13" y="20" width="14" height="8" rx="4" fill="white"/></svg>'>
                         <div class="team-member-content">
                             <div class="member-avatar" style="background-color: #FF9800;">
                                 <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2875,6 +3001,14 @@
                         </div>
                         <div class="team-member-actions">
                             <div class="unread-badge" style="display: none;"></div>
+                            <div class="team-member-action" title="发起单聊">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    <line x1="12" y1="10" x2="12" y2="10"></line>
+                                    <line x1="8" y1="10" x2="8" y2="10"></line>
+                                    <line x1="16" y1="10" x2="16" y2="10"></line>
+                                </svg>
+                            </div>
                             <div class="team-member-settings" title="设置">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2898,6 +3032,15 @@
                             </svg>
                             <span>我的人类伙伴</span>
                         </div>
+                        <button class="add-team-member-btn" title="人类职业市场">
+                            <div class="add-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                            </div>
+                        </button>
                     </div>
                     <div class="collapse-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3183,6 +3326,35 @@
 
         <!-- 中间对话区 -->
         <div class="chat-area">
+            <!-- 顶部tab栏 -->
+            <div class="chat-tab-bar">
+                <div class="chat-tab-title-container">
+                    <!-- 标题将通过JavaScript动态添加 -->
+                </div>
+                <div class="chat-tab-functions">
+                    <button class="chat-tab-function-item" data-tooltip="手绘示意图">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"/>
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                        </svg>
+                        <span>手绘示意图</span>
+                    </button>
+                    <button class="chat-tab-function-item" data-tooltip="智能框选">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="3" y1="9" x2="21" y2="9"/>
+                            <line x1="9" y1="21" x2="9" y2="9"/>
+                        </svg>
+                        <span>智能框选</span>
+                    </button>
+                </div>
+                <div class="chat-tab-marker">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                </div>
+            </div>
             <div class="chat-content">
                 <!-- 用户提问1 -->
                 <div class="chat-message user">
@@ -3378,10 +3550,8 @@
                             </svg>
                             上传文件
                         </label>
-                        <span class="divider">|</span>
-                        <div class="model-tags">
-                            <div class="model-tag" data-function="draw">画示意图</div>
-                        </div>
+
+
                     </div>
                     <button class="send-btn">↑</button>
                 </div>
@@ -3395,8 +3565,59 @@
         <div class="preview-area" id="previewArea">
             <!-- 预览区标题栏 - 集成Tab功能 -->
             <div class="preview-header">
-                <div class="tabs-container" style="display: flex; overflow-x: auto; flex: 1;">
+                <div class="tabs-scroll-container">
                     <!-- Tab将通过JavaScript动态添加 -->
+                </div>
+                <div class="tab-add-wrapper">
+                    <div class="tab-add" id="tabAddBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <div class="tab-add-dropdown" id="tabAddDropdown">
+                        <div class="dropdown-menu-item" onclick="showBICenter()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
+                                <path d="M3 3v18h18"></path>
+                                <path d="M19 9l-5 5-4-4-3 3"></path>
+                            </svg>
+                            <span>BI中心</span>
+                        </div>
+                        <div class="dropdown-menu-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span>设备监控</span>
+                        </div>
+                        <div class="dropdown-menu-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                            <span>3D软件</span>
+                        </div>
+                        <div class="dropdown-menu-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            <span>文档编辑</span>
+                        </div>
+                        <div class="dropdown-menu-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span>图片设计</span>
+                        </div>
+                        <div class="dropdown-menu-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7;">
+                                <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                            </svg>
+                            <span>视频制作</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="preview-body">
@@ -3407,10 +3628,60 @@
                 <!-- 右侧预览内容 -->
                 <div class="preview-content-wrapper">
                     <div class="preview-content" id="previewContent">
-                        <!-- 预览内容将通过JavaScript动态添加 -->
+                        <!-- 快捷入口 -->
+                        <div class="quick-entry-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                            <div class="quick-entry-items" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showBICenter()">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                        <path d="M3 3v18h18"></path>
+                                        <path d="M19 9l-5 5-4-4-3 3"></path>
+                                    </svg>
+                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
+                                </div>
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    </svg>
+                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
+                                </div>
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
+                                </div>
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文档编辑</span>
+                                </div>
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">图片设计</span>
+                                </div>
+                                <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                                    </svg>
+                                    <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- 底部工具栏 - 位于预览内容区下方 -->
                     <div class="preview-toolbar">
+
                         <button class="toolbar-item" data-tooltip="矩形标记">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="4" y="4" width="16" height="16"/>
@@ -3472,64 +3743,7 @@
 
         </div>
         
-        <!-- 右侧快捷浮标 -->
-        <div class="quick-float" id="quickFloat" style="cursor: move; background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; padding: 24px 8px;">
-            <div class="quick-float-item" id="biCenterBtn" onclick="showBICenter()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 3v18h18"></path>
-                    <path d="M19 9l-5 5-4-4-3 3"></path>
-                </svg>
-                <span>BI中心</span>
-            </div>
-            <div class="quick-float-item">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
-                <span>设备运行监控</span>
-            </div>
-        </div>
-        
-        <script>
-            // 为快捷浮标添加拖动功能
-            document.addEventListener('DOMContentLoaded', function() {
-                const quickFloat = document.getElementById('quickFloat');
-                let isDragging = false;
-                let startX, startY;
-                
-                quickFloat.addEventListener('mousedown', function(e) {
-                    // 只在点击浮标本身时触发拖动，避免点击内部按钮时触发
-                    if (e.target === quickFloat || e.target.parentElement === quickFloat) {
-                        isDragging = true;
-                        startX = e.clientX;
-                        startY = e.clientY;
-                        quickFloat.style.cursor = 'grabbing';
-                        e.preventDefault();
-                    }
-                });
-                
-                document.addEventListener('mousemove', function(e) {
-                    if (isDragging) {
-                        const clientWidth = document.documentElement.clientWidth;
-                        const clientHeight = document.documentElement.clientHeight;
-                        const newRight = clientWidth - e.clientX - (quickFloat.offsetWidth / 2);
-                        const newTop = e.clientY - (quickFloat.offsetHeight / 2);
-                        
-                        // 限制在可视区域内
-                        const boundedRight = Math.max(10, Math.min(newRight, clientWidth - quickFloat.offsetWidth - 10));
-                        const boundedTop = Math.max(10, Math.min(newTop, clientHeight - quickFloat.offsetHeight - 10));
-                        
-                        quickFloat.style.right = boundedRight + 'px';
-                        quickFloat.style.top = boundedTop + 'px';
-                        quickFloat.style.transform = 'none';
-                    }
-                });
-                
-                document.addEventListener('mouseup', function() {
-                    isDragging = false;
-                    quickFloat.style.cursor = 'move';
-                });
-        });
-        </script>
+
         
         <script>
             // 筛选表格
@@ -3579,6 +3793,24 @@
                 document.getElementById(`warningFilter_${tabId}`).value = '';
                 // 重新筛选表格
                 filterTable(tabId);
+            }
+            
+            // 重置日期筛选器
+            function resetDateFilter(tabId) {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth();
+                
+                // 本月开始日期
+                const startDate = new Date(year, month, 1);
+                const startDateStr = startDate.toISOString().split('T')[0];
+                
+                // 本月结束日期
+                const endDate = new Date(year, month + 1, 0);
+                const endDateStr = endDate.toISOString().split('T')[0];
+                
+                document.getElementById(`startDate_${tabId}`).value = startDateStr;
+                document.getElementById(`endDate_${tabId}`).value = endDateStr;
             }
         </script>
     </div>
@@ -3664,7 +3896,8 @@
         
         // 更新Tab栏
         function updateTabs() {
-            const tabsContainer = document.querySelector('.tabs-container');
+            const tabsContainer = document.querySelector('.tabs-scroll-container');
+            const previewHeader = document.querySelector('.preview-header');
             tabsContainer.innerHTML = '';
             
             previewTabs.forEach(tab => {
@@ -3673,29 +3906,161 @@
                 tabElement.dataset.tabId = tab.id;
                 tabElement.innerHTML = `
                     <span>${tab.title}</span>
-                    <span class="tab-close" onclick="closeTab('${tab.id}')">×</span>
+                    <span class="tab-close">×</span>
                 `;
+                
+                // 为关闭按钮添加点击事件
+                const closeButton = tabElement.querySelector('.tab-close');
+                closeButton.addEventListener('click', (e) => {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    closeTab(tab.id);
+                });
+                
+                // 为tab元素添加点击事件
                 tabElement.addEventListener('click', () => activateTab(tab.id));
+                
                 tabsContainer.appendChild(tabElement);
+            });
+            
+
+            
+            // 检查是否需要固定添加按钮
+            checkTabWidth();
+            
+            // 检查是否需要滚动到最新的Tab
+            if (previewTabs.length > 0) {
+                const lastTab = previewTabs[previewTabs.length - 1];
+                const lastTabElement = document.querySelector(`.tab-item[data-tab-id="${lastTab.id}"]`);
+                if (lastTabElement) {
+                    // 滚动到最新的Tab
+                    lastTabElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' });
+                }
+            }
+        }
+        
+        // 添加新Tab
+        function addNewTab() {
+            console.log('Add new tab');
+            // 这里可以添加创建新tab的逻辑
+        }
+        
+        // 检查Tab宽度是否超过可用空间
+        function checkTabWidth() {
+            // 移除固定添加按钮的逻辑，添加按钮始终跟随在Tab滚动容器右侧
+            // 滚动仅发生在Tab滚动容器内部
+        }
+        
+        // 监听窗口大小变化，重新检查Tab宽度
+        window.addEventListener('resize', checkTabWidth);
+
+        // 为静态添加按钮添加点击事件 - 切换二级菜单显示
+        document.querySelector('.tab-add').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('tabAddDropdown');
+            const rect = this.getBoundingClientRect();
+            const dropdownWidth = 180;
+            const viewportWidth = window.innerWidth;
+            const rightSpace = viewportWidth - rect.right;
+            if (rightSpace < dropdownWidth) {
+                // dropdown.style.right = 'auto';
+                dropdown.style.left = '-116px';
+            } else {
+                // dropdown.style.right = '0';
+                dropdown.style.left = 'auto';
+            }
+            dropdown.classList.toggle('show');
+        });
+
+        // 点击其他区域关闭二级菜单
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('tabAddDropdown');
+            const tabAddBtn = document.querySelector('.tab-add');
+            if (!tabAddBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+        
+        // 为Tab容器添加鼠标拖动滚动功能
+        const tabsScrollContainer = document.querySelector('.tabs-scroll-container');
+        if (tabsScrollContainer) {
+            let isDragging = false;
+            let startX, startScrollLeft;
+            
+            // 鼠标按下事件
+            tabsScrollContainer.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                startX = e.clientX;
+                startScrollLeft = tabsScrollContainer.scrollLeft;
+                
+                // 防止文本选择
+                e.preventDefault();
+            });
+            
+            // 鼠标移动事件
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                
+                // 计算鼠标移动的距离
+                const x = e.clientX;
+                const walk = (x - startX) * 2; // 滚动速度
+                
+                // 更新滚动位置
+                tabsScrollContainer.scrollLeft = startScrollLeft - walk;
+            });
+            
+            // 鼠标释放事件
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
             });
         }
         
         // 激活Tab
         function activateTab(tabId) {
+            console.log('激活Tab:', tabId);
+            console.log('当前预览标签:', previewTabs);
+            
             // 移除所有active类
             document.querySelectorAll('.tab-item').forEach(item => {
                 item.classList.remove('active');
             });
             
-            // 添加active类到当前Tab
-            const activeTab = document.querySelector(`.tab-item[data-tab-id="${tabId}"]`);
+            // 打印所有tab元素
+            const tabs = document.querySelectorAll('.tab-item');
+            console.log('所有Tab元素:', tabs);
+            
+            // 找到当前tab在previewTabs中的索引
+            const currentTabIndex = previewTabs.findIndex(tab => tab.id === tabId);
+            console.log('当前Tab在previewTabs中的索引:', currentTabIndex);
+            
+            // 尝试找到对应的tab元素
+            let activeTab = null;
+            tabs.forEach(tab => {
+                if (tab.dataset.tabId === String(tabId)) {
+                    activeTab = tab;
+                }
+            });
+            // 如果找到了对应的tab元素，为其添加active类
             if (activeTab) {
                 activeTab.classList.add('active');
+                console.log('为对应的Tab添加active类成功');
+            } else if (currentTabIndex !== -1 && tabs.length > 0) {
+                // 如果没有找到对应的tab元素，但是找到了当前tab在previewTabs中的索引，为对应索引的tab添加active类
+                if (currentTabIndex < tabs.length) {
+                    tabs[currentTabIndex].classList.add('active');
+                    console.log('为索引为', currentTabIndex, '的Tab添加active类成功');
+                } else {
+                    // 如果索引超出范围，为最后一个tab添加active类
+                    tabs[tabs.length - 1].classList.add('active');
+                    console.log('为最后一个Tab添加active类成功');
+                }
+            } else {
+                console.log('没有找到当前Tab或DOM中没有Tab元素');
             }
             
             // 找到当前tab
             const currentTab = previewTabs.find(tab => tab.id === tabId);
             if (currentTab) {
+                console.log('找到当前Tab:', currentTab);
                 // 根据tab类型更新预览内容
                 if (currentTab.title === 'BI中心') {
                     // 隐藏图片列表区域和工具栏
@@ -3716,7 +4081,15 @@
                     if (previewFiles.length > 0) {
                         showFilePreview(previewFiles[currentPreviewFileIndex]);
                     }
+                } else if (currentTab.title === '我的秘书') {
+                    // 隐藏图片列表区域和工具栏
+                    document.querySelector('.preview-file-list').style.display = 'none';
+                    document.querySelector('.preview-toolbar').style.display = 'none';
+                    // 更新预览内容
+                    updateSecretaryBoardContent(tabId);
                 }
+            } else {
+                console.log('没有找到当前Tab');
             }
         }
         
@@ -3742,6 +4115,7 @@
                             <input type="date" id="endDate_${tabId}" style="padding: 6px 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
                         </div>
                         <button style="padding: 6px 12px; background-color: #0051D9; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">搜索</button>
+                        <button onclick="resetDateFilter('${tabId}')" style="padding: 6px 12px; background-color: #6C757D; color: white; border: none; border-radius: 4px; font-size: 13px; cursor: pointer;">重置</button>
                     </div>
                     
                     <!-- 第一行：环形图和预警卡片 -->
@@ -3847,82 +4221,111 @@
                             <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
                                 <thead>
                                     <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-                                        <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">方案名称</th>
+                                        <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">工位名称</th>
                                         <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">客户编号</th>
                                         <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">交付日期</th>
                                         <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">预警状态</th>
                                         <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">状态</th>
                                         <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">负责人</th>
+                                        <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">备注</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr style="border-bottom: 1px solid #dee2e6;">
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">智能工厂解决方案</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">智能装配工位</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C001</td>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">2026-06-30 <span style="font-size: 11px; color: #666;">(还剩2天)</span></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <div>2026-06-30</div>
+                                            <div style="font-size: 11px; color: #666;">还剩2天</div>
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <span style="display: inline-block; padding: 2px 8px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; border-radius: 12px; font-size: 12px;">即将延期</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">训练中</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">张工</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">需要加急处理</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #dee2e6;">
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">设备预测性维护</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">质量检测工位</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C002</td>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">2026-05-15 <span style="font-size: 11px; color: #dc3545;">(已延期2天)</span></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <div>2026-05-15</div>
+                                            <div style="font-size: 11px; color: #dc3545;">已延期2天</div>
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <span style="display: inline-block; padding: 2px 8px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 12px; font-size: 12px;">已延期</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">待处理</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">李工</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">设备需要维护</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #dee2e6;">
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">质量检测系统</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">包装工位</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C003</td>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">2026-04-30 <span style="font-size: 11px; color: #dc3545;">(已延期2天)</span></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <div>2026-04-30</div>
+                                            <div style="font-size: 11px; color: #dc3545;">已延期2天</div>
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <span style="display: inline-block; padding: 2px 8px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 12px; font-size: 12px;">已延期</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">待处理</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">王工</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">等待物料</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #dee2e6;">
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">生产流程优化</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">物流配送工位</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C004</td>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">2026-07-15 <span style="font-size: 11px; color: #28a745;">(按时完成)</span></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <div>2026-07-15</div>
+                                            <div style="font-size: 11px; color: #28a745;">按时完成</div>
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <span style="display: inline-block; padding: 2px 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 12px; font-size: 12px;">按时完成</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">已完成</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">赵工</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">-</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #dee2e6;">
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">能耗管理系统</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">调试工位</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C005</td>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">2026-06-15 <span style="font-size: 11px; color: #fd7e14;">(延期3天完成)</span></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <div>2026-06-15</div>
+                                            <div style="font-size: 11px; color: #fd7e14;">延期3天完成</div>
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <span style="display: inline-block; padding: 2px 8px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; border-radius: 12px; font-size: 12px;">延期完成</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">运营中</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">钱工</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">需要技术支持</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid #dee2e6;">
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">智能仓储系统</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">测试工位</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C006</td>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">2026-08-10 <span style="font-size: 11px; color: #28a745;">(提前3天完成)</span></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <div>2026-08-10</div>
+                                            <div style="font-size: 11px; color: #28a745;">提前3天完成</div>
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">
                                             <span style="display: inline-block; padding: 2px 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 12px; font-size: 12px;">按时完成</span>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">已完成</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">孙工</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">-</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">智能物流系统</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">仓储工位</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">C007</td>
-                                        <td style="padding: 10px; border: 1px solid #dee2e6;">2026-09-01 <span style="font-size: 11px; color: #666;">(已取消)</span></td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">
+                                            <div>2026-09-01</div>
+                                            <div style="font-size: 11px; color: #666;">已取消</div>
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">-</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">已取消</td>
                                         <td style="padding: 10px; border: 1px solid #dee2e6;">周工</td>
+                                        <td style="padding: 10px; border: 1px solid #dee2e6;">项目暂停</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -4010,41 +4413,141 @@
                     }
                 });
             }, 100);
+            
+            // 设置默认日期为本月开始和结束
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            
+            // 本月开始日期
+            const startDate = new Date(year, month, 1);
+            const startDateStr = startDate.toISOString().split('T')[0];
+            
+            // 本月结束日期
+            const endDate = new Date(year, month + 1, 0);
+            const endDateStr = endDate.toISOString().split('T')[0];
+            
+            document.getElementById(`startDate_${tabId}`).value = startDateStr;
+            document.getElementById(`endDate_${tabId}`).value = endDateStr;
         }
         
         // 关闭Tab
         function closeTab(tabId) {
+            console.log('关闭Tab:', tabId);
+            
+            // 记录当前选中的tab_ID
+            let currentActiveTabId = null;
+            const activeTabElement = document.querySelector('.tab-item.active');
+            if (activeTabElement) {
+                currentActiveTabId = activeTabElement.dataset.tabId;
+                console.log('当前选中的Tab:', currentActiveTabId);
+            }
+            
             // 找到要关闭的tab的索引
             const tabIndex = previewTabs.findIndex(tab => tab.id === tabId);
             
             // 从数组中移除
             previewTabs = previewTabs.filter(tab => tab.id !== tabId);
             
+            // 隐藏侧边缩略图列表和工具栏
+            document.querySelector('.preview-file-list').style.display = 'none';
+            document.querySelector('.preview-toolbar').style.display = 'none';
+            
+            // 计算要激活的tabId
+            let activateTabId = null;
+            if (previewTabs.length > 0) {
+                // 判断下次需要选中的tab
+                if (currentActiveTabId && currentActiveTabId !== tabId) {
+                    // 如果当前选中的tab_id != 关闭tab_Id，选中的tab还是当前的
+                    activateTabId = currentActiveTabId;
+                    console.log('激活当前选中的Tab:', activateTabId);
+                } else {
+                    // 如果当前选中的tab_id == 关闭tab_Id，选中的tab就是上一个，如果上一个没有，就选中下一个
+                    if (tabIndex > 0) {
+                        // 激活上一个tab
+                        activateTabId = previewTabs[tabIndex - 1].id;
+                        console.log('激活上一个Tab:', activateTabId);
+                    } else if (previewTabs.length > 0) {
+                        // 如果上一个没有，激活第一个tab
+                        activateTabId = previewTabs[0].id;
+                        console.log('激活第一个Tab:', activateTabId);
+                    }
+                }
+            }
+            
             // 更新Tab栏
             updateTabs();
             
+            // 激活tab
+            if (activateTabId) {
+                activateTab(activateTabId);
+            }
+            
             // 如果没有Tab了，恢复初始状态
             if (previewTabs.length === 0) {
-                // 隐藏标题栏
-                const previewHeader = document.querySelector('.preview-header');
-                if (previewHeader) {
-                    previewHeader.style.display = 'none';
-                }
-                
-                // 清空预览内容
+                // 显示快捷入口
                 const previewContent = document.getElementById('previewContent');
-                previewContent.innerHTML = '';
+                previewContent.innerHTML = `
+                    <!-- 快捷入口 -->
+                    <div class="quick-entry-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                        <div class="quick-entry-items" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showBICenter()">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                    <path d="M3 3v18h18"></path>
+                                    <path d="M19 9l-5 5-4-4-3 3"></path>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
+                            </div>
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
+                            </div>
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">3D软件</span>
+                            </div>
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">文档编辑</span>
+                            </div>
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">图片设计</span>
+                            </div>
+                            <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">视频制作</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 
-                // 恢复预览区大小和样式
+                // 保持预览区50%宽度
                 const previewArea = document.getElementById('previewArea');
                 const chatArea = document.querySelector('.chat-area');
                 const container = document.querySelector('.main-container-inner');
                 if (container) {
-                    // 恢复默认的flex-basis
-                    chatArea.style.flexBasis = '';
-                    previewArea.style.flexBasis = '';
-                    // 恢复默认宽度
-                    previewArea.style.width = '';
+                    // 设置宽度为50%
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
                 }
                 
                 // 显示分隔线
@@ -4061,10 +4564,6 @@
                 // 移除快捷入口的选中效果
                 document.getElementById('biCenterBtn').classList.remove('active');
                 
-                // 恢复默认样式 - 隐藏文件列表区域和工具栏
-                document.querySelector('.preview-file-list').style.display = 'none';
-                document.querySelector('.preview-toolbar').style.display = 'none';
-                
                 // 确保恢复到非全屏模式
                 document.body.style.overflow = '';
                 
@@ -4075,10 +4574,27 @@
                 previewArea.style.width = '';
                 previewArea.style.height = '';
                 previewArea.style.zIndex = '';
-            } else {
-                // 激活上一个tab或第一个tab
-                const activateIndex = tabIndex > 0 ? tabIndex - 1 : 0;
-                activateTab(previewTabs[activateIndex].id);
+            }
+        }
+        
+        // 关闭其他Tab
+        function closeOtherTabs(keepTabId) {
+            console.log('关闭其他Tab，保留:', keepTabId);
+            
+            // 只保留指定的tab
+            previewTabs = previewTabs.filter(tab => tab.id === keepTabId);
+            
+            // 隐藏侧边缩略图列表和工具栏
+            document.querySelector('.preview-file-list').style.display = 'none';
+            document.querySelector('.preview-toolbar').style.display = 'none';
+            
+            // 更新Tab栏
+            updateTabs();
+            
+            // 激活保留的tab
+            if (previewTabs.length > 0) {
+                console.log('激活保留的Tab:', keepTabId);
+                activateTab(keepTabId);
             }
         }
 
@@ -4086,9 +4602,6 @@
         window.addEventListener('load', () => {
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
-            // 页面加载时显示模型标签和分割符号
-            document.querySelector('.model-tags').style.display = 'flex';
-            document.querySelector('.divider').style.display = 'inline';
             // 默认不显示AI团队成员信息区域
             document.getElementById('aiMemberInfo').classList.remove('show');
         });
@@ -4101,22 +4614,287 @@
             });
         });
 
-        // 模型标签点击事件
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('model-tag')) {
-                document.querySelectorAll('.model-tag').forEach(tag => tag.classList.remove('active'));
-                e.target.classList.add('active');
-            }
-        });
 
+
+        // 显示我的秘书看板
+        function showSecretaryBoard() {
+            // 检查是否已经存在我的秘书tab
+            const existingTab = previewTabs.find(tab => tab.title === '我的秘书');
+            if (existingTab) {
+                // 激活已存在的tab
+                activateTab(existingTab.id);
+                return;
+            }
+            
+            // 切换到全屏布局
+            const mainContainer = document.querySelector('.main-container');
+            mainContainer.classList.add('fullscreen');
+            document.body.classList.add('fullscreen-preview');
+            
+            // 显示预览区标题栏（包含Tab栏）
+            const previewHeader = document.querySelector('.preview-header');
+            if (previewHeader) {
+                previewHeader.style.display = 'flex';
+            }
+            
+            // 隐藏图片列表区域和工具栏
+            document.querySelector('.preview-file-list').style.display = 'none';
+            document.querySelector('.preview-toolbar').style.display = 'none';
+            
+            // 预览区有内容时，平分除历史对话区域的右边区域
+            const previewArea = document.getElementById('previewArea');
+            const chatArea = document.querySelector('.chat-area');
+            const container = document.querySelector('.main-container-inner');
+            if (container) {
+                // 对话区域和预览区域各占50%
+                chatArea.style.flexBasis = '50%';
+                previewArea.style.flexBasis = '50%';
+            }
+            
+            // 显示分隔线
+            const resizer = document.getElementById('resizer');
+            if (resizer) {
+                resizer.style.display = 'block';
+            }
+            
+            // 创建新Tab
+            const tabId = 'tab_' + Date.now();
+            const tabTitle = '我的秘书';
+            
+            // 添加到tabs数组
+            previewTabs.push({
+                id: tabId,
+                title: tabTitle
+            });
+            
+            // 更新Tab栏
+            updateTabs();
+            
+            // 激活当前Tab
+            activateTab(tabId);
+        }
+        
+        // 更新秘书看板内容
+        function updateSecretaryBoardContent(tabId) {
+            const previewContent = document.getElementById('previewContent');
+            previewContent.innerHTML = `
+                <div style="width: 100%; height: 100%; box-sizing: border-box;">
+                    <!-- 我的日程 -->
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">我的日程</h3>
+                        <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
+                            <div style="display: flex; gap: 40px;">
+                                <!-- 左边日历 -->
+                                <div style="flex: 1;">
+                                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 15px;">日历</div>
+                                    <div id="calendar_${tabId}" style="width: 100%;"></div>
+                                </div>
+                                
+                                <!-- 右边时间轴 -->
+                                <div style="flex: 2;">
+                                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 15px;">时间轴</div>
+                                    <div style="position: relative; padding-left: 40px;">
+                                        <!-- 垂直虚线 -->
+                                        <div style="position: absolute; left: 10px; top: 15px; bottom: 15px; width: 2px; background-color: #e0e0e0;"></div>
+                                        
+                                        <!-- 时间点1 -->
+                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; transition: all 0.3s ease;">
+                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-15 09:30</div>
+                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">团队周会</div>
+                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
+                                                <span style="font-size: 12px; color: #999;">状态：</span>
+                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #e0e0e0; border-radius: 12px; color: #666;">已过时</span>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">
+                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span>讨论本周工作安排和项目进展</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 时间点2 -->
+                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; transition: all 0.3s ease;">
+                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-15 14:00</div>
+                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">客户项目评审</div>
+                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
+                                                <span style="font-size: 12px; color: #999;">状态：</span>
+                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #e0e0e0; border-radius: 12px; color: #666;">已过时</span>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">
+                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span>与客户讨论项目需求和进度</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 时间点3 -->
+                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #e3f2fd; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #2196f3;">
+                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-16 10:00</div>
+                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">产品设计讨论</div>
+                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
+                                                <span style="font-size: 12px; color: #999;">状态：</span>
+                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #bbdefb; border-radius: 12px; color: #1976d2;">待完成</span>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">
+                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span>讨论新产品设计方案和功能需求</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 时间点4 -->
+                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #e8f5e8; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #4caf50;">
+                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-17 11:00</div>
+                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">技术培训</div>
+                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
+                                                <span style="font-size: 12px; color: #999;">状态：</span>
+                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #c8e6c9; border-radius: 12px; color: #2e7d32;">待完成</span>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">
+                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span>参加新技术培训课程</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 时间点5 -->
+                                        <div style="position: relative; margin-bottom: 30px; padding: 15px; background-color: #fff3e0; border-radius: 8px; transition: all 0.3s ease; border-left: 3px solid #ff9800;">
+                                            <div style="position: absolute; left: -40px; top: 20px; width: 20px; height: 20px; border-radius: 50%; background-color: #0051D9; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">●</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">04-18 15:30</div>
+                                            <div style="font-size: 14px; font-weight: 500; margin-bottom: 5px;">季度总结会议</div>
+                                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 5px;">
+                                                <span style="font-size: 12px; color: #999;">状态：</span>
+                                                <span style="font-size: 12px; padding: 2px 8px; background-color: #ffe0b2; border-radius: 12px; color: #e65100;">待完成</span>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">
+                                                <span style="margin-right: 10px;">备注：</span>
+                                                <span>总结本季度工作成果和不足</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 底部结束点 -->
+                                        <div style="position: relative;">
+                                            <div style="position: absolute; left: -40px; top: 0; width: 20px; height: 20px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">●</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 我的代办 -->
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">我的代办</h3>
+                        <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
+                            <div style="margin-bottom: 15px;">
+                                <input type="text" placeholder="添加新任务" style="width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
+                                    <input type="checkbox" style="width: 16px; height: 16px;">
+                                    <span style="flex: 1; font-size: 14px;">完成项目方案文档</span>
+                                    <span style="font-size: 12px; color: #666;">今天</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
+                                    <input type="checkbox" style="width: 16px; height: 16px;">
+                                    <span style="flex: 1; font-size: 14px;">准备客户会议材料</span>
+                                    <span style="font-size: 12px; color: #666;">明天</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
+                                    <input type="checkbox" style="width: 16px; height: 16px;">
+                                    <span style="flex: 1; font-size: 14px;">提交周报</span>
+                                    <span style="font-size: 12px; color: #666;">周五</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
+                                    <input type="checkbox" style="width: 16px; height: 16px;">
+                                    <span style="flex: 1; font-size: 14px;">与技术团队讨论需求</span>
+                                    <span style="font-size: 12px; color: #666;">下周一</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 8px;">
+                                    <input type="checkbox" style="width: 16px; height: 16px;">
+                                    <span style="flex: 1; font-size: 14px;">更新项目进度计划</span>
+                                    <span style="font-size: 12px; color: #666;">下周二</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 初始化日历
+            initCalendar(tabId);
+        }
+        
+        // 初始化日历
+        function initCalendar(tabId) {
+            const calendarContainer = document.getElementById(`calendar_${tabId}`);
+            if (!calendarContainer) return;
+            
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            
+            const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+            
+            // 生成日历HTML
+            let calendarHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <button id="prevMonth_${tabId}" style="padding: 3px 6px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; font-size: 10px; cursor: pointer;">&lt;</button>
+                    <h3 style="margin: 0; font-size: 12px;">${year}年 ${monthNames[month]}</h3>
+                    <button id="nextMonth_${tabId}" style="padding: 3px 6px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; font-size: 10px; cursor: pointer;">&gt;</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center;">
+                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">日</div>
+                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">一</div>
+                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">二</div>
+                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">三</div>
+                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">四</div>
+                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">五</div>
+                    <div style="font-size: 10px; font-weight: 600; color: #666; padding: 6px;">六</div>
+            `;
+            
+            // 计算当月第一天是星期几
+            const firstDay = new Date(year, month, 1);
+            const startDate = firstDay.getDay();
+            
+            // 计算当月有多少天
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // 添加上个月的占位
+            for (let i = 0; i < startDate; i++) {
+                calendarHTML += `<div style="padding: 6px 3px; font-size: 10px; color: #ccc;"></div>`;
+            }
+            
+            // 添加当月的日期
+            for (let day = 1; day <= daysInMonth; day++) {
+                const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+                const dayStyle = isToday 
+                    ? 'padding: 6px 3px; font-size: 10px; background-color: #0051D9; color: white; border-radius: 4px;' 
+                    : 'padding: 6px 3px; font-size: 10px;';
+                calendarHTML += `<div style="${dayStyle}">${day}</div>`;
+            }
+            
+            calendarHTML += `</div>`;
+            calendarContainer.innerHTML = calendarHTML;
+            
+            // 添加月份切换功能
+            document.getElementById(`prevMonth_${tabId}`).addEventListener('click', function() {
+                // 这里可以实现月份切换逻辑
+                console.log('上一月');
+            });
+            
+            document.getElementById(`nextMonth_${tabId}`).addEventListener('click', function() {
+                // 这里可以实现月份切换逻辑
+                console.log('下一月');
+            });
+        }
+        
         // 团队成员点击事件
         document.addEventListener('click', (e) => {
             const teamMember = e.target.closest('.team-member');
             if (teamMember) {
-                // 移除其他团队成员的选中状态
-                document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
-                // 添加当前团队成员的选中状态
-                teamMember.classList.add('active');
+                // 检查是否点击了消息或设置图标
+                const isActionIcon = e.target.closest('.team-member-action') || e.target.closest('.team-member-settings');
                 
                 // 获取成员信息
                 const memberId = teamMember.dataset.memberId;
@@ -4127,16 +4905,40 @@
                 const aiMemberIds = ['advisor', 'secretary', 'pm', 'sales', 'solution', 'product', 'support'];
                 const isAiMember = aiMemberIds.includes(memberId);
                 
-                // 根据成员类型决定是否显示模型标签
-                if (isAiMember) {
-                    // AI员工：显示模型标签和分割符号
-                    document.querySelector('.model-tags').style.display = 'flex';
-                    document.querySelector('.divider').style.display = 'inline';
-                } else {
-                    // 人类伙伴：隐藏模型标签和分割符号
-                    document.querySelector('.model-tags').style.display = 'none';
-                    document.querySelector('.divider').style.display = 'none';
+                if (isActionIcon) {
+                    // 点击了消息图标，更新对话弹窗标题
+                    if (e.target.closest('.team-member-action')) {
+                        // 存储当前对话的AI成员ID
+                        currentChatMemberId = memberId;
+                        
+                        // 更新对话弹窗标题
+                        const chatWindow = document.getElementById('aiChatWindow');
+                        if (chatWindow) {
+                            const chatTitle = chatWindow.querySelector('.ai-chat-title');
+                            if (chatTitle) {
+                                const avatarSvg = teamMember.dataset.avatarSvg;
+                                chatTitle.innerHTML = `
+                                    <div class="ai-chat-avatar" style="background-color: ${avatarColor};">
+                                        ${avatarSvg}
+                                    </div>
+                                    <div class="ai-chat-name">${memberName}</div>
+                                `;
+                            }
+                            // 确保对话弹窗显示
+                            chatWindow.classList.add('show');
+                        }
+                    }
+                    return; // 点击了图标，不执行其他操作
                 }
+                
+                // 移除其他团队成员的选中状态
+                document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
+                // 添加当前团队成员的选中状态
+                teamMember.classList.add('active');
+                
+
+                
+
                 
                 // 更新AI团队成员信息区域（输入框上方）
                 const aiMemberInfo = document.getElementById('aiMemberInfo');
@@ -4159,6 +4961,11 @@
                     aiMemberInfo.classList.add('show');
                 } else {
                     aiMemberInfo.classList.remove('show');
+                }
+                
+                // 点击我的秘书时显示空白预览tab
+                if (memberId === 'secretary') {
+                    showSecretaryBoard();
                 }
                 
                 // 生成聊天记录
@@ -4927,9 +5734,7 @@
                 document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
                 document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
                 item.classList.add('active');
-                // 显示模型标签和分割符号
-                document.querySelector('.model-tags').style.display = 'flex';
-                document.querySelector('.divider').style.display = 'inline';
+
                 // 隐藏AI团队成员信息区域
                 document.getElementById('aiMemberInfo').classList.remove('show');
 
@@ -5122,9 +5927,7 @@
             textarea.style.height = 'auto';
             document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
             document.querySelectorAll('.team-member').forEach(member => member.classList.remove('active'));
-            // 显示模型标签和分割符号
-            document.querySelector('.model-tags').style.display = 'flex';
-            document.querySelector('.divider').style.display = 'inline';
+
             // 隐藏AI团队成员信息区域
             document.getElementById('aiMemberInfo').classList.remove('show');
 
@@ -5490,42 +6293,47 @@
             currentPreviewFileIndex = 0;
             document.getElementById('previewFileList').innerHTML = '';
             
-            // 清空预览内容
-            document.getElementById('previewContent').innerHTML = '';
+            // 显示快捷入口
+            const previewContent = document.getElementById('previewContent');
+            previewContent.innerHTML = `
+                <!-- 快捷入口 -->
+                <div class="quick-entry-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                    <div class="quick-entry-items" style="display: flex; gap: 32px;">
+                        <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;" onclick="showBICenter()">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                <path d="M3 3v18h18"></path>
+                                <path d="M19 9l-5 5-4-4-3 3"></path>
+                            </svg>
+                            <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">BI中心</span>
+                        </div>
+                        <div class="quick-entry-item" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 20px; border-radius: 12px; transition: all 0.3s ease; border: 1px solid var(--border-gray); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); width: 120px; height: 120px; justify-content: center;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #4a6cf7; margin-bottom: 12px;">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span style="font-size: 14px; font-weight: 500; color: var(--deep-gray); text-align: center;">设备监控</span>
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            // 隐藏标题栏
+            // 保留标题栏显示
             const previewHeader = document.querySelector('.preview-header');
             if (previewHeader) {
-                previewHeader.style.display = 'none';
+                previewHeader.style.display = 'flex';
             }
             
             // 隐藏图片列表区域和工具栏
             document.querySelector('.preview-file-list').style.display = 'none';
             document.querySelector('.preview-toolbar').style.display = 'none';
             
-            // 预览区没有内容时，将宽度恢复为200px
+            // 预览区没有内容时，保持50%宽度
             const previewArea = document.getElementById('previewArea');
             const chatArea = document.querySelector('.chat-area');
             const container = document.querySelector('.main-container-inner');
             if (container) {
-                const rect = container.getBoundingClientRect();
-                const sidebarWidth = document.querySelector('.sidebar').offsetWidth;
-                const containerWidth = rect.width - sidebarWidth;
-                const previewWidth = 200;
-                const chatWidth = containerWidth - previewWidth;
-                
-                // 确保宽度在有效范围内
-                const maxChatWidth = containerWidth - 200; // 预览区最小宽度 200px
-                const minChatWidth = 200; // 对话区最小宽度 200px
-                const validChatWidth = Math.max(minChatWidth, Math.min(chatWidth, maxChatWidth));
-                const validPreviewWidth = containerWidth - validChatWidth;
-                
-                const chatWidthPercent = (validChatWidth / containerWidth) * 100;
-                const previewWidthPercent = 100 - chatWidthPercent;
-                
-                // 使用 flex-basis 来设置宽度
-                chatArea.style.flexBasis = `${chatWidthPercent}%`;
-                previewArea.style.flexBasis = `${previewWidthPercent}%`;
+                // 使用 flex-basis 来设置宽度为50%
+                chatArea.style.flexBasis = '50%';
+                previewArea.style.flexBasis = '50%';
             }
         }
 
@@ -5629,24 +6437,9 @@
             function setDefaultWidths() {
                 const container = document.querySelector('.main-container-inner');
                 if (container) {
-                    const rect = container.getBoundingClientRect();
-                    const sidebarWidth = document.querySelector('.sidebar').offsetWidth;
-                    const containerWidth = rect.width - sidebarWidth;
-                    const previewWidth = 200;
-                    const chatWidth = containerWidth - previewWidth;
-                    
-                    // 确保宽度在有效范围内
-                    const maxChatWidth = containerWidth - 200; // 预览区最小宽度 200px
-                    const minChatWidth = 200; // 对话区最小宽度 200px
-                    const validChatWidth = Math.max(minChatWidth, Math.min(chatWidth, maxChatWidth));
-                    const validPreviewWidth = containerWidth - validChatWidth;
-                    
-                    const chatWidthPercent = (validChatWidth / containerWidth) * 100;
-                    const previewWidthPercent = 100 - chatWidthPercent;
-                    
-                    // 使用 flex-basis 来设置宽度
-                    chatArea.style.flexBasis = `${chatWidthPercent}%`;
-                    previewArea.style.flexBasis = `${previewWidthPercent}%`;
+                    // 直接设置为50%宽度
+                    chatArea.style.flexBasis = '50%';
+                    previewArea.style.flexBasis = '50%';
                 }
             }
             
@@ -6132,6 +6925,8 @@
                 showLogoutConfirm();
             }
         });
+
+
     </script>
     <!-- 通用二级操作菜单浮窗 -->
     <div class="common-submenu" id="commonSubmenu">
@@ -6208,5 +7003,522 @@
             </div>
         </div>
     </div>
+
+    <!-- AI对话窗口 -->
+    <div class="ai-chat-window" id="aiChatWindow">
+        <div class="ai-chat-header">
+            <div class="ai-chat-title">
+                <div class="ai-chat-avatar">🤖</div>
+                <div class="ai-chat-name">工元智能</div>
+            </div>
+            <button class="ai-chat-close" onclick="closeAIChat()">×</button>
+        </div>
+        <div class="ai-chat-content">
+            <div class="chat-message ai">
+                <div class="ai-message-wrapper">
+                    <div class="message-content">
+                        欢迎您！
+                        欢迎咨询工元智能，很高兴为您服务！请问您需要咨询哪款产品或应用呢？
+                        <span class="message-time">06-06 10:30</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-message user">
+                <div class="message-content">
+                    <div>你好，我想了解一下你们的机器人焊接方案</div>
+                    <span class="message-time">06-06 10:35</span>
+                </div>
+            </div>
+            <div class="chat-message ai">
+                <div class="ai-message-wrapper">
+                    <div class="message-content">
+                        您好！我们的机器人焊接方案主要包括六轴机器人+视觉定位系统，支持24小时无人化作业，高精度稳定运行。请问您是在什么行业使用呢？
+                        <span class="message-time">06-06 10:36</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-message ai">
+                <div class="ai-message-wrapper">
+                    <div class="message-content">
+                        我们的焊接方案适用于汽车制造、工程机械、钢结构等行业，支持多种焊接工艺，精度可达±0.1mm，重复定位精度±0.05mm。
+                        <span class="message-time">06-06 10:37</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ai-chat-input-container">
+            <div class="ai-chat-input-box">
+                <textarea placeholder="输入你的问题..." class="ai-chat-textarea"></textarea>
+                <div class="ai-chat-input-tools">
+                    <div class="ai-chat-input-tools-left">
+                        <div class="upload-file-btn">
+                            <span>📎</span>
+                            <span>上传文件</span>
+                        </div>
+                    </div>
+                    <div class="ai-chat-input-tools-right">
+                        <button class="ai-chat-send">↑</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 存储当前对话的AI成员ID
+        let currentChatMemberId = null;
+
+        function closeAIChat() {
+            const chatWindow = document.getElementById('aiChatWindow');
+            chatWindow.classList.remove('show');
+        }
+
+        // 发送消息功能
+        document.querySelector('.ai-chat-send').addEventListener('click', function() {
+            const textarea = document.querySelector('.ai-chat-textarea');
+            const message = textarea.value.trim();
+            if (message && currentChatMemberId) {
+                // 添加用户消息
+                const chatContent = document.querySelector('.ai-chat-content');
+                const userMessageHTML = `
+                    <div class="chat-message user">
+                        <div class="message-content">
+                            ${message}
+                            <span class="message-time">${getCurrentTime()}</span>
+                        </div>
+                    </div>
+                `;
+                chatContent.insertAdjacentHTML('beforeend', userMessageHTML);
+                
+                // 清空输入框
+                textarea.value = '';
+                
+                // 滚动到底部
+                chatContent.scrollTop = chatContent.scrollHeight;
+                
+                // 高亮当前AI成员的消息icon
+                const currentMember = document.querySelector(`.team-member[data-member-id="${currentChatMemberId}"]`);
+                if (currentMember) {
+                    const messageIcon = currentMember.querySelector('.team-member-action');
+                    if (messageIcon) {
+                        messageIcon.classList.add('active');
+                        messageIcon.style.display = 'block';
+                    }
+                }
+                
+                // 模拟AI回复
+                setTimeout(() => {
+                    const aiReplyHTML = `
+                        <div class="chat-message ai">
+                            <div class="ai-message-wrapper">
+                                <div class="message-content">
+                                    感谢您的咨询！我已收到您的消息，会尽快为您解答。
+                                    <span class="message-time">${getCurrentTime()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    chatContent.insertAdjacentHTML('beforeend', aiReplyHTML);
+                    chatContent.scrollTop = chatContent.scrollHeight;
+                }, 1000);
+            }
+        });
+
+        // 获取当前时间
+        function getCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            return `今天 ${hours}:${minutes}:${seconds}`;
+        }
+
+        // 标签点击功能
+        document.querySelectorAll('.ai-chat-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const textarea = document.querySelector('.ai-chat-textarea');
+                textarea.value = this.textContent;
+                textarea.focus();
+            });
+        });
+
+        // 对话弹窗拖动功能
+        window.addEventListener('DOMContentLoaded', function() {
+            const chatWindow = document.getElementById('aiChatWindow');
+            const chatHeader = document.querySelector('.ai-chat-header');
+            let isDragging = false;
+            let startX, startY;
+
+            // 鼠标按下事件
+            chatHeader.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                chatHeader.style.cursor = 'grabbing';
+                chatWindow.style.userSelect = 'none';
+            });
+
+            // 鼠标移动事件
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                chatWindow.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+                // 移除bottom和right属性，使用transform定位
+                chatWindow.style.bottom = 'auto';
+                chatWindow.style.right = 'auto';
+            });
+
+            // 鼠标释放事件
+            document.addEventListener('mouseup', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    chatHeader.style.cursor = 'grab';
+                    chatWindow.style.userSelect = '';
+                }
+            });
+
+            // 默认隐藏对话窗口
+            // chatWindow.classList.add('show');
+        });
+    </script>
+
+    <style>
+        /* AI对话窗口样式 */
+        .ai-chat-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(100%);
+            width: 600px;
+            height: 500px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 81, 217, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            opacity: 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .ai-chat-window.show {
+            transform: translate(-50%, -50%) translateY(0);
+            opacity: 1;
+        }
+
+        .ai-chat-header {
+            cursor: grab;
+        }
+
+        .ai-chat-header:active {
+            cursor: grabbing;
+        }
+
+        .ai-chat-window.show {
+            transform: translate(-50%, -50%) translateY(0);
+            opacity: 1;
+        }
+
+        .ai-chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px;
+            border-bottom: 1px solid var(--border-gray);
+            background-color: var(--light-gray);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .ai-chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .ai-chat-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--deep-gray);
+        }
+
+        .ai-chat-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--deep-gray);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .ai-chat-close:hover {
+            background-color: var(--light-gray);
+            color: var(--klein-blue);
+        }
+
+        .ai-chat-content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* 对话气泡样式 */
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+
+        .chat-message.ai {
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .ai-message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            background-color: var(--hermes-orange);
+        }
+
+        .user .message-avatar {
+            display: none;
+        }
+
+        .ai-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--deep-gray);
+        }
+
+        .ai-message-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 80%;
+        }
+
+        .message-content {
+            max-width: 100%;
+            padding: 12px 14px 8px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user .message-content {
+            background-color: #edf3fe;
+            border-bottom-right-radius: 4px;
+            max-width: 80%;
+        }
+
+        .ai .message-content {
+            background-color: var(--light-gray);
+            color: var(--deep-gray);
+            border: 1px solid var(--border-gray);
+            border-bottom-left-radius: 4px;
+        }
+
+        .ai-chat-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-top: 1px solid var(--border-gray);
+            background-color: var(--white);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .ai-chat-input-box {
+            flex: 1;
+            position: relative;
+            border: 1px solid var(--border-gray);
+            border-radius: 20px;
+            padding: 5px 10px;
+            background-color: var(--white);
+        }
+
+        .ai-chat-textarea {
+            width: 100%;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 0;
+            font-size: 14px;
+            resize: none;
+            min-height: 30px;
+            max-height: 120px;
+            line-height: 1.4;
+            background-color: transparent;
+        }
+
+        .ai-chat-textarea:focus {
+            outline: none;
+        }
+
+        .ai-chat-textarea::placeholder {
+            color: #999;
+        }
+
+        .ai-chat-input-tools {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px solid var(--border-gray);
+        }
+
+        .ai-chat-input-tools-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-chat-input-tools-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .upload-file-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .upload-file-btn:hover {
+            color: var(--klein-blue);
+        }
+
+
+
+        .ai-chat-send {
+            background-color: #06b6d4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .ai-chat-send:hover {
+            background-color: #04a4be;
+            transform: scale(1.05);
+        }
+
+        .ai-chat-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 16px 16px;
+            border-top: 1px solid var(--border-gray);
+            background-color: var(--light-gray);
+        }
+
+        .ai-chat-tag {
+            background-color: white;
+            color: var(--deep-gray);
+            border: 1px solid var(--border-gray);
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ai-chat-tag:hover {
+            background-color: var(--klein-blue);
+            color: white;
+            border-color: var(--klein-blue);
+        }
+
+        .ai-chat-tag-more {
+            background-color: white;
+            color: var(--klein-blue);
+            border: 1px solid var(--klein-blue);
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ai-chat-tag-more:hover {
+            background-color: var(--klein-blue);
+            color: white;
+        }
+
+        /* 滚动条美化 */
+        .ai-chat-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .ai-chat-content::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 3px;
+        }
+
+        .ai-chat-content::-webkit-scrollbar-thumb {
+            background: var(--light-gray);
+            border-radius: 3px;
+        }
+
+        .ai-chat-content::-webkit-scrollbar-thumb:hover {
+            background: var(--klein-blue);
+        }
+    </style>
+
 </body>
 </html>
