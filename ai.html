@@ -2917,10 +2917,10 @@
     <div class="sub-nav">
         <div class="sub-nav-inner">
             <div class="sub-nav-item active">工元智能</div>
-            <div class="sub-nav-item">农业方案库</div>
-            <div class="sub-nav-item">工业方案库</div>
-            <div class="sub-nav-item">服务业方案库</div>
+            <div class="sub-nav-item">生产力方案商城</div>
             <div class="sub-nav-item">设备商城</div>
+            <div class="sub-nav-item">消费商城</div>
+            <div class="sub-nav-item">我的社群</div>
         </div>
     </div>
 
@@ -6423,17 +6423,17 @@
                 if (tabText !== '工元智能') {
                     let tabParam = '';
                     switch(tabText) {
-                        case '工业方案库':
-                            tabParam = 'industry';
-                            break;
-                        case '农业方案库':
-                            tabParam = 'agriculture';
-                            break;
-                        case '服务业方案库':
-                            tabParam = 'service';
+                        case '生产力方案商城':
+                            tabParam = 'productivity';
                             break;
                         case '设备商城':
                             tabParam = 'equipment';
+                            break;
+                        case '消费商城':
+                            tabParam = 'consumption';
+                            break;
+                        case '我的社群':
+                            tabParam = 'community';
                             break;
                     }
                     // 直接跳转，不等待其他事件
