@@ -14,50 +14,52 @@
             // 获取用户区域元素
             const userArea = document.querySelector('.user-area');
             
-            if (isLoggedIn) {
-                // 已登录状态，显示欢迎信息和退出按钮
-                userArea.innerHTML = `
-                    <div class="welcome">
-                        <span>👋</span>
-                        <span>
-                            <span class="company-name">东莞嘉东科技有限公司</span> 
-                            <span class="user-name">林工</span> 
-                            欢迎您！
-                            <span class="logout-btn" onclick="logout()">[退出]</span>
-                        </span>
-                    </div>
-                    <!-- 消息按钮添加图标 -->
-                    <button class="login">
-                        <span class="msg-icon">📩</span>
-                        <span>消息 12</span>
-                    </button>
-                    <button class="login">
-                        <span>👤</span>
-                        <span>个人中心</span>
-                    </button>
-                    <div class="location">
-                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span class="city-name">北京</span>
-                        <span class="switch-city">[切换城市]</span>
-                    </div>
-                `;
-            } else {
-                // 未登录状态，显示登录和注册按钮
-                userArea.innerHTML = `
-                    <button class="login">登录</button>
-                    <button class="login">注册</button>
-                    <div class="location">
-                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span class="city-name">北京</span>
-                        <span class="switch-city">[切换城市]</span>
-                    </div>
-                `;
+            if (userArea) {
+                if (isLoggedIn) {
+                    // 已登录状态，显示欢迎信息和退出按钮
+                    userArea.innerHTML = `
+                        <div class="welcome">
+                            <span>👋</span>
+                            <span>
+                                <span class="company-name">东莞嘉东科技有限公司</span> 
+                                <span class="user-name">林工</span> 
+                                欢迎您！
+                                <span class="logout-btn" onclick="logout()">[退出]</span>
+                            </span>
+                        </div>
+                        <!-- 消息按钮添加图标 -->
+                        <button class="login">
+                            <span class="msg-icon">📩</span>
+                            <span>消息 12</span>
+                        </button>
+                        <button class="login">
+                            <span>👤</span>
+                            <span>个人中心</span>
+                        </button>
+                        <div class="location">
+                            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="city-name">北京</span>
+                            <span class="switch-city">[切换城市]</span>
+                        </div>
+                    `;
+                } else {
+                    // 未登录状态，显示登录和注册按钮
+                    userArea.innerHTML = `
+                        <button class="login">登录</button>
+                        <button class="login">注册</button>
+                        <div class="location">
+                            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="city-name">北京</span>
+                            <span class="switch-city">[切换城市]</span>
+                        </div>
+                    `;
+                }
             }
         });
 
@@ -187,12 +189,6 @@
             padding: 14px 0;
             color: var(--white);
         }
-        .page-title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            margin: 15px 0 30px 0px;
-        }
 
         /* AI智能体对话框 */
         .ai-chat-container {
@@ -207,6 +203,137 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        /* 搜索容器 */
+        .blank-container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 30px auto;
+            background: var(--ai-chat-bg);
+            border-radius: 14px;
+            padding: 30px 80px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--ai-border);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 12px;
+            margin-top: 16px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--ai-border);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--klein-blue);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0px 6px 6px  0px;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #0056b3;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 24px;
+        }
+
+        .quote-btn {
+            background: #ff7f00;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .quote-btn:hover {
+            background: #e67e22;
+        }
+
+        .cart-btn {
+            background: transparent;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 14px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .cart-btn:hover {
+            border-color: #0051D9;
+            color: #0051D9;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            background: #e0e0e0;
+            color: var(--klein-blue);
         }
 
         .ai-input-box textarea {
@@ -400,8 +527,8 @@
             color: var(--white);
             border: none;
             border-radius: 8px;
-            padding: 14px 32px;
-            font-size: 18px;
+            padding: 14px 36px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             white-space: nowrap;
@@ -409,7 +536,6 @@
             box-shadow: 0 4px 12px rgba(243, 112, 33, 0.3);
             position: relative;
             overflow: hidden;
-            min-width: 180px;
         }
 
         .ai-team-btn::before {
@@ -795,10 +921,6 @@
             .filter {
                 width: 100%;
                 margin-bottom: 10px;
-            }
-
-            .page-title {
-                font-size: 24px;
             }
 
             .tab {
@@ -1194,25 +1316,27 @@
     <!-- 头部区域 -->
     <header>
         <div class="container">
-            <h1 class="page-title">智能生产力平台</h1>
-
-            <!-- AI智能体对话框 -->
-            <div class="ai-chat-container">
-                <div class="ai-input-box">
-                    <textarea placeholder="输入你的问题..."></textarea>
-                </div>
-                <div class="ai-tool-row">
-                    <div class="ai-tool-left">
-                        <label class="upload-btn">
-                            <input type="file">
-                            <span>📎</span> 上传文件
-                        </label>
-                        <span class="divider">|</span>
-                        <div class="model-tags">
-                            <div class="model-tag" data-function="draw">画示意图</div>
-                        </div>
+            <!-- 搜索容器 -->
+            <div class="blank-container">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" placeholder="请输入" class="search-input">
+                        <button class="search-btn">搜索</button>
                     </div>
-                    <button class="send-btn">↑</button>
+                    <div class="search-actions">
+                        <button class="ai-team-btn" onclick="window.location.href='ai.html'">创造中心</button>
+                        <button class="cart-btn">
+                            🛒 采购购物车
+                            <span class="cart-badge">1</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="search-tags">
+                    <span class="tag">工业机器人</span>
+                    <span class="tag">协作机器人</span>
+                    <span class="tag">自动化产线</span>
+                    <span class="tag">AGV物流</span>
+                    <span class="tag">机器人租赁</span>
                 </div>
             </div>
         </div>
@@ -1229,7 +1353,6 @@
                     <div class="tab">共享消费</div>
                     <div class="tab">我的社群</div>
                 </div>
-                <button class="ai-team-btn" onclick="window.location.href='ai.html'">创造中心</button>
             </div>
         </div>
     </div>
@@ -1492,21 +1615,28 @@
 
         // 输入框自动高度适配
         const textarea = document.querySelector('.ai-input-box textarea');
-        textarea.addEventListener('input', () => {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
-        });
+        if (textarea) {
+            textarea.addEventListener('input', () => {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+            });
+        }
 
         // 页面加载时初始化输入框高度
         window.addEventListener('load', () => {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
+            if (textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = textarea.scrollHeight + 'px';
+            }
         });
 
         // 发送按钮点击跳转到AI页面
-        document.querySelector('.send-btn').addEventListener('click', () => {
-            window.location.href = 'ai.html';
-        });
+        const sendBtn = document.querySelector('.send-btn');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', () => {
+                window.location.href = 'ai.html';
+            });
+        }
 
         // 根据URL参数选中对应tab并定位到tab栏位置
         function selectTabByParam() {

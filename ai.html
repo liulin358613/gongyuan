@@ -1944,7 +1944,14 @@
         }
 
         .chat-image {
+            width: 100%;
             max-width: 200px;
+        }
+
+        .chat-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
         }
 
         .chat-image:hover img {
@@ -2041,6 +2048,28 @@
         .file-card-size {
             font-size: 12px;
             color: #86909C;
+        }
+
+        /* 图片卡片样式 */
+        .image-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px;
+            background-color: #F7F8FA;
+            border-radius: 8px;
+            margin-top: 8px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .image-card-content {
+            flex: 1;
+        }
+
+        .image-card-preview {
+            margin-top: 8px;
+            display: flex;
+            justify-content: flex-end;
         }
 
         /* 右侧预览区样式 */
@@ -3699,6 +3728,28 @@
                 </button>
             </div>
             <div class="chat-content">
+                <!-- 默认对话内容 -->
+                <div class="chat-message ai">
+                    <div class="message-avatar" style="background-color: #4CAF50;">工</div>
+                    <div class="ai-message-wrapper">
+                        <div class="ai-message-header">
+                            <span class="ai-name">方案工程师</span>
+                        </div>
+                        <div class="message-content">
+                            感谢您的提问，我们的专业团队会根据您的具体需求，为您定制专属的智能生产解决方案。如需进一步沟通，可拨打我们的服务热线：400-123-4567，或留下您的联系方式，我们将尽快与您联系。
+                            <div class="file-card">
+                                <div class="file-card-icon">文</div>
+                                <div class="file-card-info">
+                                    <div class="file-card-name">智能生产解决方案.pdf</div>
+                                    <div class="file-card-size">2.5MB</div>
+                                </div>
+                                <button class="preview-btn">预览</button>
+                            </div>
+                            <span class="message-time">04-22 08:48</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 用户提问1 -->
                 <div class="chat-message user">
                     <div class="message-content">
@@ -3742,9 +3793,14 @@
                 <div class="chat-message user">
                     <div class="message-content">
                         这个方案的实施成本大概是多少？回报周期大概多久？另外我们工厂现有20台加工中心，改造难度大吗？
-                        <div style="margin-top: 10px; cursor: pointer;" onclick="openImageModal('images/equipment1.png')">
-                            <div class="chat-image">
-                                <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                        <div class="image-card">
+                            <div class="image-card-content" onclick="openImageModal('images/equipment1.png')" style="cursor: pointer;">
+                                <div class="chat-image">
+                                    <img src="images/equipment1.png" alt="本地图片1" style="max-width: 200px; border-radius: 8px; transition: transform 0.3s;">
+                                </div>
+                            </div>
+                            <div class="image-card-preview">
+                                <button class="preview-btn" onclick="openImageModal('images/equipment1.png')">预览</button>
                             </div>
                         </div>
                         <span class="message-time">06-06 10:35</span>
@@ -3799,17 +3855,19 @@
                             2. 设备传感器安装和网络搭建（2-3周）<br>
                             3. 系统调试和人员培训（2周）<br>
                             4. 试运行和优化（1-2周）
-                            <div style="margin-top: 10px;">
-                                <div style="display: flex; gap: 10px; cursor: pointer;" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">
-                                    <div class="chat-image" style="flex: 1;">
-                                        <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
-                                    </div>
-                                    <div class="chat-image" style="flex: 1;">
-                                        <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                            <div class="image-card">
+                                <div class="image-card-content" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png']);" style="cursor: pointer;">
+                                    <div style="display: flex; gap: 10px;">
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
+                                <div class="image-card-preview">
+                                    <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
                                 </div>
                             </div><br>
                             <span class="message-time">06-06 10:38</span>
@@ -3856,12 +3914,19 @@
                             关于成功案例，我们在汽车零部件行业有多个成功实施的项目，例如：<br>
                             - 某汽车发动机零部件制造商：实施后次品率从2.8%降低到0.5%，生产效率提升18%<br>
                             - 某汽车底盘零部件企业：实施后设备故障率降低60%，维护成本减少40%
-                            <div style="margin-top: 10px; display: flex; gap: 10px; cursor: pointer;" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">
-                                <div class="chat-image" style="flex: 1;">
-                                    <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                            <div class="image-card">
+                                <div class="image-card-content" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png']);" style="cursor: pointer;">
+                                    <div style="display: flex; gap: 10px;">
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment1.png" alt="机械设备3D模型1" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                        <div class="chat-image" style="flex: 1;">
+                                            <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="chat-image" style="flex: 1;">
-                                    <img src="images/equipment2.png" alt="机械设备3D模型2" style="max-width: 100%; border-radius: 8px; transition: transform 0.3s;">
+                                <div class="image-card-preview">
+                                    <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
                                 </div>
                             </div>
                             <span class="message-time">06-06 10:42</span>
@@ -5667,7 +5732,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
+                                            <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
                                         </div>
                                     </div><br>
                                     <span class="message-time">06-06 10:38</span>
@@ -6083,7 +6148,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
+                                            <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
                                         </div>
                                     </div><br>
                                     <span class="message-time">06-06 10:38</span>
@@ -6242,7 +6307,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
+                                        <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
                                     </div>
                                 </div><br>
                                 <span class="message-time">06-06 10:38</span>
@@ -6435,7 +6500,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">查看预览</button>
+                                        <button class="preview-btn" onclick="openImageModalMultiple(['images/equipment1.png', 'images/equipment2.png'])">预览</button>
                                     </div>
                                 </div><br>
                                 <span class="message-time">06-06 10:38</span>
@@ -6634,6 +6699,7 @@
                                             <div class="file-card-name">智能生产解决方案.pdf</div>
                                             <div class="file-card-size">2.5MB</div>
                                         </div>
+                                        <button class="preview-btn">预览</button>
                                     `;
                                     messageContent.appendChild(fileCard);
                                     
