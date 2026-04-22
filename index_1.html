@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工业智能生产力平台</title>
+    <script>
+        // 检查登录状态并显示相应的头部内容
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态，实际项目中应从localStorage或cookie中获取
+            // 确保localStorage.getItem返回的值被正确转换为布尔值
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            // 获取用户区域元素
+            const userArea = document.querySelector('.user-area');
+            
+            if (userArea) {
+                if (isLoggedIn) {
+                    // 已登录状态，显示欢迎信息和退出按钮
+                    userArea.innerHTML = `
+                        <div class="welcome">
+                            <span>👋</span>
+                            <span>
+                                <span class="company-name">东莞嘉东科技有限公司</span> 
+                                <span class="user-name">林工</span> 
+                                欢迎您！
+                                <span class="logout-btn" onclick="logout()">[退出]</span>
+                            </span>
+                        </div>
+                        <!-- 消息按钮添加图标 -->
+                        <button class="login">
+                            <span class="msg-icon">📩</span>
+                            <span>消息 12</span>
+                        </button>
+                        <button class="login">
+                            <span>👤</span>
+                            <span>个人中心</span>
+                        </button>
+                        <div class="location">
+                            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="city-name">北京</span>
+                            <span class="switch-city">[切换城市]</span>
+                        </div>
+                    `;
+                } else {
+                    // 未登录状态，显示登录和注册按钮
+                    userArea.innerHTML = `
+                        <button class="login">登录</button>
+                        <button class="login">注册</button>
+                        <div class="location">
+                            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="city-name">北京</span>
+                            <span class="switch-city">[切换城市]</span>
+                        </div>
+                    `;
+                }
+            }
+        });
+
+        // 退出登录函数
+        function logout() {
+            // 清除登录状态
+            localStorage.removeItem('isLoggedIn');
+            
+            // 刷新页面，显示未登录的头部
+            window.location.reload();
+        }
+    </script>
+    <style>
+        /* 基础重置与全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        :root {
+            /* 主色调 */
+            --klein-blue: #0051D9;
+            --hermes-orange: #F37021;
+            --deep-gray: #1D2129;
+            --light-bg: #F2F3F5;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+
+            /* AI对话框配色 */
+            --ai-chat-bg: #FFFFFF;
+            --ai-input-bg: #FFFFFF;
+            --ai-text: #1D2129;
+            --ai-desc: #86909C;
+            --ai-border: #E5E7EB;
+            --ai-send: #06b6d4;
+            --ai-tag-bg: #F2F3F5;
+            --ai-tag-hover: #E5E7EB;
+
+            /* 响应式断点 */
+            --breakpoint-md: 992px;
+            --breakpoint-sm: 768px;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 通用容器 */
+        .container {
+            width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* ========== 固定顶部导航栏（单独一行） ========== */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--klein-blue);
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        .fixed-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .logo {
+            width: 220px;
+            height: 50px;
+            background: var(--white);
+            color: var(--klein-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.9;
+        }
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .welcome {
+            background: var(--white);
+            color: var(--deep-gray);
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .login {
+            background: var(--white);
+            color: var(--klein-blue);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .login:hover {
+            background: var(--hermes-orange);
+            color: var(--white);
+        }
+
+        /* 头部区域 */
+        header {
+            /* background: var(--klein-blue); */
+            /* padding: 14px 0; */
+            color: var(--white);
+        }
+
+        /* AI智能体对话框 */
+        .ai-chat-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            background: var(--ai-chat-bg);
+            border-radius: 24px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--ai-border);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* 搜索容器 */
+        .blank-container {
+            width: 100%;
+            max-width: 1440px;
+            background: var(--ai-chat-bg);
+            padding: 30px 80px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 12px;
+            margin-top: 16px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--ai-border);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--klein-blue);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0px 6px 6px  0px;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #0056b3;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 24px;
+        }
+
+        .quote-btn {
+            background: #ff7f00;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .quote-btn:hover {
+            background: #e67e22;
+        }
+
+        .cart-btn {
+            background: transparent;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 14px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .cart-btn:hover {
+            border-color: #0051D9;
+            color: #0051D9;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            background: #e0e0e0;
+            color: var(--klein-blue);
+        }
+
+        .ai-input-box textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--ai-text);
+            font-size: 16px;
+            resize: none;
+            height: 24px;
+            max-height: 160px;
+            line-height: 24px;
+            padding: 4px 0;
+            overflow: hidden !important;
+            scrollbar-width: none;
+        }
+
+        .ai-input-box textarea::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ai-input-box textarea::placeholder {
+            color: var(--ai-desc);
+            font-size: 16px;
+        }
+
+        .ai-tool-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--ai-border);
+        }
+
+        .ai-tool-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn {
+            color: var(--ai-desc);
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            color: var(--klein-blue);
+        }
+
+        .upload-btn input {
+            display: none;
+        }
+
+        .divider {
+            color: #d1d5db;
+            font-size: 16px;
+            padding: 0 4px;
+        }
+
+        .ai-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .ai-tag {
+            background: var(--ai-tag-bg);
+            color: var(--ai-text);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        .ai-tag:hover {
+            background: var(--ai-tag-hover);
+        }
+
+        /* 模型标签样式 */
+        .model-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .model-tag {
+            background: var(--light-bg);
+            color: var(--deep-gray);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .model-tag:hover {
+            background: var(--border);
+            color: var(--klein-blue);
+        }
+
+        .model-tag.active {
+            background: var(--klein-blue);
+            color: white;
+        }
+
+        .send-btn {
+            background: var(--ai-send);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background-color 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #04a4be;
+        }
+
+        /* 标签导航容器 */
+        .tab-container {
+            background: var(--light-bg);
+            border-bottom: 1px solid var(--border);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* 导航标签栏 */
+        .tab-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            height: 60px;
+        }
+
+        .tab {
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--ai-desc);
+            padding: 0 24px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            /* border-bottom: 3px solid transparent; */
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .tab.active {
+            color: var(--klein-blue);
+            font-weight: bold;
+            border-bottom: 3px solid var(--klein-blue);
+            width: 220px;
+            font-size: 20px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--klein-blue);
+            background-color: var(--light-bg);
+        }
+
+        .ai-team-btn {
+            background: var(--hermes-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 14px 36px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(243, 112, 33, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-team-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .ai-team-btn:hover::before {
+            left: 100%;
+        }
+
+        .ai-team-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(243, 112, 33, 0.4);
+        }
+
+        /* 内容区域 */
+        .content-row {
+            display: flex;
+            gap: 18px;
+            margin-top: 20px;
+            align-items: stretch;
+        }
+
+        .filter {
+            width: 220px;
+            background: var(--white);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .sub-filter-popup {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 200px;
+            background: var(--white);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 10000;
+            margin-left: 10px;
+            border: 2px solid var(--hermes-orange);
+            overflow: hidden;
+        }
+
+        .filter-section {
+            /* margin-bottom: 20px;
+            height: 100%; */
+        }
+
+        .filter-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--deep-gray);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: calc(100% - 20px);
+            overflow: hidden;
+        }
+
+        .filter-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .filter-item:hover {
+            color: var(--klein-blue);
+            background-color: #f0f7ff;
+            font-weight: 500;
+            transform: translateX(4px);
+        }
+
+        #sub-filter-items .filter-item {
+            padding: 12px 16px;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        #sub-filter-items .filter-item:hover {
+            background-color: var(--klein-blue);
+            color: white;
+        }
+
+        .card-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img {
+            height: 140px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-text {
+            padding: 16px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: var(--deep-gray);
+            line-height: 1.4;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 案例与知识库区域 */
+        .case-know-row {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .case-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .case-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--deep-gray);
+            line-height: 1.3;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .case {
+            background: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .case:hover {
+            transform: translateY(-4px);
+        }
+
+        .case-img {
+            height: 130px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .case-text {
+            padding: 14px;
+        }
+
+        .case-name {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--deep-gray);
+            line-height: 1.4;
+        }
+
+        .case-desc {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .right-box {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+
+        .right-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .right-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--klein-blue);
+        }
+
+        .more-btn {
+            font-size: 13px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .more-btn:hover {
+            color: var(--klein-blue);
+        }
+
+        .know-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .know-block {
+            flex: 1;
+        }
+
+        .know-sub-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .know-item {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .know-item:hover {
+            color: var(--klein-blue);
+        }
+
+        /* 合作伙伴区域 */
+        .partner-section {
+            margin-top: 36px;
+            margin-bottom: 48px;
+        }
+
+        .partner-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--deep-gray);
+            line-height: 1.3;
+        }
+
+        .partner {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .partner-item {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .partner-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .partner-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .partner-name {
+            font-weight: 600;
+            color: var(--deep-gray);
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+
+
+        /* 自定义滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--ai-desc);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1350px) {
+            .container {
+                width: 100%;
+                padding: 0 40px;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .case-know-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-row {
+                flex-direction: column;
+            }
+
+            .filter {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .tab {
+                padding: 0 12px;
+                font-size: 15px;
+            }
+
+            .tab.active {
+                font-size: 17px;
+                width: 150px;
+            }
+        }
+
+       /* 登录弹窗样式 - 优化版 */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .login-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(29, 33, 41, 0.6);
+            backdrop-filter: blur(2px);
+            transition: all 0.3s ease;
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: var(--white);
+            padding: 30px 36px;
+            border-radius: 12px;
+            width: 420px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            line-height: 1.5;
+            font-family: "Microsoft Yahei", sans-serif;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        
+        .login-modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--deep-gray);
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--ai-desc);
+            transition: all 0.3s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close-btn:hover {
+            color: var(--klein-blue);
+            background-color: var(--light-bg);
+        }
+        
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .login-tab {
+            padding: 8px 0;
+            margin-right: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            color: var(--ai-desc);
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .login-tab.active {
+            color: var(--klein-blue);
+            border-bottom-color: var(--klein-blue);
+            font-weight: 500;
+        }
+        
+        .login-tab:hover:not(.active) {
+            color: var(--klein-blue);
+            opacity: 0.8;
+        }
+        
+        .login-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            line-height: 1.4;
+            color: var(--deep-gray);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: var(--ai-desc);
+        }
+        
+        .password-input {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .password-input .form-input {
+            padding-right: 40px;
+            margin-bottom: 0;
+        }
+        
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--ai-desc);
+            transition: all 0.3s;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .eye-btn:hover {
+            color: var(--klein-blue);
+        }
+        
+        .code-input {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .code-input .form-input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .code-btn {
+            padding: 0 16px;
+            background-color: var(--light-bg);
+            color: var(--deep-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .code-btn:hover {
+            border-color: var(--klein-blue);
+            color: var(--klein-blue);
+            background-color: var(--white);
+        }
+        
+        .code-btn:active {
+            background-color: var(--light-bg);
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--klein-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-button:hover {
+            background-color: #0047c9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.2);
+        }
+        
+        .login-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.2);
+        }
+        
+        .login-links {
+            text-align: center;
+            font-size: 13px;
+            color: var(--ai-desc);
+            margin-bottom: 20px;
+        }
+        
+        .login-links a {
+            color: var(--klein-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .login-links a:hover {
+            color: #0047c9;
+            text-decoration: underline;
+        }
+        
+        .login-links span {
+            margin: 0 8px;
+        }
+        
+        .other-login {
+            margin-top: 20px;
+        }
+        
+        .other-login-line {
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .other-login-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--border);
+            z-index: 1;
+        }
+        
+        .other-login-line span {
+            position: relative;
+            background-color: var(--white);
+            padding: 0 16px;
+            z-index: 2;
+            font-size: 13px;
+            color: var(--ai-desc);
+        }
+        
+        .other-login-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+        
+        .other-login-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background-color: var(--white);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .other-login-btn:hover {
+            border-color: var(--klein-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
+        }
+        
+        .other-login-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.15);
+        }
+        
+        /* 第三方登录图标样式优化 */
+        .other-login-btn:nth-child(1) {
+            background-color: #07C160;
+            color: var(--white);
+            border-color: #07C160;
+        }
+        
+        .other-login-btn:nth-child(1):hover {
+            background-color: #06AD56;
+            border-color: #06AD56;
+        }
+        
+        .other-login-btn:nth-child(2) {
+            background-color: #FF6B35;
+            color: var(--white);
+            border-color: #FF6B35;
+        }
+        
+        .other-login-btn:nth-child(2):hover {
+            background-color: #E55A2B;
+            border-color: #E55A2B;
+        }
+        
+        /* 增加图标样式，更真实 */
+        .other-login-btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 18px;
+        }
+        
+        .other-login-btn:nth-child(1)::before {
+            content: "📱"; /* 微信图标 */
+        }
+        
+        .other-login-btn:nth-child(2)::before {
+            content: "📧"; /* 支付宝图标 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <div style="background: #e5e7eb;height: 36px;">
+        <div style="width: 1440px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
+            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d;">
+                <span>您好！欢迎您的登录</span>
+                <a href="#" style="color: #0051D9; text-decoration: none;">登录</a>
+                <a href="#" style="color: #0051D9; text-decoration: none;">注册</a>
+                <a href="#" style="color: #0051D9; text-decoration: none;">会员中心</a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d;">
+                <a href="#" style="color: #6c757d; text-decoration: none;">消息中心</a>
+                <a href="#" style="color: #6c757d; text-decoration: none;">我的订单</a>
+                <a href="#" style="color: #6c757d; text-decoration: none;">个人中心</a>
+                <a href="#" style="color: #6c757d; text-decoration: none;">采购中心</a>
+                <a href="#" style="color: #6c757d; text-decoration: none;">资质认证</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 头部区域 -->
+    <header>
+        <div class="container">
+            <!-- 搜索容器 -->
+            <div class="blank-container">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="search-container">
+                        <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                            <div style="font-size: 24px; font-weight: bold; color: var(--klein-blue);">怡合达</div>
+                            <div style="flex: 1; display: flex; align-items: center;">
+                                <input type="text" placeholder="请输入产品名称/型号/型号" class="search-input">
+                                <button class="search-btn">搜索</button>
+                            </div>
+                        </div>
+                        <div class="search-actions">
+                            <button class="ai-team-btn" style="background: #ff7f00;" onclick="window.location.href='ai.html'">快速报价</button>
+                            <button class="cart-btn" style="background: #007bff; color: white; border: 1px solid #007bff;">
+                                🛒 采购购物车
+                                <span class="cart-badge">1</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-tags" style="padding-left: 120px;">
+                        <span class="tag">同步比价</span>
+                        <span class="tag">应有尽有</span>
+                        <span class="tag">品牌库</span>
+                        <span class="tag">设计公社</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 标签导航 -->
+    <div class="tab-container">
+        <div class="container">
+            <div class="tab-row">
+                <div class="tabs">
+                    <div class="tab">生产力方案共享</div>
+                    <div class="tab">机器人设备共享</div>
+                    <div class="tab">资源共享</div>
+                    <div class="tab">共享消费</div>
+                    <div class="tab">我的社群</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <main class="container">
+
+        <!-- 方案卡片区域 -->
+        <div class="content-row">
+            <div class="filter">
+                <div class="filter-section">
+                    <div class="filter-items" id="industry-filter">
+                        <div class="filter-item">全部产业</div>
+                        <!-- 产业项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <!-- 三级筛选浮层 -->
+                <div class="sub-filter-popup" id="sub-filter" style="display: none;">
+                    <div class="filter-items" id="sub-filter-items">
+                        <!-- 细分领域将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=1')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【汽车制造】机器人焊接 + 自动上下料</div>
+                        <div class="card-desc">六轴机器人+视觉定位，24小时无人化作业</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=2')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【3C电子】智能手表高精度装配检测</div>
+                        <div class="card-desc">微米级装配+AI视觉检测，不良率降至0.2%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=3')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【机械加工】CNC机床无人化上下料</div>
+                        <div class="card-desc">桁架机器人+机床联动，替代人工85%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=4')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【新能源】锂电池模组全自动组装线</div>
+                        <div class="card-desc">全流程自动化，产能提升60%，人力降低50%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=5')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【食品包装】全自动装箱码垛生产线</div>
+                        <div class="card-desc">高速稳定，节省人工70%，效率提升50%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=6')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【物流仓储】AGV智能搬运系统</div>
+                        <div class="card-desc">全自动调度，24小时连续作业，降低物流成本</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=7')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【医药行业】药品包装自动化生产线</div>
+                        <div class="card-desc">全流程无菌操作，包装精度±0.1mm，效率提升40%</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=8')"></div>
+                    <div class="card-text">
+                        <div class="card-title">【纺织行业】智能纺纱生产线</div>
+                        <div class="card-desc">自动换纱，断纱检测，生产效率提升35%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 案例与知识库 -->
+        <div class="case-know-row">
+            <div class="case-section">
+                <div class="case-title">成功案例</div>
+                <div class="case-grid">
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=10')"></div>
+                        <div class="case-text">
+                            <div class="case-name">比亚迪新能源汽车智能工厂</div>
+                            <div class="case-desc">产能提升40%，人力成本降低30%</div>
+                        </div>
+                    </div>
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=11')"></div>
+                        <div class="case-text">
+                            <div class="case-name">华为3C消费电子自动化产线</div>
+                            <div class="case-desc">不良率下降22%，良品率99.8%</div>
+                        </div>
+                    </div>
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=12')"></div>
+                        <div class="case-text">
+                            <div class="case-name">工业机器人离线编程中心</div>
+                            <div class="case-desc">调试效率提升50%，停机时间减少60%</div>
+                        </div>
+                    </div>
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=13')"></div>
+                        <div class="case-text">
+                            <div class="case-name">全流程数字化智能车间</div>
+                            <div class="case-desc">生产数据实时可视化，管理更高效</div>
+                        </div>
+                    </div>
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=14')"></div>
+                        <div class="case-text">
+                            <div class="case-name">智能仓储物流系统</div>
+                            <div class="case-desc">仓储效率提升80%，错误率降至0.1%</div>
+                        </div>
+                    </div>
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=15')"></div>
+                        <div class="case-text">
+                            <div class="case-name">食品行业智能检测系统</div>
+                            <div class="case-desc">检测速度提升3倍，准确率99.9%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-box">
+                <div class="right-header">
+                    <div class="right-title">📚 知识库</div>
+                    <div class="more-btn">更多</div>
+                </div>
+                <div class="know-row">
+                    <div class="know-block">
+                        <div class="know-sub-title">方案知识库</div>
+                        <div class="know-item">智能制造整体解决方案</div>
+                        <div class="know-item">工厂数字化建设方案</div>
+                        <div class="know-item">自动化产线设计规范</div>
+                        <div class="know-item">视觉检测技术方案</div>
+                    </div>
+                    <div class="know-block">
+                        <div class="know-sub-title">设备知识库</div>
+                        <div class="know-item">工业机器人选型手册</div>
+                        <div class="know-item">伺服电机参数配置</div>
+                        <div class="know-item">PLC编程与应用</div>
+                        <div class="know-item">传感器应用指南</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 合作伙伴 -->
+        <div class="partner-section">
+            <div class="partner-title">合作伙伴</div>
+            <div class="partner">
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #00aeef;">S</div>
+                    <div class="partner-name">SIEMENS 西门子</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #0073b7;">F</div>
+                    <div class="partner-name">FANUC 发那科</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #ed1c24;">A</div>
+                    <div class="partner-name">ABB</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #0066b3;">Y</div>
+                    <div class="partner-name">YASKAWA 安川电机</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #00a1e4;">K</div>
+                    <div class="partner-name">KUKA 库卡</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #e60012;">汇</div>
+                    <div class="partner-name">汇川技术</div>
+                </div>
+                <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #009933;">三</div>
+                    <div class="partner-name">三菱电机</div>
+                </div>
+                 <div class="partner-item">
+                    <div class="partner-logo" style="background-color: #009933;">三</div>
+                    <div class="partner-name">三菱电机</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <iframe src="footer.html" frameborder="0" width="100%" height="220px"></iframe>
+    <!-- 登录弹窗 -->
+    <div class="login-modal" id="loginModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>账号登录</h2>
+                <button class="close-btn" id="closeBtn">×</button>
+            </div>
+            <div class="login-tabs">
+                <div class="login-tab active">密码登录</div>
+                <div class="login-tab">验证码登录</div>
+            </div>
+            <div class="login-form">
+                <input type="text" class="form-input" placeholder="请输入手机号/用户名">
+                <div class="password-input">
+                    <input type="password" class="form-input" placeholder="请输入密码">
+                    <button class="eye-btn">👁️</button>
+                </div>
+                <div class="code-input" style="display: none;">
+                    <input type="text" class="form-input" placeholder="请输入验证码">
+                    <button class="code-btn">获取验证码</button>
+                </div>
+                <button class="login-button">登录</button>
+            </div>
+            <div class="login-links">
+                <a href="#">忘记密码</a>
+                <span>|</span>
+                <a href="#">注册账号</a>
+            </div>
+            <div class="other-login">
+                <div class="other-login-line">
+                    <span>其他登录方式</span>
+                </div>
+                <div class="other-login-buttons">
+                    <button class="other-login-btn">微信</button>
+                    <button class="other-login-btn">支付宝</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TAB切换功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+                // 更新当前选中的tab并重新生成产业列表
+                currentTab = tab.textContent.trim();
+                generateIndustries(currentTab);
+            });
+        });
+
+        // 模型标签点击事件
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('model-tag')) {
+                document.querySelectorAll('.model-tag').forEach(tag => tag.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+
+        // 输入框自动高度适配
+        const textarea = document.querySelector('.ai-input-box textarea');
+        if (textarea) {
+            textarea.addEventListener('input', () => {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+            });
+        }
+
+        // 页面加载时初始化输入框高度
+        window.addEventListener('load', () => {
+            if (textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = textarea.scrollHeight + 'px';
+            }
+        });
+
+        // 发送按钮点击跳转到AI页面
+        const sendBtn = document.querySelector('.send-btn');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', () => {
+                window.location.href = 'ai.html';
+            });
+        }
+
+        // 根据URL参数选中对应tab并定位到tab栏位置
+        function selectTabByParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            
+            if (tabParam) {
+                // 选中对应tab
+                const tabs = document.querySelectorAll('.tab');
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                let tabIndex = 0;
+                switch(tabParam) {
+                    case 'industry':
+                        tabIndex = 1; // 机器人设备共享
+                        break;
+                    case 'agriculture':
+                        tabIndex = 0; // 生产力方案共享
+                        break;
+                    case 'service':
+                        tabIndex = 2; // 资源共享
+                        break;
+                    case 'equipment':
+                        tabIndex = 3; // 共享消费
+                        break;
+                }
+                
+                if (tabs[tabIndex]) {
+                    tabs[tabIndex].classList.add('active');
+                    // 更新currentTab变量
+                    currentTab = tabs[tabIndex].textContent.trim();
+                }
+            }
+        }
+
+        // 产业数据
+        const industryData = {
+            '生产力方案共享': [
+                { name: '智能制造', sub: ['工厂自动化', '智能生产线', '数字化车间'] },
+                { name: '智慧物流', sub: ['AGV系统', '智能仓储', '供应链优化'] },
+                { name: '智能检测', sub: ['视觉检测', '无损检测', '在线监测'] },
+                { name: '智能控制', sub: ['PLC系统', 'DCS系统', '工业机器人'] }
+            ],
+            '机器人设备共享': [
+                { name: '工业机器人', sub: ['六轴机器人', 'SCARA机器人', '协作机器人'] },
+                { name: '服务机器人', sub: ['巡检机器人', '配送机器人', '清洁机器人'] },
+                { name: '特种机器人', sub: ['焊接机器人', '打磨机器人', '搬运机器人'] },
+                { name: '机器人配件', sub: ['末端执行器', '传感器', '控制系统'] }
+            ],
+            '资源共享': [
+                { name: '设备资源', sub: ['数控机床', '加工中心', '检测设备'] },
+                { name: '技术资源', sub: ['专利技术', '工艺方案', '设计服务'] },
+                { name: '人才资源', sub: ['专家顾问', '技术人员', '培训服务'] },
+                { name: '场地资源', sub: ['厂房', '仓库', '实验室'] }
+            ],
+            '共享消费': [
+                { name: '设备租赁', sub: ['短期租赁', '长期租赁', '融资租赁'] },
+                { name: '服务采购', sub: ['技术服务', '维修服务', '咨询服务'] },
+                { name: '耗材采购', sub: ['机器人配件', '传感器', '控制系统'] },
+                { name: '培训课程', sub: ['操作培训', '编程培训', '维护培训'] }
+            ],
+            '我的社群': [
+                { name: '行业社群', sub: ['汽车制造', '3C电子', '医疗器械'] },
+                { name: '兴趣社群', sub: ['机器人爱好者', '自动化技术', '智能制造'] },
+                { name: '专业社群', sub: ['PLC编程', '机器人调试', '视觉检测'] },
+                { name: '地区社群', sub: ['北京', '上海', '广州', '深圳'] }
+            ],
+            // 保留原来的Tab名称作为后备
+            '农业方案库': [
+                { name: '种植业', sub: ['粮食作物', '经济作物', '蔬菜', '水果', '花卉'] },
+                { name: '养殖业', sub: ['畜牧业', '渔业', '家禽', '特种养殖'] },
+                { name: '农产品加工', sub: ['食品加工', '饮料制造', '纺织加工'] },
+                { name: '农业机械', sub: ['种植机械', '收获机械', '养殖设备', '加工设备'] },
+                { name: '智慧农业', sub: ['物联网', '无人机', '智能灌溉', '精准农业'] },
+                { name: '生态农业', sub: ['有机农业', '循环农业', '休闲农业'] }
+            ],
+            '工业方案库': [
+                { name: '汽车制造', sub: ['整车制造', '零部件', '新能源汽车', '智能网联'] },
+                { name: '3C电子', sub: ['手机', '电脑', '家电', '智能设备'] },
+                { name: '机械加工', sub: ['金属加工', '模具制造', '精密加工'] },
+                { name: '新能源', sub: ['光伏', '风电', '锂电池', '氢能'] },
+                { name: '食品包装', sub: ['食品加工', '包装机械', '冷链物流'] },
+                { name: '物流仓储', sub: ['自动化仓储', 'AGV', '分拣系统'] },
+                { name: '化工', sub: ['基础化工', '精细化工', '新材料'] },
+                { name: '医药', sub: ['制药', '医疗器械', '生物工程'] }
+            ],
+            '服务业方案库': [
+                { name: '物流服务', sub: ['快递配送', '仓储服务', '供应链管理'] },
+                { name: '金融服务', sub: ['银行', '保险', '证券', '金融科技'] },
+                { name: '零售服务', sub: ['线下零售', '电商', '无人零售'] },
+                { name: '餐饮服务', sub: ['传统餐饮', '快餐', '外卖', '智慧餐厅'] },
+                { name: '酒店服务', sub: ['传统酒店', '民宿', '智慧酒店'] },
+                { name: '教育服务', sub: ['K12', '职业教育', '在线教育', '教育科技'] }
+            ],
+            '设备商城': [
+                { name: '工业机器人', sub: ['六轴机器人', 'SCARA机器人', '协作机器人'] },
+                { name: '自动化设备', sub: ['PLC', '传感器', '伺服系统', '视觉系统'] },
+                { name: '机床设备', sub: ['CNC机床', '加工中心', '车床', '铣床'] },
+                { name: '包装设备', sub: ['包装机', '贴标机', '灌装机'] },
+                { name: '检测设备', sub: ['无损检测', '精密测量', '环境监测'] },
+                { name: '物流设备', sub: ['AGV', '堆垛机', '分拣机'] }
+            ]
+        };
+
+        // 当前选中的tab
+        let currentTab = document.querySelector('.tab').textContent.trim();
+
+        // 生成产业列表
+        function generateIndustries(tabName) {
+            // console.log('generateIndustries called with tabName:', tabName);
+            // console.log('industryData:', industryData);
+            // console.log('industryData[tabName]:', industryData[tabName]);
+            
+            // 尝试通过遍历document.body.children来查找main.container元素
+            let mainContainer = null;
+            for (let i = 0; i < document.body.children.length; i++) {
+                const child = document.body.children[i];
+                // console.log('Child', i, ':', child.tagName, child.className, child.id);
+                if (child.tagName === 'MAIN' && child.classList.contains('container')) {
+                    mainContainer = child;
+                    break;
+                }
+            }
+            // console.log('mainContainer:', mainContainer);
+            
+            // 从主内容区域中查找filter元素
+            let filterElement = null;
+            if (mainContainer) {
+                for (let i = 0; i < mainContainer.children.length; i++) {
+                    const child = mainContainer.children[i];
+                    // console.log('Main child', i, ':', child.tagName, child.className, child.id);
+                    if (child.classList.contains('content-row')) {
+                        // 从content-row元素中查找filter元素
+                        for (let j = 0; j < child.children.length; j++) {
+                            const contentChild = child.children[j];
+                            // console.log('Content child', j, ':', contentChild.tagName, contentChild.className, contentChild.id);
+                            if (contentChild.classList.contains('filter')) {
+                                filterElement = contentChild;
+                                break;
+                            }
+                        }
+                        if (filterElement) {
+                            break;
+                        }
+                    }
+                }
+            }
+            // console.log('filterElement:', filterElement);
+            
+            // 从filter元素中查找industry-filter元素
+            let industryFilter = null;
+            if (filterElement) {
+                for (let i = 0; i < filterElement.children.length; i++) {
+                    const child = filterElement.children[i];
+                    // console.log('Filter child', i, ':', child.tagName, child.className, child.id);
+                    if (child.classList.contains('filter-section')) {
+                        // 从filter-section元素中查找industry-filter元素
+                        for (let j = 0; j < child.children.length; j++) {
+                            const sectionChild = child.children[j];
+                            // console.log('Section child', j, ':', sectionChild.tagName, sectionChild.className, sectionChild.id);
+                            if (sectionChild.id === 'industry-filter') {
+                                industryFilter = sectionChild;
+                                break;
+                            }
+                        }
+                        if (industryFilter) {
+                            break;
+                        }
+                    }
+                }
+            }
+            // console.log('industryFilter:', industryFilter);
+            
+            if (industryFilter) {
+                // 清空industryFilter元素的内容
+                industryFilter.innerHTML = '';
+                
+                // 检查是否有选中的tab
+                const hasActiveTab = document.querySelector('.tab.active') !== null;
+                
+                let industries = [];
+                
+                if (hasActiveTab) {
+                    // 有选中的tab，只展示对应tab的产业数据
+                    industries = industryData[tabName] || [];
+                } else {
+                    // 没有选中的tab，填充所有tab的产业数据，只显示前10个
+                    const tabNames = ['生产力方案共享', '机器人设备共享', '资源共享', '共享消费', '我的社群'];
+                    tabNames.forEach(tab => {
+                        const tabIndustries = industryData[tab] || [];
+                        industries = industries.concat(tabIndustries);
+                    });
+                    // 只显示前10个
+                    industries = industries.slice(0, 10);
+                }
+                
+                // 填充产业数据
+                industries.forEach((industry, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'filter-item';
+                    item.textContent = industry.name;
+                    item.dataset.industry = industry.name;
+                    item.dataset.sub = JSON.stringify(industry.sub);
+                    
+                    // 添加鼠标悬停事件
+                    item.addEventListener('mouseenter', (e) => {
+                        showSubFilter(e.target);
+                    });
+                    
+                    // 添加点击事件
+                    item.addEventListener('click', () => {
+                        // 点击时显示三级筛选
+                        showSubFilter(item);
+                    });
+                    
+                    industryFilter.appendChild(item);
+                });
+            }
+        }
+
+        // 页面加载时执行
+        window.addEventListener('DOMContentLoaded', () => {
+            selectTabByParam();
+            // 延迟执行，确保DOM元素已经完全加载
+            setTimeout(() => {
+                generateIndustries(currentTab);
+            }, 100);
+        });
+
+        // 显示三级筛选
+        function showSubFilter(item) {
+            const industry = item.dataset.industry;
+            const sub = JSON.parse(item.dataset.sub);
+            
+            const subFilter = document.getElementById('sub-filter');
+            if (industry) {
+                subFilter.style.display = 'block';
+                generateSubFilter(sub, item);
+            } else {
+                subFilter.style.display = 'none';
+            }
+        }
+
+        // 计算并调整三级筛选位置
+        function adjustSubFilterPosition(item) {
+            const subFilter = document.getElementById('sub-filter');
+            const rect = item.getBoundingClientRect();
+            const filterRect = document.querySelector('.filter').getBoundingClientRect();
+            
+            // 强制回流以获取正确的尺寸
+            subFilter.offsetHeight;
+            
+            const subFilterRect = subFilter.getBoundingClientRect();
+            
+            // 计算基础位置
+            let top = rect.top - filterRect.top;
+            
+            // 计算屏幕高度
+            const windowHeight = window.innerHeight;
+            
+            // 计算三级筛选框底部位置
+            const subFilterBottom = rect.top + subFilterRect.height;
+            
+            // 如果三级筛选框超出屏幕底部，调整位置
+            if (subFilterBottom > windowHeight - 20) { // 20px 底部边距
+                top = windowHeight - subFilterRect.height - filterRect.top - 20;
+                // 确保位置不会小于0
+                top = Math.max(0, top);
+            }
+            
+            subFilter.style.top = top + 'px';
+        }
+
+        // 生成三级筛选
+        function generateSubFilter(subItems, item) {
+            const subFilterItems = document.getElementById('sub-filter-items');
+            subFilterItems.innerHTML = '';
+            
+            subItems.forEach(sub => {
+                const subItem = document.createElement('div');
+                subItem.className = 'filter-item';
+                subItem.textContent = sub;
+                subItem.addEventListener('click', () => {
+                    // 点击时跳转到list页面
+                    window.location.href = 'list.html';
+                });
+                subFilterItems.appendChild(subItem);
+            });
+            
+            // 生成内容后调整位置
+            adjustSubFilterPosition(item);
+        }
+
+        // Tab切换事件
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除其他tab的active状态
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                // 添加当前tab的active状态
+                tab.classList.add('active');
+                
+                // 更新当前tab
+                currentTab = tab.textContent.trim();
+                // 生成对应产业列表
+                generateIndustries(currentTab);
+                // 隐藏三级筛选
+                document.getElementById('sub-filter').style.display = 'none';
+            });
+        });
+
+        // 鼠标离开筛选区域时隐藏三级筛选
+        document.querySelector('.filter').addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
+                    document.getElementById('sub-filter').style.display = 'none';
+                }
+            }, 200);
+        });
+
+        // 鼠标悬停在三级筛选上时保持显示
+        document.querySelector('.sub-filter-popup').addEventListener('mouseenter', () => {
+            document.getElementById('sub-filter').style.display = 'block';
+        });
+
+        document.querySelector('.sub-filter-popup').addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
+                    document.getElementById('sub-filter').style.display = 'none';
+                }
+            }, 200);
+        });
+
+        // 为方案卡片添加点击跳转到详情页面的功能
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                window.location.href = 'solution_detail.html';
+            });
+        });
+
+    </script>
+
+    <script>
+        // 测试获取industry-filter元素
+        // console.log('Testing getElementById("industry-filter"):', document.getElementById('industry-filter'));
+        // console.log('Testing querySelector("#industry-filter"):', document.querySelector('#industry-filter'));
+        // console.log('Testing document.body:', document.body);
+        // console.log('Testing document.body.children:', document.body.children);
+        //  console.log('Testing document.body.childNodes:', document.body.childNodes);
+    </script>
+
+    <script>
+        // 登录弹窗交互
+        const loginModal = document.getElementById('loginModal');
+        const loginBtns = document.querySelectorAll('.login');
+        const closeBtn = document.getElementById('closeBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const loginTabs = document.querySelectorAll('.login-tab');
+        const passwordInput = document.querySelector('.password-input');
+        const codeInput = document.querySelector('.code-input');
+        const eyeBtn = document.querySelector('.eye-btn');
+        const passwordField = document.querySelector('.password-input .form-input');
+
+        // 打开弹窗
+        loginBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loginModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // 关闭弹窗
+        function closeModal() {
+            loginModal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', closeModal);
+
+        // 登录方式切换
+        loginTabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                loginTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                if (index === 0) {
+                    // 密码登录
+                    passwordInput.style.display = 'block';
+                    codeInput.style.display = 'none';
+                } else {
+                    // 验证码登录
+                    passwordInput.style.display = 'none';
+                    codeInput.style.display = 'flex';
+                }
+            });
+        });
+
+        // 密码显示/隐藏
+        eyeBtn.addEventListener('click', () => {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // 登录按钮点击事件
+        document.querySelector('.login-button').addEventListener('click', () => {
+            // 设置登录状态为已登录
+            localStorage.setItem('isLoggedIn', 'true');
+            // 关闭登录弹窗
+            closeModal();
+            // 重新加载页面，停留当前页面
+            window.location.reload();
+        });
+
+        // 处理来自iframe的postMessage消息
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'SHOW_LOGIN_MODAL') {
+                loginModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            } else if (event.data.type === 'SHOW_LOGOUT_MODAL') {
+                showLogoutConfirm();
+            }
+        });
+
+        // 显示退出确认对话框
+        function showLogoutConfirm() {
+            // 检查是否已经存在退出确认对话框
+            let logoutModal = document.getElementById('logoutModal');
+            if (!logoutModal) {
+                // 创建对话框HTML结构
+                const modalHTML = `
+                    <div id="logoutModal" class="logout-modal">
+                        <div class="logout-modal-content">
+                            <h3 class="logout-modal-title">确认退出</h3>
+                            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
+                            <div class="logout-modal-buttons">
+                                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
+                                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // 创建样式元素
+                const styleContent = `
+                        /* 退出确认对话框样式 */
+                        .logout-modal {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            display: none;
+                            z-index: 99999;
+                            background-color: rgba(29, 33, 41, 0.6);
+                            backdrop-filter: blur(2px);
+                        }
+
+                        .logout-modal.show {
+                            display: block;
+                        }
+
+                        .logout-modal-content {
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: #FFFFFF;
+                            border-radius: 12px;
+                            padding: 30px 36px;
+                            width: 400px;
+                            max-width: 90%;
+                            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+                            text-align: center;
+                            z-index: 100000;
+                        }
+
+                        .logout-modal-title {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #1D2129;
+                            margin-bottom: 16px;
+                        }
+
+                        .logout-modal-message {
+                            font-size: 14px;
+                            color: #86909C;
+                            margin-bottom: 24px;
+                            line-height: 1.5;
+                        }
+
+                        .logout-modal-buttons {
+                            display: flex;
+                            gap: 12px;
+                            justify-content: center;
+                        }
+
+                        .logout-modal-btn {
+                            padding: 10px 24px;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            border: 1px solid #E5E7EB;
+                        }
+
+                        .logout-modal-btn.cancel {
+                            background-color: #FFFFFF;
+                            color: #1D2129;
+                        }
+
+                        .logout-modal-btn.cancel:hover {
+                            background-color: #F7F8FA;
+                        }
+
+                        .logout-modal-btn.confirm {
+                            background-color: #F37021;
+                            color: #FFFFFF;
+                            border-color: #F37021;
+                        }
+
+                        .logout-modal-btn.confirm:hover {
+                            background-color: #e0631d;
+                            border-color: #e0631d;
+                        }
+                `;
+
+                // 将样式添加到头部
+                const styleElement = document.createElement('style');
+                styleElement.innerHTML = styleContent;
+                document.head.appendChild(styleElement);
+
+                // 将对话框添加到body的最前面，确保置顶显示
+                const modalElement = document.createElement('div');
+                modalElement.innerHTML = modalHTML;
+                if (document.body.firstChild) {
+                    document.body.insertBefore(modalElement, document.body.firstChild);
+                } else {
+                    document.body.appendChild(modalElement);
+                }
+
+                // 获取新创建的对话框元素
+                logoutModal = document.getElementById('logoutModal');
+                const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+                const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+
+                // 处理取消按钮点击
+                if (logoutCancelBtn) {
+                    logoutCancelBtn.addEventListener('click', function() {
+                        // 隐藏对话框
+                        logoutModal.classList.remove('show');
+                        document.body.style.overflow = '';
+                        // 页面保持不变
+                    });
+                }
+
+                // 处理确认按钮点击
+                if (logoutConfirmBtn) {
+                    logoutConfirmBtn.addEventListener('click', function() {
+                        // 清除登录状态
+                        localStorage.removeItem('isLoggedIn');
+                        
+                        // 隐藏对话框
+                        logoutModal.classList.remove('show');
+                        document.body.style.overflow = '';
+                        
+                        // 重新加载页面，显示未登录状态
+                        window.location.reload();
+                    });
+                }
+
+                // 点击对话框外部关闭
+                if (logoutModal) {
+                    logoutModal.addEventListener('click', function(e) {
+                        if (e.target === logoutModal) {
+                            logoutModal.classList.remove('show');
+                            document.body.style.overflow = '';
+                        }
+                    });
+
+                    // 按ESC键关闭对话框
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && logoutModal.classList.contains('show')) {
+                            logoutModal.classList.remove('show');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+            }
+
+            // 显示对话框
+            logoutModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    </script>
+</body>
+</html>
