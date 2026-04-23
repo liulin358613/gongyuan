@@ -458,8 +458,8 @@
                     <span>其他登录方式</span>
                 </div>
                 <div class="other-login-buttons">
-                    <button class="other-login-btn">微信</button>
-                    <button class="other-login-btn">支付宝</button>
+                    <div class="other-login-btn"></div>
+                    <div class="other-login-btn"></div>
                 </div>
             </div>
         </div>
@@ -734,34 +734,46 @@
         }
         /* 第三方登录图标样式 */
         .other-login-btn:nth-child(1) {
-            background-color: #07C160;
+            background-color: transparent;
             color: #FFFFFF;
-            border-color: #07C160;
+            border-color: #E5E7EB;
         }
         .other-login-btn:nth-child(1):hover {
-            background-color: #06AD56;
-            border-color: #06AD56;
+            background-color: transparent;
+            border-color: #0051D9;
         }
         .other-login-btn:nth-child(2) {
-            background-color: #FF6B35;
+            background-color: transparent;
             color: #FFFFFF;
-            border-color: #FF6B35;
+            border-color: #E5E7EB;
         }
         .other-login-btn:nth-child(2):hover {
-            background-color: #E55A2B;
-            border-color: #E55A2B;
+            background-color: transparent;
+            border-color: #0051D9;
         }
         /* 图标样式 */
         .other-login-btn::before {
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
             font-size: 18px;
         }
         .other-login-btn:nth-child(1)::before {
-            content: "📱";
+            content: "";
+            width: 80%;
+            height: 70%;
+            background-image: url('images/wx.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
         }
         .other-login-btn:nth-child(2)::before {
-            content: "📧";
+            content: "";
+            width: 80%;
+            height: 70%;
+            background-image: url('images/zfb.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
         }
         /* 退出确认对话框样式 */
         .logout-modal-content {

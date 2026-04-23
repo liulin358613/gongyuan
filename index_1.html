@@ -113,45 +113,6 @@
             padding-top: 36px;
         }
 
-        body::before,
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, 
-                transparent, 
-                rgba(0, 81, 217, 0.3), 
-                rgba(243, 112, 33, 0.3), 
-                transparent);
-            z-index: 1;
-            animation: glow 4s ease-in-out infinite alternate;
-        }
-
-        body::before {
-            left: 30px;
-        }
-
-        body::after {
-            right: 30px;
-        }
-
-        @keyframes glow {
-            0% {
-                opacity: 0.2;
-                box-shadow: 0 0 15px rgba(0, 81, 217, 0.3);
-            }
-            50% {
-                opacity: 0.4;
-                box-shadow: 0 0 25px rgba(243, 112, 33, 0.4);
-            }
-            100% {
-                opacity: 0.2;
-                box-shadow: 0 0 15px rgba(0, 81, 217, 0.3);
-            }
-        }
-
         /* 通用容器 */
         .container {
             width: 1440px;
@@ -638,29 +599,18 @@
 
         .tab {
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             padding: 0 24px;
             font-weight: 500;
             height: 100%;
             display: flex;
             align-items: center;
             transition: all 0.3s;
-            /* border-bottom: 3px solid transparent; */
             text-align: left;
             justify-content: flex-start;
         }
 
-        .tab.active {
-            color: var(--klein-blue);
-            font-weight: bold;
-            border-bottom: 3px solid var(--klein-blue);
-            width: 220px;
-            font-size: 20px;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .tab:hover:not(.active) {
+        .tab:hover {
             color: var(--klein-blue);
             background-color: var(--light-bg);
         }
@@ -754,16 +704,14 @@
 
         .sub-filter-popup {
             position: absolute;
-            left: 100%;
+            left: 94%;
             top: 0;
             width: 200px;
             background: var(--white);
-            border-radius: 10px;
-            padding: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             z-index: 10000;
             margin-left: 10px;
-            border: 2px solid var(--hermes-orange);
             overflow: hidden;
         }
 
@@ -828,7 +776,7 @@
             gap: 8px;
         }
 
-        .card-grid > div {
+        .card-grid:not(.hr-card-grid) > div {
             display: flex;
             align-items: center;
             /* justify-content: center; */
@@ -1081,7 +1029,7 @@
         .recommend-block {
             flex: 1;
             background-color: #FFFFFF;
-            padding: 20px;
+            padding: 0 10px;
         }
 
         .recommend-block:not(:last-child) {
@@ -1440,11 +1388,6 @@
             .tab {
                 padding: 0 12px;
                 font-size: 15px;
-            }
-
-            .tab.active {
-                font-size: 17px;
-                width: 150px;
             }
         }
 
@@ -2066,23 +2009,23 @@
                         </div>
                         <div class="recommend-block human-resource">
                             <h3>人类资源</h3>
-                            <div class="card-grid" style="display: flex; flex-direction: column; gap: 12px;">
-                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 0 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <div class="card-grid hr-card-grid" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 2px 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
                                     <div class="hr-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: #f0f9ff; display: flex; align-items: center; justify-content: center;">
                                         <span style="font-size: 24px;">👤</span>
                                     </div>
                                     <div class="info">
-                                        <div class="name" style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">张经理</div>
-                                        <div class="specialty" style="font-size: 14px; color: #666;">人力资源管理</div>
+                                        <div class="name" style="font-size: 16px; font-weight: normal;">张经理</div>
+                                        <div class="specialty" style="font-size: 13px; color: #999; font-style: italic; font-weight: normal;">人力资源管理</div>
                                     </div>
                                 </div>
-                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 0 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 2px 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
                                     <div class="hr-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: #f0f9ff; display: flex; align-items: center; justify-content: center;">
                                         <span style="font-size: 24px;">👩‍💼</span>
                                     </div>
                                     <div class="info">
-                                        <div class="name" style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">李主管</div>
-                                        <div class="specialty" style="font-size: 14px; color: #666;">培训与发展</div>
+                                        <div class="name" style="font-size: 16px; font-weight: normal;">李主管</div>
+                                        <div class="specialty" style="font-size: 13px; color: #999; font-style: italic; font-weight: normal;">培训与发展</div>
                                     </div>
                                 </div>
                             </div>
@@ -2292,8 +2235,6 @@
         // TAB切换功能
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(item => item.classList.remove('active'));
-                tab.classList.add('active');
                 // 更新当前选中的tab并重新生成产业列表
                 currentTab = tab.textContent.trim();
                 generateIndustries(currentTab);
@@ -2339,11 +2280,7 @@
             const tabParam = urlParams.get('tab');
             
             if (tabParam) {
-                // 选中对应tab
                 const tabs = document.querySelectorAll('.tab');
-                tabs.forEach(tab => {
-                    tab.classList.remove('active');
-                });
                 
                 let tabIndex = 0;
                 switch(tabParam) {
@@ -2362,7 +2299,6 @@
                 }
                 
                 if (tabs[tabIndex]) {
-                    tabs[tabIndex].classList.add('active');
                     // 更新currentTab变量
                     currentTab = tabs[tabIndex].textContent.trim();
                 }
@@ -2473,24 +2409,16 @@
                 // 清空industryFilter元素的内容
                 industryFilter.innerHTML = '';
                 
-                // 检查是否有选中的tab
-                const hasActiveTab = document.querySelector('.tab.active') !== null;
-                
                 let industries = [];
                 
-                if (hasActiveTab) {
-                    // 有选中的tab，只展示对应tab的产业数据
-                    industries = industryData[tabName] || [];
-                } else {
-                    // 没有选中的tab，填充所有tab的产业数据，限制数量
-                    const tabNames = ['生产力方案共享', '资源共享', '共享消费', '我的社群'];
-                    tabNames.forEach(tab => {
-                        const tabIndustries = industryData[tab] || [];
-                        industries = industries.concat(tabIndustries);
-                    });
-                    // 限制数量，共15个
-                    industries = industries.slice(0, 15);
-                }
+                // 填充所有tab的产业数据，限制数量
+                const tabNames = ['生产力方案共享', '资源共享', '共享消费', '我的社群'];
+                tabNames.forEach(tab => {
+                    const tabIndustries = industryData[tab] || [];
+                    industries = industries.concat(tabIndustries);
+                });
+                // 限制数量，共15个
+                industries = industries.slice(0, 15);
                 
                 // 填充产业数据
                 industries.forEach((industry, index) => {
@@ -2592,11 +2520,6 @@
         // Tab切换事件
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                // 移除其他tab的active状态
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                // 添加当前tab的active状态
-                tab.classList.add('active');
-                
                 // 更新当前tab
                 currentTab = tab.textContent.trim();
                 // 生成对应产业列表
