@@ -159,43 +159,7 @@
             margin: 0 auto;
         }
 
-        /* ========== 固定顶部导航栏（单独一行） ========== */
-        .fixed-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            background: var(--klein-blue);
-            z-index: 9999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-        }
-        .fixed-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .logo {
-            width: 220px;
-            height: 50px;
-            background: var(--white);
-            color: var(--klein-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
 
-        .logo:hover {
-            opacity: 0.9;
-        }
         .user-area {
             display: flex;
             align-items: center;
@@ -249,12 +213,12 @@
         .blank-container {
             width: 100%;
             max-width: 1440px;
-            padding: 50px 80px;
+            padding: 50px 30px;
         }
 
         .search-container {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 24px;
             margin-bottom: 0;
         }
@@ -269,7 +233,7 @@
         }
 
         .search-logo {
-            font-size: 32px;
+            font-size: 44px;
             font-weight: bold;
             color: var(--klein-blue);
             white-space: nowrap;
@@ -280,7 +244,7 @@
         }
 
         .logo-slogan {
-            font-size: 13px;
+            font-size: 16px;
             color: var(--deep-gray);
             font-weight: 500;
             background: linear-gradient(135deg, var(--klein-blue), var(--hermes-orange));
@@ -298,6 +262,7 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+            width: 80%;
         }
 
         .search-input-row {
@@ -313,44 +278,110 @@
             height: 44px;
         }
 
-        .search-input {
+        /* 底部输入框 */
+        .input-container {
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-gray);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-box textarea {
             width: 100%;
-            padding: 12px 20px;
-            border: 1px solid #e0e7ff;
-            border-radius: 12px;
-            font-size: 15px;
-            outline: none;
-            transition: all 0.3s ease;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-input:focus {
-            border-color: var(--klein-blue);
-            box-shadow: 0 0 0 4px rgba(0, 81, 217, 0.1);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 46px;
-            background: var(--klein-blue);
-            color: white;
+            background: transparent;
             border: none;
-            border-radius: 0 12px 12px 0;
-            padding: 0 24px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 81, 217, 0.2);
+            outline: none;
+            color: #9c9fa4;
+            font-size: 16px;
+            resize: none;
+            height: 24px;
+            max-height: 160px;
+            line-height: 24px;
+            padding: 4px 0;
+            overflow: hidden !important;
+            scrollbar-width: none;
         }
 
-        .search-btn:hover {
-            background: #0047c9;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 12px rgba(0, 81, 217, 0.3);
+        .input-box textarea::-webkit-scrollbar {
+            display: none;
+        }
+
+        .input-box textarea::placeholder {
+            color: var(--classic-gray);
+            font-size: 16px;
+        }
+
+        .input-tool-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-gray);
+            gap: 12px;
+            min-height: 40px;
+        }
+
+        .input-tool-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .input-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .input-tag {
+            background: var(--light-gray);
+            color: var(--deep-gray);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .input-tag:hover {
+            background: var(--border-gray);
+        }
+
+
+        .send-btn {
+            background: #06b6d4;
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            padding: 0;
+            line-height: 1;
+            min-width: 36px;
+            min-height: 36px;
+            z-index: 9999;
+        }
+
+        .send-btn:hover {
+            background: #04a4be;
         }
 
         .search-actions {
@@ -403,12 +434,12 @@
 
         .cart-badge {
             position: absolute;
-            top: -8px;
-            right: -8px;
+            top: 0px;
+            right: 0px;
             background: var(--hermes-orange);
             color: white;
-            border-radius: 50%;
-            width: 20px;
+            border-radius: 10px;
+            min-width: 24px;
             height: 20px;
             font-size: 12px;
             font-weight: bold;
@@ -416,6 +447,8 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            padding: 0 6px;
         }
 
         .search-tags {
@@ -583,12 +616,11 @@
 
         /* 标签导航容器 */
         .tab-container {
-            background: var(--light-bg);
             border-bottom: 1px solid var(--border);
             border-top: 1px solid var(--border);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             position: relative;
-            z-index: 99999;
+            z-index: 1000;
         }
 
         /* 导航标签栏 */
@@ -608,8 +640,8 @@
         .tab {
             cursor: pointer;
             font-size: 18px;
-            color: var(--ai-desc);
             padding: 0 24px;
+            font-weight: 500;
             height: 100%;
             display: flex;
             align-items: center;
@@ -632,6 +664,36 @@
         .tab:hover:not(.active) {
             color: var(--klein-blue);
             background-color: var(--light-bg);
+        }
+
+        .create-center-btn {
+            padding: 12px 30px;
+            margin: 0 12px;
+            background: linear-gradient(135deg, var(--hermes-orange), #FF8A4C);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: center;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(243, 112, 33, 0.3);
+        }
+
+        .create-center-btn:hover {
+            background: linear-gradient(135deg, #e0631d, #FF7A3C);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(243, 112, 33, 0.4);
+        }
+
+        .create-center-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(243, 112, 33, 0.3);
         }
 
         .ai-team-btn {
@@ -677,6 +739,7 @@
             /* margin-top: 20px; */
             align-items: stretch;
             padding: 14px 0;
+            height: 630px;
         }
 
         .filter {
@@ -687,6 +750,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
             position: relative;
+            height: 100%;
         }
 
         .sub-filter-popup {
@@ -736,6 +800,8 @@
             font-size: 14px;
             transition: all 0.2s;
             border-radius: 6px;
+            width: 100%;
+            text-align: left;
         }
 
         .filter-item:hover {
@@ -862,8 +928,8 @@
         }
 
         .avatar {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: rgba(0, 81, 217, 0.1);
             display: flex;
@@ -950,7 +1016,7 @@
         }
 
         .function-btn {
-            padding: 8px 16px;      
+            padding: 8px 16px;
             border: 2px solid #f0f0f0;
             border-radius: 8px;
             background: white;
@@ -962,31 +1028,24 @@
             position: relative;
             overflow: hidden;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             gap: 8px;
+            justify-content: center;
         }
 
-        .function-btn::before {
+        .btn-icon {
             font-size: 20px;
-            margin-bottom: 4px;
+            display: block;
         }
 
-        .function-btn:nth-child(1)::before {
-            content: '📩';
+        .btn-text {
+            font-size: 14px;
+            font-weight: 500;
+            display: block;
         }
 
-        .function-btn:nth-child(2)::before {
-            content: '📋';
-        }
 
-        .function-btn:nth-child(3)::before {
-            content: '👤';
-        }
-
-        .function-btn:nth-child(4)::before {
-            content: '📄';
-        }
 
         .function-btn::after {
             content: '';
@@ -1030,7 +1089,7 @@
         }
 
         .recommend-block:not(:last-child) {
-            border-right: 1px solid #e0e0e0;
+            border-right: 3px solid #e0e0e0;
         }
 
         .recommend-block h3 {
@@ -1769,6 +1828,14 @@
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">资质认证</a>
+                <div style="display: flex; align-items: center; gap: 6px; color: #FFFFFF;">
+                    <svg style="width: 14px; height: 14px; color: #F37021;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span style="color: #F37021;">北京</span>
+                    <span style="color: #86909C;">[切换城市]</span>
+                </div>
             </div>
         </div>
     </div>
@@ -1777,33 +1844,83 @@
     <header>
         <div class="container">
             <!-- 搜索容器 -->
-            <div class="blank-container">
-                <div class="search-container">
+            <div class="blank-container" style="padding: 40px 30px;">
+                <div class="search-container" style="display: flex; align-items: center; gap: 28px;">
                         <div class="logo-section">
-                            <div class="search-logo">Raas.Dao</div>
-                            <div class="logo-slogan">共创・共享</div>
+                            <div class="search-logo" style="color: #0051D9;">Raas.Dao</div>
+                            <div class="logo-slogan" style="color: #0051D9;">共创・共享</div>
                         </div>
-                    <div class="search-main">
-                        <div class="search-input-row">
-                            <div class="search-input-wrapper">
-                                <input type="text" placeholder="请输入" class="search-input">
-                                <button class="search-btn">搜索</button>
+                    <div class="search-main" style="flex: 1; max-width: 900px;">
+                        <div class="chat-input-wrapper">
+                            <div class="input-container" style="border-radius: 24px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); padding: 16px 30px;border: 1px solid #ededed">
+                                <div class="input-box">
+                                    <textarea placeholder="请输入..." class="search-input" rows="1" style="font-size: 16px; height: 40px; line-height: 40px;"></textarea>
+                                </div>
+                                <div class="input-tool-row" style="padding-top: 8px; gap: 8px;">
+                                    <div class="input-tool-left" style="gap: 12px; display: flex; align-items: center;">
+                                        <div class="upload-btn" style="color: #666; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid #e0e0e0; border-radius: 4px; transition: all 0.3s; background: #f9fafb;">
+                                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                                <circle cx="12" cy="13" r="4"></circle>
+                                            </svg>
+                                            以图找品
+                                        </div>
+                                        <span style="color: #ccc; margin: 0 4px;">|</span>
+                                        <div style="display: flex; gap: 8px; align-items: center;">
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">供应链</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">训练基地</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">共享工厂</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">设备租赁</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">影视/文学</div>
+                                        </div>
+                                        <style>
+                                            .quick-tag:hover {
+                                                background: #06b6d4;
+                                                color: white;
+                                                border-color: #06b6d4;
+                                                transform: translateY(-1px);
+                                                box-shadow: 0 2px 4px rgba(6, 182, 212, 0.2);
+                                            }
+                                            .upload-btn:hover {
+                                                background: #06b6d4;
+                                                color: white;
+                                                border-color: #06b6d4;
+                                                transform: translateY(-1px);
+                                                box-shadow: 0 2px 4px rgba(6, 182, 212, 0.2);
+                                            }
+                                        </style>
+                                        <script>
+                                            document.querySelector('.upload-btn').addEventListener('click', function() {
+                                                document.getElementById('imageUpload').click();
+                                            });
+                                            
+                                            document.getElementById('imageUpload').addEventListener('change', function(e) {
+                                                if (e.target.files && e.target.files[0]) {
+                                                    const fileName = e.target.files[0].name;
+                                                    alert('已选择文件: ' + fileName);
+                                                    // 这里可以添加文件上传逻辑
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                    <button class="send-btn" style="background: #06b6d4; width: 36px; height: 36px;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="12" y1="3" x2="12" y2="21"></line>
+                                            <polyline points="3 12 12 3 21 12"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="search-tags">
-                            <span class="tag">同步比价</span>
-                            <span class="tag">应有尽有</span>
-                            <span class="tag">品牌库</span>
-                            <span class="tag">设计公社</span>
-                        </div>
                     </div>
-                    <div class="search-actions">
-                            <button class="quote-btn" onclick="window.location.href='ai.html'">创造中心</button>
-                            <button class="cart-btn">
-                                🛒 购物车
-                                <span class="cart-badge">1</span>
-                            </button>
-                        </div>
+                    <div class="cart-section" style="display: flex; align-items: center;">
+                        <button class="cart-btn" style="display: flex; align-items: center; gap: 6px; padding: 8px 50px; border: 1px solid #e0e0e0; border-radius: 6px; background: #ffffff; color: #666; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                            <span class="btn-icon">🛒</span>
+                            <span class="btn-text">购物车</span>
+                            <span class="cart-badge" style="background: #f37021; color: white; font-size: 12px; padding: 1px 6px; border-radius: 10px; font-weight: bold;">99+</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1814,6 +1931,7 @@
         <div class="container">
             <div class="tab-row">
                 <div class="tabs">
+                    <button class="create-center-btn" onclick="window.location.href='ai.html'">创造中心</button>
                     <div class="tab">生产力方案共享</div>
                     <div class="tab">机器人设备共享</div>
                     <div class="tab">资源共享</div>
@@ -1881,10 +1999,27 @@
                             </div>
                             <hr class="divider">
                             <div class="function-buttons">
-                                <button class="function-btn">消息中心</button>
-                                <button class="function-btn">我的订单</button>
-                                <button class="function-btn">个人中心</button>
-                                <button class="function-btn">资质认证</button>
+
+                                <button class="function-btn">
+                                    <span class="btn-icon">📋</span>
+                                    <span class="btn-text">我的订单</span>
+                                </button>
+                                <button class="function-btn">
+                                    <span class="btn-icon">📩</span>
+                                    <span class="btn-text">消息中心</span>
+                                </button>
+                                <button class="function-btn">
+                                    <span class="btn-icon">📊</span>
+                                    <span class="btn-text">BI中心</span>
+                                </button>
+                                <button class="function-btn">
+                                    <span class="btn-icon">📄</span>
+                                    <span class="btn-text">资质认证</span>
+                                </button>
+                                <button class="function-btn">
+                                    <span class="btn-icon">👤</span>
+                                    <span class="btn-text">个人中心</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -2218,69 +2353,31 @@
         // 产业数据
         const industryData = {
             '生产力方案共享': [
-                { name: '智能制造', sub: ['工厂自动化', '智能生产线', '数字化车间'] },
-                { name: '智慧物流', sub: ['AGV系统', '智能仓储', '供应链优化'] },
-                { name: '智能检测', sub: ['视觉检测', '无损检测', '在线监测'] },
-                { name: '智能控制', sub: ['PLC系统', 'DCS系统', '工业机器人'] }
-            ],
-            '机器人设备共享': [
-                { name: '工业机器人', sub: ['六轴机器人', 'SCARA机器人', '协作机器人'] },
-                { name: '服务机器人', sub: ['巡检机器人', '配送机器人', '清洁机器人'] },
-                { name: '特种机器人', sub: ['焊接机器人', '打磨机器人', '搬运机器人'] },
-                { name: '机器人配件', sub: ['末端执行器', '传感器', '控制系统'] }
+                { name: '机器人、设备共享', sub: ['AI员工资源', '人类资源', 'MCP资源', '应用软件资源', '数据资源', '虚拟币资源', '供应链资源', '训练基地资源'] },
+                { name: '共享工厂', sub: ['智能工厂', '柔性制造', '定制化生产', '协同制造'] }
             ],
             '资源共享': [
-                { name: '设备资源', sub: ['数控机床', '加工中心', '检测设备'] },
-                { name: '技术资源', sub: ['专利技术', '工艺方案', '设计服务'] },
-                { name: '人才资源', sub: ['专家顾问', '技术人员', '培训服务'] },
-                { name: '场地资源', sub: ['厂房', '仓库', '实验室'] }
+                { name: '设备资源', sub: ['数控机床', '加工中心', '检测设备', '自动化设备'] },
+                { name: '技术资源', sub: ['专利技术', '工艺方案', '设计服务', '研发成果'] },
+                { name: '人才资源', sub: ['专家顾问', '技术人员', '培训服务', '管理咨询'] },
+                { name: '场地资源', sub: ['厂房', '仓库', '实验室', '办公空间'] }
             ],
             '共享消费': [
-                { name: '设备租赁', sub: ['短期租赁', '长期租赁', '融资租赁'] },
-                { name: '服务采购', sub: ['技术服务', '维修服务', '咨询服务'] },
-                { name: '耗材采购', sub: ['机器人配件', '传感器', '控制系统'] },
-                { name: '培训课程', sub: ['操作培训', '编程培训', '维护培训'] }
+                { name: '智造品', sub: ['工业产品', '农业产品', '服务业产品', '智能硬件'] },
+                { name: '应用软件产品', sub: ['工业软件', '管理软件', '设计软件', '数据分析'] },
+                { name: '游戏产品', sub: ['手机游戏', 'PC游戏', 'VR游戏', '休闲游戏'] },
+                { name: '影视文学', sub: ['电影', '电视剧', '小说', '动漫'] },
+                { name: '游乐服务产品', sub: ['主题乐园', '休闲娱乐', '文化体验', '旅游服务'] },
+                { name: '教育培训产品', sub: ['职业培训', '技能提升', '认证考试', '在线课程'] },
+                { name: '健康医疗产品', sub: ['医疗器械', '健康管理', '医疗服务', '康复护理'] },
+                { name: '智能家居产品', sub: ['智能家电', '安防系统', '环境控制', '家庭自动化'] },
+                { name: '绿色环保产品', sub: ['节能设备', '环保材料', '可再生能源', '循环利用'] }
             ],
             '我的社群': [
-                { name: '行业社群', sub: ['汽车制造', '3C电子', '医疗器械'] },
-                { name: '兴趣社群', sub: ['机器人爱好者', '自动化技术', '智能制造'] },
-                { name: '专业社群', sub: ['PLC编程', '机器人调试', '视觉检测'] },
+                { name: '行业社群', sub: ['汽车制造', '3C电子', '医疗器械', '新能源'] },
+                { name: '兴趣社群', sub: ['机器人爱好者', '自动化技术', '智能制造', 'AI应用'] },
+                { name: '专业社群', sub: ['PLC编程', '机器人调试', '视觉检测', '系统集成'] },
                 { name: '地区社群', sub: ['北京', '上海', '广州', '深圳'] }
-            ],
-            // 保留原来的Tab名称作为后备
-            '农业方案库': [
-                { name: '种植业', sub: ['粮食作物', '经济作物', '蔬菜', '水果', '花卉'] },
-                { name: '养殖业', sub: ['畜牧业', '渔业', '家禽', '特种养殖'] },
-                { name: '农产品加工', sub: ['食品加工', '饮料制造', '纺织加工'] },
-                { name: '农业机械', sub: ['种植机械', '收获机械', '养殖设备', '加工设备'] },
-                { name: '智慧农业', sub: ['物联网', '无人机', '智能灌溉', '精准农业'] },
-                { name: '生态农业', sub: ['有机农业', '循环农业', '休闲农业'] }
-            ],
-            '工业方案库': [
-                { name: '汽车制造', sub: ['整车制造', '零部件', '新能源汽车', '智能网联'] },
-                { name: '3C电子', sub: ['手机', '电脑', '家电', '智能设备'] },
-                { name: '机械加工', sub: ['金属加工', '模具制造', '精密加工'] },
-                { name: '新能源', sub: ['光伏', '风电', '锂电池', '氢能'] },
-                { name: '食品包装', sub: ['食品加工', '包装机械', '冷链物流'] },
-                { name: '物流仓储', sub: ['自动化仓储', 'AGV', '分拣系统'] },
-                { name: '化工', sub: ['基础化工', '精细化工', '新材料'] },
-                { name: '医药', sub: ['制药', '医疗器械', '生物工程'] }
-            ],
-            '服务业方案库': [
-                { name: '物流服务', sub: ['快递配送', '仓储服务', '供应链管理'] },
-                { name: '金融服务', sub: ['银行', '保险', '证券', '金融科技'] },
-                { name: '零售服务', sub: ['线下零售', '电商', '无人零售'] },
-                { name: '餐饮服务', sub: ['传统餐饮', '快餐', '外卖', '智慧餐厅'] },
-                { name: '酒店服务', sub: ['传统酒店', '民宿', '智慧酒店'] },
-                { name: '教育服务', sub: ['K12', '职业教育', '在线教育', '教育科技'] }
-            ],
-            '设备商城': [
-                { name: '工业机器人', sub: ['六轴机器人', 'SCARA机器人', '协作机器人'] },
-                { name: '自动化设备', sub: ['PLC', '传感器', '伺服系统', '视觉系统'] },
-                { name: '机床设备', sub: ['CNC机床', '加工中心', '车床', '铣床'] },
-                { name: '包装设备', sub: ['包装机', '贴标机', '灌装机'] },
-                { name: '检测设备', sub: ['无损检测', '精密测量', '环境监测'] },
-                { name: '物流设备', sub: ['AGV', '堆垛机', '分拣机'] }
             ]
         };
 
@@ -2366,14 +2463,14 @@
                     // 有选中的tab，只展示对应tab的产业数据
                     industries = industryData[tabName] || [];
                 } else {
-                    // 没有选中的tab，填充所有tab的产业数据，只显示前10个
-                    const tabNames = ['生产力方案共享', '机器人设备共享', '资源共享', '共享消费', '我的社群'];
+                    // 没有选中的tab，填充所有tab的产业数据，限制数量
+                    const tabNames = ['生产力方案共享', '资源共享', '共享消费', '我的社群'];
                     tabNames.forEach(tab => {
                         const tabIndustries = industryData[tab] || [];
                         industries = industries.concat(tabIndustries);
                     });
-                    // 只显示前10个
-                    industries = industries.slice(0, 10);
+                    // 限制数量，共15个
+                    industries = industries.slice(0, 15);
                 }
                 
                 // 填充产业数据

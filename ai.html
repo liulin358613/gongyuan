@@ -4583,7 +4583,7 @@
             updatePreviewPadding(currentTab.title);
         }
         
-        //跟新预览区内边距
+        //更新预览区内边距
         function updatePreviewPadding(title) {
              const previewContent = document.getElementById('previewContent');
             // 检查是否需要移除内边距
@@ -6849,7 +6849,7 @@
                 clearTimeout(hideTimeout);
                 const rect = this.getBoundingClientRect();
                 submenu.style.left = rect.left + 'px';
-                submenu.style.top = rect.bottom + 8 + 'px';
+                submenu.style.top = rect.bottom + 2 + 'px';
                 submenu.classList.add('show');
             });
 
@@ -6962,7 +6962,7 @@
                 clearTimeout(hideTimeout);
                 const rect = this.getBoundingClientRect();
                 submenu.style.left = rect.left + 'px';
-                submenu.style.top = rect.bottom + 8 + 'px';
+                submenu.style.top = rect.bottom + 2 + 'px';
                 submenu.classList.add('show');
             });
 
@@ -8006,6 +8006,7 @@
                         if (previewTabs.length === 0) {
                             previewArea.style.flexBasis = '100%';
                         }
+                        previewArea.style.borderLeft = 'none';
                     }
                 });
             }
