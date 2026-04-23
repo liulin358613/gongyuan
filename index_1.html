@@ -46,10 +46,9 @@
                         </div>
                     `;
                 } else {
-                    // 未登录状态，显示登录和注册按钮
+                    // 未登录状态，显示登录按钮
                     userArea.innerHTML = `
                         <button class="login">登录</button>
-                        <button class="login">注册</button>
                         <div class="location">
                             <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -434,8 +433,8 @@
 
         .cart-badge {
             position: absolute;
-            top: 0px;
-            right: 0px;
+            top: -6px;
+            right: -8px;
             background: var(--hermes-orange);
             color: white;
             border-radius: 10px;
@@ -789,13 +788,13 @@
         .filter-items {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            /* gap: 4px; */
             max-height: calc(100% - 20px);
             overflow: hidden;
         }
 
         .filter-item {
-            padding: 10px 14px;
+            padding: 8px 14px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.2s;
@@ -832,7 +831,7 @@
         .card-grid > div {
             display: flex;
             align-items: center;
-            justify-content: center;
+            /* justify-content: center; */
             font-size: 16px;
             font-weight: bold;
             color: #666;
@@ -847,7 +846,7 @@
         .carousel-container {
             display: flex;
             height: 100%;
-            gap: 12px;
+            gap: 8px;
             background: #FFFFFF;
             border-radius: 8px;
         }
@@ -871,11 +870,10 @@
         .carousel-thumbs {
             display: flex;
             flex-direction: column;
-            gap: 8px;
             overflow: hidden;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 8px;
+            padding: 4px;
             background: #f5f5f5;
         }
 
@@ -888,9 +886,7 @@
             overflow: hidden;
         }
 
-        .thumb:nth-child(5) {
-            display: none;
-        }
+
 
         .thumb img {
             width: 100%;
@@ -905,7 +901,7 @@
         .personal-area {
             flex: 1;
             height: 400px;
-            padding: 24px;
+            padding: 28px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -966,7 +962,7 @@
         }
 
         .login-btn, .register-btn {
-            padding: 10px 32px;
+            padding: 10px 60px;
             border-radius: 4px;
             font-size: 14px;
             font-weight: 600;
@@ -1016,7 +1012,7 @@
         }
 
         .function-btn {
-            padding: 8px 16px;
+            padding: 12px 16px;
             border: 2px solid #f0f0f0;
             border-radius: 8px;
             background: white;
@@ -1074,7 +1070,7 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            padding: 0 8px;
+            overflow: hidden;
         }
 
         .recommend-content {
@@ -1145,7 +1141,7 @@
 
         .card-grid .top-row {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
@@ -1821,7 +1817,6 @@
             <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #FFFFFF; line-height: 36px;">
                 <span>您好！欢迎您</span>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">登录</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">注册</a>
             </div>
             <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心</a>
@@ -1915,7 +1910,7 @@
                         </div>
                     </div>
                     <div class="cart-section" style="display: flex; align-items: center;">
-                        <button class="cart-btn" style="display: flex; align-items: center; gap: 6px; padding: 8px 50px; border: 1px solid #e0e0e0; border-radius: 6px; background: #ffffff; color: #666; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                        <button class="cart-btn" style="display: flex; align-items: center; gap: 6px; padding: 8px 40px; border: 1px solid #08b6d4; border-radius: 6px; background: #ffffff; color: #08b6d4; font-size: 14px; cursor: pointer; transition: all 0.3s;">
                             <span class="btn-icon">🛒</span>
                             <span class="btn-text">购物车</span>
                             <span class="cart-badge" style="background: #f37021; color: white; font-size: 12px; padding: 1px 6px; border-radius: 10px; font-weight: bold;">99+</span>
@@ -1995,12 +1990,15 @@
                             </div>
                             <div class="auth-buttons">
                                 <button class="login-btn">登录</button>
-                                <button class="register-btn">注册</button>
                             </div>
                             <hr class="divider">
                             <div class="function-buttons">
 
                                 <button class="function-btn">
+                                    <span class="btn-icon">💰</span>
+                                    <span class="btn-text">我的报价</span>
+                                </button>
+                                 <button class="function-btn">
                                     <span class="btn-icon">📋</span>
                                     <span class="btn-text">我的订单</span>
                                 </button>
@@ -2063,6 +2061,29 @@
                                 <div class="recommend-card">
                                     <img src="images/equipment1.png" alt="共享工厂2" width="100%" height="120">
                                     <div class="card-caption">共享工厂示例</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommend-block human-resource">
+                            <h3>人类资源</h3>
+                            <div class="card-grid" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 0 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                    <div class="hr-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: #f0f9ff; display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 24px;">👤</span>
+                                    </div>
+                                    <div class="info">
+                                        <div class="name" style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">张经理</div>
+                                        <div class="specialty" style="font-size: 14px; color: #666;">人力资源管理</div>
+                                    </div>
+                                </div>
+                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 0 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                    <div class="hr-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: #f0f9ff; display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 24px;">👩‍💼</span>
+                                    </div>
+                                    <div class="info">
+                                        <div class="name" style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">李主管</div>
+                                        <div class="specialty" style="font-size: 14px; color: #666;">培训与发展</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2254,8 +2275,6 @@
             </div>
             <div class="login-links">
                 <a href="#">忘记密码</a>
-                <span>|</span>
-                <a href="#">注册账号</a>
             </div>
             <div class="other-login">
                 <div class="other-login-line">
