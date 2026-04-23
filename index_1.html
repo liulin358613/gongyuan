@@ -249,11 +249,7 @@
         .blank-container {
             width: 100%;
             max-width: 1440px;
-            background: var(--ai-chat-bg);
             padding: 50px 80px;
-            /* border-radius: 16px; */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            /* margin: 20px auto; */
         }
 
         .search-container {
@@ -266,17 +262,21 @@
         .logo-section {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             gap: 4px;
+            padding: 0;
+            margin: 0;
         }
 
         .search-logo {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
             color: var(--klein-blue);
             white-space: nowrap;
             font-family: 'Arial', sans-serif;
             text-shadow: 0 2px 4px rgba(0, 81, 217, 0.1);
+            padding: 0;
+            margin: 0;
         }
 
         .logo-slogan {
@@ -287,6 +287,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-align: left;
+            white-space: nowrap;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
         }
 
         .search-main {
@@ -329,7 +334,7 @@
             position: absolute;
             right: 0;
             top: 0;
-            height: 100%;
+            height: 46px;
             background: var(--klein-blue);
             color: white;
             border: none;
@@ -668,19 +673,18 @@
         /* 内容区域 */
         .content-row {
             display: flex;
-            gap: 18px;
+            gap: 14px;
             /* margin-top: 20px; */
             align-items: stretch;
-            background: #FFFFFF;
-            padding: 20px 0;
+            padding: 14px 0;
         }
 
         .filter {
             width: 220px;
             background: var(--white);
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
             position: relative;
         }
@@ -754,9 +758,337 @@
 
         .card-grid {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-grid > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .ad-area {
+            flex: 3;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            display: flex;
+            height: 100%;
+            gap: 12px;
+            background: #FFFFFF;
+            border-radius: 8px;
+        }
+
+        .carousel-main {
+            width: 698px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .carousel-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-thumbs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 8px;
+            background: #f5f5f5;
+        }
+
+        .thumb {
+            width: 140px;
+            height: 90px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .thumb:nth-child(5) {
+            display: none;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumb.active {
+            border-color: var(--hermes-orange);
+        }
+
+        .personal-area {
+            flex: 1;
+            height: 400px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .personal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            align-items: center;
+        }
+
+        .personal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 81, 217, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: rgba(0, 81, 217, 0.6);
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 81, 217, 0.2);
+        }
+
+        .avatar::before {
+            content: '👤';
+        }
+
+        .avatar:hover {
+            background: rgba(0, 81, 217, 0.15);
+            transform: scale(1.05);
+        }
+
+        .welcome-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            margin-top: 8px;
+            justify-content: center;
+        }
+
+        .login-btn, .register-btn {
+            padding: 10px 32px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn {
+            color: #0051D9;
+            border: 1px solid #0051D9;
+        }
+
+        .register-btn {
+            color: #F37021;
+            border: 1px solid #F37021;
+        }
+
+        .login-btn:hover {
+            background: rgba(0, 81, 217, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .register-btn:hover {
+            background: rgba(243, 112, 33, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .divider {
+            width: 100%;
+            border: none;
+            height: 0;
+            border-top: 1px dashed #e0e0e0;
+            margin-top: 16px;
+            margin-bottom: 10px;
+            align-self: stretch;
+        }
+
+        .function-buttons {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .function-btn {
+            padding: 8px 16px;      
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .function-btn::before {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .function-btn:nth-child(1)::before {
+            content: '📩';
+        }
+
+        .function-btn:nth-child(2)::before {
+            content: '📋';
+        }
+
+        .function-btn:nth-child(3)::before {
+            content: '👤';
+        }
+
+        .function-btn:nth-child(4)::before {
+            content: '📄';
+        }
+
+        .function-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 81, 217, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .function-btn:hover {
+            border-color: #0051D9;
+            color: #0051D9;
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.1);
+        }
+
+        .function-btn:hover::after {
+            left: 100%;
+        }
+
+        .recommend-area {
+            height: auto;
+            min-height: 180px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 0 8px;
+        }
+
+        .recommend-content {
+            display: flex;
+            gap: 0;
+        }
+
+        .recommend-block {
+            flex: 1;
+            background-color: #FFFFFF;
+            padding: 20px;
+        }
+
+        .recommend-block:not(:last-child) {
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .recommend-block h3 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .recommend-block .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            height: auto;
+            min-height: auto;
+            background: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 0;
+            margin-top: 0;
+        }
+
+        .recommend-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .recommend-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .recommend-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .card-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 12px;
+            padding: 8px;
+            line-height: 1.3;
+        }
+
+        .card-grid .top-row {
+            display: flex;
+            gap: 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .card {
@@ -801,7 +1133,7 @@
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 24px;
-            margin-top: 30px;
+            margin-top: 14px;
         }
 
         .case-section {
@@ -823,6 +1155,19 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
+        }
+
+        .recommend-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .recommend-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
         }
 
         .case {
@@ -1415,16 +1760,14 @@
     <div style="background: #0051d9;height: 36px; position: fixed; top: 0; left: 0; width: 100%; z-index: 99998;">
         <div style="width: 1440px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
             <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #FFFFFF; line-height: 36px;">
-                <span>您好！欢迎您的登录</span>
+                <span>您好！欢迎您</span>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">登录</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">注册</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">会员中心</a>
             </div>
             <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">采购中心</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">资质认证</a>
             </div>
         </div>
@@ -1438,7 +1781,7 @@
                 <div class="search-container">
                         <div class="logo-section">
                             <div class="search-logo">Raas.Dao</div>
-                            <div class="logo-slogan">共创・共享・共赢</div>
+                            <div class="logo-slogan">共创・共享</div>
                         </div>
                     <div class="search-main">
                         <div class="search-input-row">
@@ -1501,60 +1844,135 @@
                 </div>
             </div>
             <div class="card-grid">
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=1')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【汽车制造】机器人焊接 + 自动上下料</div>
-                        <div class="card-desc">六轴机器人+视觉定位，24小时无人化作业</div>
+                <div class="top-row">
+                    <div class="ad-area">
+                        <div class="carousel-container">
+                            <div class="carousel-main">
+                                <img src="images/banana-1.png" id="mainImage" alt="轮播大图">
+                            </div>
+                            <div class="carousel-thumbs">
+                                <div class="thumb active" data-index="0">
+                                    <img src="images/banana-1.png" alt="缩略图1">
+                                </div>
+                                <div class="thumb" data-index="1">
+                                    <img src="images/banana-3.png" alt="缩略图2">
+                                </div>
+                                <div class="thumb" data-index="2">
+                                    <img src="images/banana-4.png" alt="缩略图3">
+                                </div>
+                                <div class="thumb" data-index="3">
+                                    <img src="images/banana-5.png" alt="缩略图4">
+                                </div>
+                                <div class="thumb" data-index="4">
+                                    <img src="images/banana-6.png" alt="缩略图5">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="personal-area">
+                        <div class="personal-content">
+                            <div class="personal-header">
+                                <div class="avatar"></div>
+                                <div class="welcome-text">欢迎来到RaaS商城</div>
+                            </div>
+                            <div class="auth-buttons">
+                                <button class="login-btn">登录</button>
+                                <button class="register-btn">注册</button>
+                            </div>
+                            <hr class="divider">
+                            <div class="function-buttons">
+                                <button class="function-btn">消息中心</button>
+                                <button class="function-btn">我的订单</button>
+                                <button class="function-btn">个人中心</button>
+                                <button class="function-btn">资质认证</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=2')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【3C电子】智能手表高精度装配检测</div>
-                        <div class="card-desc">微米级装配+AI视觉检测，不良率降至0.2%</div>
+                <div class="recommend-area">
+
+                    <div class="recommend-content">
+                        <div class="recommend-block supply-chain">
+                            <h3>供应链</h3>
+                            <div class="card-grid">
+                                <div class="recommend-card">
+                                    <img src="images/1.png" alt="玻璃瓶" width="100%" height="120">
+                                    <div class="card-caption">玻璃瓶的制造工艺流程</div>
+                                </div>
+                                <div class="recommend-card">
+                                    <img src="images/2.png" alt="橡胶止水带" width="100%" height="120">
+                                    <div class="card-caption">橡胶止水带的抗剪切性能</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommend-block training-base">
+                            <h3>训练基地</h3>
+                            <div class="card-grid">
+                                <div class="recommend-card">
+                                    <img src="images/3.png" alt="山东立业重工机械有限公司" width="100%" height="120">
+                                    <div class="card-caption">山东立业重工机械有限公司</div>
+                                </div>
+                                <div class="recommend-card">
+                                    <img src="images/5.png" alt="训练基地2" width="100%" height="120">
+                                    <div class="card-caption">训练基地示例</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommend-block shared-factory">
+                            <h3>共享工厂</h3>
+                            <div class="card-grid">
+                                <div class="recommend-card">
+                                    <img src="images/4.png" alt="莲池区启达模具经营部" width="100%" height="120">
+                                    <div class="card-caption">莲池区启达模具经营部</div>
+                                </div>
+                                <div class="recommend-card">
+                                    <img src="images/equipment1.png" alt="共享工厂2" width="100%" height="120">
+                                    <div class="card-caption">共享工厂示例</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=3')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【机械加工】CNC机床无人化上下料</div>
-                        <div class="card-desc">桁架机器人+机床联动，替代人工85%</div>
+            </div>
+        </div>
+
+        <!-- 精品推荐 -->
+        <div class="recommend-section">
+            <div class="case-title">精品推荐</div>
+            <div class="recommend-grid">
+                <div class="case">
+                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=20')"></div>
+                    <div class="case-text">
+                        <div class="case-name">智能工厂整体解决方案</div>
+                        <div class="case-desc">全流程自动化，效率提升50%</div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=4')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【新能源】锂电池模组全自动组装线</div>
-                        <div class="card-desc">全流程自动化，产能提升60%，人力降低50%</div>
+                <div class="case">
+                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=21')"></div>
+                    <div class="case-text">
+                        <div class="case-name">工业机器人租赁服务</div>
+                        <div class="case-desc">灵活配置，降低成本30%</div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=5')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【食品包装】全自动装箱码垛生产线</div>
-                        <div class="card-desc">高速稳定，节省人工70%，效率提升50%</div>
+                <div class="case">
+                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=22')"></div>
+                    <div class="case-text">
+                        <div class="case-name">数字化车间改造</div>
+                        <div class="case-desc">数据驱动，管理更高效</div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=6')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【物流仓储】AGV智能搬运系统</div>
-                        <div class="card-desc">全自动调度，24小时连续作业，降低物流成本</div>
+                <div class="case">
+                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=23')"></div>
+                    <div class="case-text">
+                        <div class="case-name">视觉检测系统</div>
+                        <div class="case-desc">AI识别，准确率99.9%</div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=7')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【医药行业】药品包装自动化生产线</div>
-                        <div class="card-desc">全流程无菌操作，包装精度±0.1mm，效率提升40%</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-img" style="background-image:url('https://picsum.photos/800/500?random=8')"></div>
-                    <div class="card-text">
-                        <div class="card-title">【纺织行业】智能纺纱生产线</div>
-                        <div class="card-desc">自动换纱，断纱检测，生产效率提升35%</div>
+                <div class="case">
+                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=24')"></div>
+                    <div class="case-text">
+                        <div class="case-name">智能仓储解决方案</div>
+                        <div class="case-desc">自动化存储，空间利用提升60%</div>
                     </div>
                 </div>
             </div>
@@ -2101,6 +2519,66 @@
                 window.location.href = 'solution_detail.html';
             });
         });
+
+        // 轮播图功能
+        const carouselImages = [
+            'images/banana-1.png',
+            'images/banana-3.png',
+            'images/banana-4.png',
+            'images/banana-5.png',
+            'images/banana-6.png'
+        ];
+        
+        let currentIndex = 0;
+        const mainImage = document.getElementById('mainImage');
+        const thumbs = document.querySelectorAll('.thumb');
+        let autoPlayInterval;
+
+        // 切换图片
+        function switchImage(index) {
+            currentIndex = index;
+            mainImage.src = carouselImages[index];
+            
+            // 更新缩略图状态
+            thumbs.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        // 缩略图点击事件
+        thumbs.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => {
+                switchImage(index);
+                resetAutoPlay();
+            });
+        });
+
+        // 自动轮播
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % carouselImages.length;
+                switchImage(currentIndex);
+            }, 3000);
+        }
+
+        // 重置自动轮播
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            startAutoPlay();
+        }
+
+        // 鼠标悬停暂停轮播
+        const carouselContainer = document.querySelector('.carousel-container');
+        carouselContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoPlayInterval);
+        });
+
+        carouselContainer.addEventListener('mouseleave', () => {
+            startAutoPlay();
+        });
+
+        // 启动自动轮播
+        startAutoPlay();
 
     </script>
 
