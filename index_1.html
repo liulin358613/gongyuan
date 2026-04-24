@@ -4,73 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>工业智能生产力平台</title>
-    <script>
-        // 检查登录状态并显示相应的头部内容
-        document.addEventListener('DOMContentLoaded', function() {
-            // 检查登录状态，实际项目中应从localStorage或cookie中获取
-            // 确保localStorage.getItem返回的值被正确转换为布尔值
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            
-            // 获取用户区域元素
-            const userArea = document.querySelector('.user-area');
-            
-            if (userArea) {
-                if (isLoggedIn) {
-                    // 已登录状态，显示欢迎信息和退出按钮
-                    userArea.innerHTML = `
-                        <div class="welcome">
-                            <span>👋</span>
-                            <span>
-                                <span class="company-name">东莞嘉东科技有限公司</span> 
-                                <span class="user-name">林工</span> 
-                                欢迎您！
-                                <span class="logout-btn" onclick="logout()">[退出]</span>
-                            </span>
-                        </div>
-                        <!-- 消息按钮添加图标 -->
-                        <button class="login">
-                            <span class="msg-icon">📩</span>
-                            <span>消息 12</span>
-                        </button>
-                        <button class="login">
-                            <span>👤</span>
-                            <span>个人中心</span>
-                        </button>
-                        <div class="location">
-                            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <span class="city-name">北京</span>
-                            <span class="switch-city">[切换城市]</span>
-                        </div>
-                    `;
-                } else {
-                    // 未登录状态，显示登录按钮
-                    userArea.innerHTML = `
-                        <button class="login">登录</button>
-                        <div class="location">
-                            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <span class="city-name">北京</span>
-                            <span class="switch-city">[切换城市]</span>
-                        </div>
-                    `;
-                }
-            }
-        });
 
-        // 退出登录函数
-        function logout() {
-            // 清除登录状态
-            localStorage.removeItem('isLoggedIn');
-            
-            // 刷新页面，显示未登录的头部
-            window.location.reload();
-        }
-    </script>
     <style>
         /* 基础重置与全局样式 */
         * {
@@ -78,6 +12,102 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        /* 登录弹窗容器样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-iframe {
+            width: 420px;
+            height: 580px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .modal-iframe {
+                width: 90%;
+                height: 550px;
+            }
+        }
+
+        /* 退出确认弹窗样式 */
+        .logout-modal-content {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            padding: 30px 36px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            text-align: center;
+            z-index: 100000;
+        }
+
+        .logout-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1D2129;
+            margin-bottom: 16px;
+        }
+
+        .logout-modal-message {
+            font-size: 14px;
+            color: #86909C;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .logout-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .logout-modal-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+        }
+
+        .logout-modal-btn.cancel {
+            background-color: #FFFFFF;
+            color: #1D2129;
+        }
+
+        .logout-modal-btn.cancel:hover {
+            background-color: #F7F8FA;
+        }
+
+        .logout-modal-btn.confirm {
+            background-color: #F37021;
+            color: #FFFFFF;
+            border-color: #F37021;
+        }
+
+        .logout-modal-btn.confirm:hover {
+            background-color: #e0631d;
+            border-color: #e0631d;
         }
 
         :root {
@@ -110,7 +140,7 @@
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
-            padding-top: 36px;
+            padding-top: 72px;
         }
 
         /* 通用容器 */
@@ -704,7 +734,7 @@
 
         .sub-filter-popup {
             position: absolute;
-            left: 94%;
+            left: 88%;
             top: 0;
             width: 200px;
             background: var(--white);
@@ -765,8 +795,10 @@
         }
 
         #sub-filter-items .filter-item:hover {
-            background-color: var(--klein-blue);
-            color: white;
+            color: var(--klein-blue);
+            background-color: #f0f7ff;
+            font-weight: 500;
+            transform: translateX(4px);
         }
 
         .card-grid {
@@ -1014,7 +1046,7 @@
 
         .recommend-area {
             height: auto;
-            min-height: 180px;
+            min-height: 194px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -1135,7 +1167,7 @@
         .case-know-row {
             display: grid;
             grid-template-columns: 1fr 380px;
-            gap: 24px;
+            gap: 14px;
             margin-top: 14px;
         }
 
@@ -1170,7 +1202,7 @@
         .recommend-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
+            gap: 8px;
         }
 
         .case {
@@ -1191,7 +1223,7 @@
         }
 
         .case-text {
-            padding: 14px;
+            padding: 12px;
         }
 
         .case-name {
@@ -1391,392 +1423,15 @@
             }
         }
 
-       /* 登录弹窗样式 - 优化版 */
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
+
         
-        .login-modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .modal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(29, 33, 41, 0.6);
-            backdrop-filter: blur(2px);
-            transition: all 0.3s ease;
-        }
-        
-        .modal-content {
-            position: relative;
-            background-color: var(--white);
-            padding: 30px 36px;
-            border-radius: 12px;
-            width: 420px;
-            max-width: 90%;
-            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
-            line-height: 1.5;
-            font-family: "Microsoft Yahei", sans-serif;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-        }
-        
-        .login-modal.show .modal-content {
-            transform: translateY(0);
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .modal-header h2 {
-            margin: 0;
-            font-size: 20px;
-            color: var(--deep-gray);
-            font-weight: 600;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--ai-desc);
-            transition: all 0.3s;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .close-btn:hover {
-            color: var(--klein-blue);
-            background-color: var(--light-bg);
-        }
-        
-        .login-tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .login-tab {
-            padding: 8px 0;
-            margin-right: 30px;
-            cursor: pointer;
-            font-size: 15px;
-            color: var(--ai-desc);
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .login-tab.active {
-            color: var(--klein-blue);
-            border-bottom-color: var(--klein-blue);
-            font-weight: 500;
-        }
-        
-        .login-tab:hover:not(.active) {
-            color: var(--klein-blue);
-            opacity: 0.8;
-        }
-        
-        .login-form {
-            margin-bottom: 20px;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s;
-            line-height: 1.4;
-            color: var(--deep-gray);
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--klein-blue);
-            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
-        }
-        
-        .form-input::placeholder {
-            color: var(--ai-desc);
-        }
-        
-        .password-input {
-            position: relative;
-            margin-bottom: 16px;
-        }
-        
-        .password-input .form-input {
-            padding-right: 40px;
-            margin-bottom: 0;
-        }
-        
-        .eye-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: var(--ai-desc);
-            transition: all 0.3s;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .eye-btn:hover {
-            color: var(--klein-blue);
-        }
-        
-        .code-input {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .code-input .form-input {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        
-        .code-btn {
-            padding: 0 16px;
-            background-color: var(--light-bg);
-            color: var(--deep-gray);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            white-space: nowrap;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .code-btn:hover {
-            border-color: var(--klein-blue);
-            color: var(--klein-blue);
-            background-color: var(--white);
-        }
-        
-        .code-btn:active {
-            background-color: var(--light-bg);
-        }
-        
-        .login-button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--klein-blue);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            transition: all 0.3s;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .login-button:hover {
-            background-color: #0047c9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.2);
-        }
-        
-        .login-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.2);
-        }
-        
-        .login-links {
-            text-align: center;
-            font-size: 13px;
-            color: var(--ai-desc);
-            margin-bottom: 20px;
-        }
-        
-        .login-links a {
-            color: var(--klein-blue);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .login-links a:hover {
-            color: #0047c9;
-            text-decoration: underline;
-        }
-        
-        .login-links span {
-            margin: 0 8px;
-        }
-        
-        .other-login {
-            margin-top: 20px;
-        }
-        
-        .other-login-line {
-            position: relative;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .other-login-line::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background-color: var(--border);
-            z-index: 1;
-        }
-        
-        .other-login-line span {
-            position: relative;
-            background-color: var(--white);
-            padding: 0 16px;
-            z-index: 2;
-            font-size: 13px;
-            color: var(--ai-desc);
-        }
-        
-        .other-login-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-        }
-        
-        .other-login-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background-color: var(--white);
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .other-login-btn:hover {
-            border-color: var(--klein-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
-        }
-        
-        .other-login-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.15);
-        }
-        
-        /* 第三方登录图标样式优化 */
-        .other-login-btn:nth-child(1) {
-            background-color: #07C160;
-            color: var(--white);
-            border-color: #07C160;
-        }
-        
-        .other-login-btn:nth-child(1):hover {
-            background-color: #06AD56;
-            border-color: #06AD56;
-        }
-        
-        .other-login-btn:nth-child(2) {
-            background-color: #FF6B35;
-            color: var(--white);
-            border-color: #FF6B35;
-        }
-        
-        .other-login-btn:nth-child(2):hover {
-            background-color: #E55A2B;
-            border-color: #E55A2B;
-        }
-        
-        /* 增加图标样式，更真实 */
-        .other-login-btn::before {
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            font-size: 18px;
-        }
-        
-        .other-login-btn:nth-child(1)::before {
-            content: "📱"; /* 微信图标 */
-        }
-        
-        .other-login-btn:nth-child(2)::before {
-            content: "📧"; /* 支付宝图标 */
-        }
+
     </style>
 </head>
 
 <body>
-    <!-- 顶部导航栏 -->
-    <div style="background: #0051d9;height: 36px; position: fixed; top: 0; left: 0; width: 100%; z-index: 99998;">
-        <div style="width: 1440px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #FFFFFF; line-height: 36px;">
-                <span>您好！欢迎您</span>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">登录</a>
-            </div>
-            <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">资质认证</a>
-                <div style="display: flex; align-items: center; gap: 6px; color: #FFFFFF;">
-                    <svg style="width: 14px; height: 14px; color: #F37021;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    <span style="color: #F37021;">北京</span>
-                    <span style="color: #86909C;">[切换城市]</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- 公共头部引用 -->
+    <iframe src="header.html" style="width: 100%; height: 36px; border: none; position: fixed; top: 0; left: 0; z-index: 99998;"></iframe>
 
     <!-- 头部区域 -->
     <header>
@@ -1945,9 +1600,10 @@
                                     <span class="btn-icon">📋</span>
                                     <span class="btn-text">我的订单</span>
                                 </button>
-                                <button class="function-btn">
+                                <button class="function-btn" style="position: relative;">
                                     <span class="btn-icon">📩</span>
                                     <span class="btn-text">消息中心</span>
+                                    <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
                                 </button>
                                 <button class="function-btn">
                                     <span class="btn-icon">📊</span>
@@ -2076,7 +1732,296 @@
                 </div>
             </div>
         </div>
-
+  <!-- 机器人与设备专区 -->
+        <div class="equipment-section" style="margin-top: 14px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); padding: 20px;">
+            <h3 style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 16px;">机器人及设备</h3>
+            
+            <!-- 板块容器 - 一行两个 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- 机器人板块 -->
+                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">机器人</h4>
+                    <!-- Tab区 -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0;">
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">工业机器人</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">服务机器人</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">协作机器人</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">移动机器人</button>
+                    </div>
+                    <!-- 内容区 -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=101" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">六轴工业机器人</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">负载10kg 臂展1850mm</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥12.50万</div>
+                                    <div style="font-size: 10px; color: #666;">¥10000/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=102" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🦾</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">协作机器人</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">负载5kg 臂展800mm</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥6.80万</div>
+                                    <div style="font-size: 10px; color: #666;">¥5440/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=103" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">AGV移动机器人</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">载重500kg 激光导航</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥8.20万</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=104" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">⚙️</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">SCARA机器人</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">高速分拣 精度±0.01mm</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥5.60万</div>
+                                    <div style="font-size: 10px; color: #666;">¥4480/天</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 专机设备板块 -->
+                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">专机设备</h4>
+                    <!-- Tab区 -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0;">
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">行业专用设备</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">包装机械</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">风机机械设备</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">机床</button>
+                    </div>
+                    <!-- 内容区 -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=105" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff3e8; color: #F37021; font-size: 24px;">🔥</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">液体防爆空气加热器</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">气体加热 温度可控</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥8600.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥688/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=106" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff3e8; color: #F37021; font-size: 24px;">💨</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">工业节能加热器</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">均匀风道 支持定制</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥3000.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥240/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=107" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff3e8; color: #F37021; font-size: 24px;">⚡</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">燃气蒸汽发生设备</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">可满足定制需求</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥5.50万</div>
+                                    <div style="font-size: 10px; color: #666;">¥4400/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=108" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff3e8; color: #F37021; font-size: 24px;">🛢️</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">燃油热水锅炉</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">高效节能 环保达标</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥12.80万</div>
+                                    <div style="font-size: 10px; color: #666;">¥10240/天</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工具设备板块 -->
+                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">工具设备</h4>
+                    <!-- Tab区 -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0;">
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">电动工具</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">手动工具</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">测量工具</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">切削工具</button>
+                    </div>
+                    <!-- 内容区 -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=109" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f0f7ff; color: #0051d9; font-size: 24px;">🔧</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">电动冲击钻</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">13mm 800W 正反转</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥299.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥24/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=110" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f0f7ff; color: #0051d9; font-size: 24px;">📏</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">激光测距仪</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">40m 精度±2mm</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥199.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥16/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=111" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f0f7ff; color: #0051d9; font-size: 24px;">🔩</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">角磨机</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">100mm 710W</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥349.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥28/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=112" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f0f7ff; color: #0051d9; font-size: 24px;">📱</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">数字万用表</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">自动量程 高精度</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥129.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥10/天</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 零配件板块 -->
+                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">零配件</h4>
+                    <!-- Tab区 -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0;">
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">机械设备配件</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">电气配件</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">液压配件</button>
+                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;">气动配件</button>
+                    </div>
+                    <!-- 内容区 -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=113" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f5f5f5; color: #666; font-size: 24px;">🔴</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">深沟球轴承</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">6205 25×52×15mm</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥25.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥2/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=114" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f5f5f5; color: #666; font-size: 24px;">🟠</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">液压缸</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">Φ50×200mm 单作用</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥380.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥30/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=115" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f5f5f5; color: #666; font-size: 24px;">🟡</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">气缸</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">Φ40×100mm 标准型</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥120.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥10/天</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=116" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f5f5f5; color: #666; font-size: 24px;">🟢</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #333; margin-bottom: 4px;">交流接触器</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px; line-height: 1.4;">CJX2-1810 220V</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 12px; color: #F37021; font-weight: 500;">¥45.00</div>
+                                    <div style="font-size: 10px; color: #666;">¥4/天</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 案例与知识库 -->
         <div class="case-know-row">
             <div class="case-section">
@@ -2192,44 +2137,7 @@
 
     <!-- 页脚 -->
     <iframe src="footer.html" frameborder="0" width="100%" height="220px"></iframe>
-    <!-- 登录弹窗 -->
-    <div class="login-modal" id="loginModal">
-        <div class="modal-overlay" id="modalOverlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>账号登录</h2>
-                <button class="close-btn" id="closeBtn">×</button>
-            </div>
-            <div class="login-tabs">
-                <div class="login-tab active">密码登录</div>
-                <div class="login-tab">验证码登录</div>
-            </div>
-            <div class="login-form">
-                <input type="text" class="form-input" placeholder="请输入手机号/用户名">
-                <div class="password-input">
-                    <input type="password" class="form-input" placeholder="请输入密码">
-                    <button class="eye-btn">👁️</button>
-                </div>
-                <div class="code-input" style="display: none;">
-                    <input type="text" class="form-input" placeholder="请输入验证码">
-                    <button class="code-btn">获取验证码</button>
-                </div>
-                <button class="login-button">登录</button>
-            </div>
-            <div class="login-links">
-                <a href="#">忘记密码</a>
-            </div>
-            <div class="other-login">
-                <div class="other-login-line">
-                    <span>其他登录方式</span>
-                </div>
-                <div class="other-login-buttons">
-                    <button class="other-login-btn">微信</button>
-                    <button class="other-login-btn">支付宝</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <script>
         // TAB切换功能
@@ -2630,250 +2538,277 @@
         //  console.log('Testing document.body.childNodes:', document.body.childNodes);
     </script>
 
+
+
+
+
+        
+
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 登录弹窗容器 -->
+    <div class="modal-overlay" id="loginModalOverlay">
+        <iframe src="login_modal.html" class="modal-iframe" id="loginModalIframe"></iframe>
+    </div>
+
+    <!-- 退出确认弹窗 -->
+    <div class="modal-overlay" id="logoutModalOverlay">
+        <div class="logout-modal-content">
+            <h3 class="logout-modal-title">退出登录</h3>
+            <p class="logout-modal-message">确定要退出登录吗？</p>
+            <div class="logout-modal-buttons">
+                <button class="logout-modal-btn cancel" id="logoutCancelBtn">取消</button>
+                <button class="logout-modal-btn confirm" id="logoutConfirmBtn">确定</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 登录弹窗交互
-        const loginModal = document.getElementById('loginModal');
-        const loginBtns = document.querySelectorAll('.login');
-        const closeBtn = document.getElementById('closeBtn');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const loginTabs = document.querySelectorAll('.login-tab');
-        const passwordInput = document.querySelector('.password-input');
-        const codeInput = document.querySelector('.code-input');
-        const eyeBtn = document.querySelector('.eye-btn');
-        const passwordField = document.querySelector('.password-input .form-input');
-
-        // 打开弹窗
-        loginBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                loginModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        // 关闭弹窗
-        function closeModal() {
-            loginModal.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        closeBtn.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', closeModal);
-
-        // 登录方式切换
-        loginTabs.forEach((tab, index) => {
-            tab.addEventListener('click', () => {
-                loginTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                if (index === 0) {
-                    // 密码登录
-                    passwordInput.style.display = 'block';
-                    codeInput.style.display = 'none';
-                } else {
-                    // 验证码登录
-                    passwordInput.style.display = 'none';
-                    codeInput.style.display = 'flex';
-                }
-            });
-        });
-
-        // 密码显示/隐藏
-        eyeBtn.addEventListener('click', () => {
-            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', type);
-            eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
-        });
-
-        // 登录按钮点击事件
-        document.querySelector('.login-button').addEventListener('click', () => {
-            // 设置登录状态为已登录
-            localStorage.setItem('isLoggedIn', 'true');
-            // 关闭登录弹窗
-            closeModal();
-            // 重新加载页面，停留当前页面
-            window.location.reload();
-        });
-
-        // 处理来自iframe的postMessage消息
-        window.addEventListener('message', (event) => {
-            if (event.data.type === 'SHOW_LOGIN_MODAL') {
-                loginModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            } else if (event.data.type === 'SHOW_LOGOUT_MODAL') {
-                showLogoutConfirm();
-            }
-        });
-
-        // 显示退出确认对话框
-        function showLogoutConfirm() {
-            // 检查是否已经存在退出确认对话框
-            let logoutModal = document.getElementById('logoutModal');
-            if (!logoutModal) {
-                // 创建对话框HTML结构
-                const modalHTML = `
-                    <div id="logoutModal" class="logout-modal">
-                        <div class="logout-modal-content">
-                            <h3 class="logout-modal-title">确认退出</h3>
-                            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
-                            <div class="logout-modal-buttons">
-                                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
-                                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
+        // 更新个人中心内容
+        function updatePersonalContent() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const personalContent = document.querySelector('.personal-content');
+            if (personalContent) {
+                if (isLoggedIn) {
+                    // 已登录状态
+                    personalContent.innerHTML = `
+                        <div class="personal-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
+                                <div class="avatar" style="width: 60px; height: 60px; font-size: 24px;"></div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 16px; font-weight: bold; color: #333;">林工</span>
+                                        <span style="background: #E6F7FF; color: #1890FF; border-radius: 4px; padding: 2px 8px; font-size: 12px; display: flex; align-items: center; gap: 4px;">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                            </svg>
+                                            普通企业
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 14px; color: #666;margin-top: 6px;">东莞市嘉东网络科技有限公司</div>
+                                    <div style="font-size: 14px; color: #F37021;margin-top: 6px;">我的元宝：375</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-
-                // 创建样式元素
-                const styleContent = `
-                        /* 退出确认对话框样式 */
-                        .logout-modal {
-                            position: fixed;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            display: none;
-                            z-index: 99999;
-                            background-color: rgba(29, 33, 41, 0.6);
-                            backdrop-filter: blur(2px);
-                        }
-
-                        .logout-modal.show {
-                            display: block;
-                        }
-
-                        .logout-modal-content {
-                            position: fixed;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            background-color: #FFFFFF;
-                            border-radius: 12px;
-                            padding: 30px 36px;
-                            width: 400px;
-                            max-width: 90%;
-                            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
-                            text-align: center;
-                            z-index: 100000;
-                        }
-
-                        .logout-modal-title {
-                            font-size: 18px;
-                            font-weight: 600;
-                            color: #1D2129;
-                            margin-bottom: 16px;
-                        }
-
-                        .logout-modal-message {
-                            font-size: 14px;
-                            color: #86909C;
-                            margin-bottom: 24px;
-                            line-height: 1.5;
-                        }
-
-                        .logout-modal-buttons {
-                            display: flex;
-                            gap: 12px;
-                            justify-content: center;
-                        }
-
-                        .logout-modal-btn {
-                            padding: 10px 24px;
-                            border-radius: 6px;
-                            font-size: 14px;
-                            font-weight: 500;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            border: 1px solid #E5E7EB;
-                        }
-
-                        .logout-modal-btn.cancel {
-                            background-color: #FFFFFF;
-                            color: #1D2129;
-                        }
-
-                        .logout-modal-btn.cancel:hover {
-                            background-color: #F7F8FA;
-                        }
-
-                        .logout-modal-btn.confirm {
-                            background-color: #F37021;
-                            color: #FFFFFF;
-                            border-color: #F37021;
-                        }
-
-                        .logout-modal-btn.confirm:hover {
-                            background-color: #e0631d;
-                            border-color: #e0631d;
-                        }
-                `;
-
-                // 将样式添加到头部
-                const styleElement = document.createElement('style');
-                styleElement.innerHTML = styleContent;
-                document.head.appendChild(styleElement);
-
-                // 将对话框添加到body的最前面，确保置顶显示
-                const modalElement = document.createElement('div');
-                modalElement.innerHTML = modalHTML;
-                if (document.body.firstChild) {
-                    document.body.insertBefore(modalElement, document.body.firstChild);
+                        <hr class="divider">
+                        <div class="function-buttons">
+                            <button class="function-btn">
+                                <span class="btn-icon">💰</span>
+                                <span class="btn-text">我的报价</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">📋</span>
+                                <span class="btn-text">我的订单</span>
+                            </button>
+                            <button class="function-btn" style="position: relative;">
+                                <span class="btn-icon">📩</span>
+                                <span class="btn-text">消息中心</span>
+                                <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 10px; padding: 1px 6px; border-radius: 10px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">📊</span>
+                                <span class="btn-text">BI中心</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">📄</span>
+                                <span class="btn-text">资质认证</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">👤</span>
+                                <span class="btn-text">个人中心</span>
+                            </button>
+                        </div>
+                    `;
                 } else {
-                    document.body.appendChild(modalElement);
-                }
-
-                // 获取新创建的对话框元素
-                logoutModal = document.getElementById('logoutModal');
-                const logoutCancelBtn = document.getElementById('logoutCancelBtn');
-                const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
-
-                // 处理取消按钮点击
-                if (logoutCancelBtn) {
-                    logoutCancelBtn.addEventListener('click', function() {
-                        // 隐藏对话框
-                        logoutModal.classList.remove('show');
-                        document.body.style.overflow = '';
-                        // 页面保持不变
-                    });
-                }
-
-                // 处理确认按钮点击
-                if (logoutConfirmBtn) {
-                    logoutConfirmBtn.addEventListener('click', function() {
-                        // 清除登录状态
-                        localStorage.removeItem('isLoggedIn');
-                        
-                        // 隐藏对话框
-                        logoutModal.classList.remove('show');
-                        document.body.style.overflow = '';
-                        
-                        // 重新加载页面，显示未登录状态
-                        window.location.reload();
-                    });
-                }
-
-                // 点击对话框外部关闭
-                if (logoutModal) {
-                    logoutModal.addEventListener('click', function(e) {
-                        if (e.target === logoutModal) {
-                            logoutModal.classList.remove('show');
-                            document.body.style.overflow = '';
+                    // 未登录状态
+                    personalContent.innerHTML = `
+                        <div class="personal-header">
+                            <div class="avatar"></div>
+                            <div class="welcome-text">欢迎来到RaaS商城</div>
+                        </div>
+                        <div class="auth-buttons">
+                            <button class="login-btn">登录</button>
+                        </div>
+                        <hr class="divider">
+                        <div class="function-buttons">
+                            <button class="function-btn">
+                                <span class="btn-icon">💰</span>
+                                <span class="btn-text">我的报价</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">📋</span>
+                                <span class="btn-text">我的订单</span>
+                            </button>
+                            <button class="function-btn" style="position: relative;">
+                                <span class="btn-icon">📩</span>
+                                <span class="btn-text">消息中心</span>
+                                <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">📊</span>
+                                <span class="btn-text">BI中心</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">📄</span>
+                                <span class="btn-text">资质认证</span>
+                            </button>
+                            <button class="function-btn">
+                                <span class="btn-icon">👤</span>
+                                <span class="btn-text">个人中心</span>
+                            </button>
+                        </div>
+                    `;
+                    
+                    // 为登录按钮添加点击事件
+                    setTimeout(() => {
+                        const loginBtn = personalContent.querySelector('.login-btn');
+                        if (loginBtn) {
+                            loginBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                // 显示登录弹窗
+                                const modalOverlay = document.getElementById('loginModalOverlay');
+                                if (modalOverlay) {
+                                    modalOverlay.classList.add('show');
+                                    document.body.style.overflow = 'hidden';
+                                }
+                            });
                         }
-                    });
-
-                    // 按ESC键关闭对话框
-                    document.addEventListener('keydown', function(e) {
-                        if (e.key === 'Escape' && logoutModal.classList.contains('show')) {
-                            logoutModal.classList.remove('show');
-                            document.body.style.overflow = '';
-                        }
-                    });
+                    }, 100);
                 }
             }
+        }
 
-            // 显示对话框
-            logoutModal.classList.add('show');
-            document.body.style.overflow = 'hidden';
+        // 处理来自 header.html 的消息
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'SHOW_LOGIN_MODAL') {
+                // 显示登录弹窗
+                const modalOverlay = document.getElementById('loginModalOverlay');
+                if (modalOverlay) {
+                    modalOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            } else if (event.data.type === 'SHOW_LOGOUT_MODAL') {
+                // 显示退出确认弹窗
+                const logoutModalOverlay = document.getElementById('logoutModalOverlay');
+                if (logoutModalOverlay) {
+                    logoutModalOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        });
+
+        // 处理来自 login_modal.html 的消息
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'LOGIN_SUCCESS') {
+                // 登录成功，设置登录状态并关闭弹窗
+                localStorage.setItem('isLoggedIn', 'true');
+                const modalOverlay = document.getElementById('loginModalOverlay');
+                if (modalOverlay) {
+                    modalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+                // 更新个人中心内容
+                updatePersonalContent();
+                // 刷新页面，更新导航栏状态
+                window.location.reload();
+            } else if (event.data.type === 'CLOSE_MODAL') {
+                // 关闭弹窗
+                const modalOverlay = document.getElementById('loginModalOverlay');
+                if (modalOverlay) {
+                    modalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // 页面加载时更新个人中心内容
+        window.addEventListener('DOMContentLoaded', function() {
+            updatePersonalContent();
+        });
+
+        // 点击登录弹窗外部关闭
+        const loginModalOverlay = document.getElementById('loginModalOverlay');
+        if (loginModalOverlay) {
+            loginModalOverlay.addEventListener('click', function(e) {
+                if (e.target === loginModalOverlay) {
+                    loginModalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // 按ESC键关闭登录弹窗
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && loginModalOverlay.classList.contains('show')) {
+                    loginModalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // 退出确认弹窗按钮事件
+        const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+        const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+        const logoutModalOverlay = document.getElementById('logoutModalOverlay');
+
+        if (logoutCancelBtn) {
+            logoutCancelBtn.addEventListener('click', function() {
+                if (logoutModalOverlay) {
+                    logoutModalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        if (logoutConfirmBtn) {
+            logoutConfirmBtn.addEventListener('click', function() {
+                // 清除登录状态
+                localStorage.removeItem('isLoggedIn');
+                // 关闭弹窗
+                if (logoutModalOverlay) {
+                    logoutModalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+                // 刷新页面，显示未登录的导航栏
+                window.location.reload();
+            });
+        }
+
+        // 点击退出确认弹窗外部关闭
+        if (logoutModalOverlay) {
+            logoutModalOverlay.addEventListener('click', function(e) {
+                if (e.target === logoutModalOverlay) {
+                    logoutModalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // 按ESC键关闭退出确认弹窗
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && logoutModalOverlay.classList.contains('show')) {
+                    logoutModalOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
         }
     </script>
 </body>

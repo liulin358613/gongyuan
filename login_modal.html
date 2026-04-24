@@ -26,7 +26,7 @@
         }
 
         body {
-            background-color: rgba(29, 33, 41, 0.6);
+            background-color: transparent;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -455,9 +455,24 @@
             eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
         });
 
-        // 登录按钮点击跳转到 index_login 页面
-        document.querySelector('.login-button').addEventListener('click', () => {
-            window.location.href = 'index_login.html';
+        // 登录按钮点击事件
+        document.querySelector('.login-button').addEventListener('click', function() {
+            // 直接向父页面发送登录成功消息
+            window.parent.postMessage({ type: 'LOGIN_SUCCESS' }, '*');
+        });
+        
+        // 关闭按钮点击事件
+        document.querySelector('.close-btn').addEventListener('click', function() {
+            // 向父页面发送关闭弹窗消息
+            window.parent.postMessage({ type: 'CLOSE_MODAL' }, '*');
+        });
+        
+        // 处理来自父页面的消息
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'MODAL_LOADED') {
+                // 登录弹窗已加载
+                console.log('登录弹窗已加载');
+            }
         });
     </script>
 </body>
