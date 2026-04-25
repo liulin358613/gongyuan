@@ -35,6 +35,16 @@
                     });
                 }
             });
+
+            // 为退出按钮添加点击事件
+            const logoutButtons = document.querySelectorAll('a[onclick="showLogoutConfirm()"]');
+            logoutButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 向父页面发送显示退出确认弹窗的消息
+                    window.parent.postMessage({ type: 'SHOW_LOGOUT_MODAL' }, '*');
+                });
+            });
         });
 
         // 显示退出确认对话框

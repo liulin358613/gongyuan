@@ -31,32 +31,36 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0;
+            padding: 0;
         }
 
         /* 登录弹窗样式 - 默认展示 */
         .login-modal {
             position: relative;
             z-index: 99999;
+            background-color: transparent;
         }
         
         .modal-content {
             position: relative;
             background-color: var(--white);
-            padding: 30px 36px;
             border-radius: 12px;
             width: 420px;
-            max-width: 90%;
+            height: 500px;
             box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
             line-height: 1.5;
+            border: 1px solid var(--border-gray);
             font-family: "Microsoft Yahei", sans-serif;
         }
+
+
         
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
+            padding: 12px 10px 12px 20px;
             border-bottom: 1px solid var(--border-gray);
         }
         
@@ -89,13 +93,12 @@
         
         .login-tabs {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-gray);
+            padding: 12px 10px 12px 20px;
+            /* border-bottom: 1px solid var(--border-gray); */
         }
         
         .login-tab {
-            padding: 8px 0;
-            margin-right: 30px;
+            padding: 8px 24px;
             cursor: pointer;
             font-size: 15px;
             color: var(--classic-gray);
@@ -116,6 +119,7 @@
         
         .login-form {
             margin-bottom: 20px;
+            padding: 12px;
         }
         
         .form-input {
@@ -142,7 +146,7 @@
         
         .password-input {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 30px;
         }
         
         .password-input .form-input {
@@ -175,7 +179,7 @@
         .code-input {
             display: flex;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 30px;
         }
         
         .code-input .form-input {
@@ -210,7 +214,7 @@
         }
         
         .login-button {
-            width: 100%;
+            width: 80%;
             padding: 12px;
             background-color: var(--klein-blue);
             color: var(--white);
@@ -219,7 +223,7 @@
             cursor: pointer;
             font-size: 15px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin: auto;
             transition: all 0.3s;
             height: 44px;
             display: flex;
@@ -258,10 +262,6 @@
         
         .login-links span {
             margin: 0 8px;
-        }
-        
-        .other-login {
-            margin-top: 20px;
         }
         
         .other-login-line {

@@ -21,7 +21,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
             display: none;
             justify-content: center;
             align-items: center;
@@ -35,7 +34,7 @@
 
         .modal-iframe {
             width: 420px;
-            height: 580px;
+            height: 500px;
             border: none;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -44,7 +43,7 @@
         @media (max-width: 768px) {
             .modal-iframe {
                 width: 90%;
-                height: 550px;
+                height: 500px;
             }
         }
 
@@ -140,7 +139,7 @@
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
-            padding-top: 72px;
+            padding-top: 36px;
         }
 
         /* 通用容器 */
@@ -540,6 +539,12 @@
             transform: translateY(-2px);
         }
 
+        .section-tab.active {
+            border-bottom: 2px solid #0051d9;
+            color: #0051d9;
+            font-weight: 500;
+        }
+
         .divider {
             color: #d1d5db;
             font-size: 16px;
@@ -658,6 +663,30 @@
             background-color: var(--light-bg);
         }
 
+        .main-tab {
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 24px;
+            font-weight: 500;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .main-tab:hover {
+            color: var(--klein-blue);
+            background-color: var(--light-bg);
+        }
+
+        .main-tab.active {
+            color: var(--klein-blue);
+            border-bottom: 3px solid var(--klein-blue);
+            font-weight: 600;
+        }
+
         .create-center-btn {
             padding: 12px 30px;
             margin: 0 12px;
@@ -758,10 +787,6 @@
             overflow: hidden;
         }
 
-        .filter-section {
-            /* margin-bottom: 20px;
-            height: 100%; */
-        }
 
         .filter-section:last-child {
             margin-bottom: 0;
@@ -821,7 +846,7 @@
         }
 
         .card-grid:not(.hr-card-grid) > div {
-            display: flex;
+            /* display: flex; */
             align-items: center;
             /* justify-content: center; */
             font-size: 16px;
@@ -1069,12 +1094,14 @@
             display: flex;
             gap: 0;
             width: 100%;
+            height: 100%;
+            align-items: stretch;
         }
 
         .recommend-block {
             flex: 1;
             background-color: #FFFFFF;
-            padding: 0 10px;
+            padding: 12px 10px;
             box-sizing: border-box;
         }
 
@@ -1092,7 +1119,7 @@
         .recommend-block .card-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 6px;
             height: auto;
             min-height: auto;
             background: none;
@@ -1108,6 +1135,12 @@
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
+            height: 136px;
+        }
+        
+        /* 人类资源 section 的卡片高度自动调整 */
+        .hr-card-grid .recommend-card {
+            height: auto;
         }
 
         .recommend-card:hover {
@@ -1117,7 +1150,7 @@
 
         .recommend-card img {
             width: 100%;
-            height: 120px;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -1453,7 +1486,7 @@
             <!-- 搜索容器 -->
             <div class="blank-container" style="padding: 40px 30px;">
                 <div class="search-container" style="display: flex; align-items: center; gap: 28px;">
-                        <div class="logo-section">
+                        <div class="logo-section" onclick="location.reload();" style="cursor: pointer;">
                             <div class="search-logo" style="color: #0051D9;">Raas.Dao</div>
                             <div class="logo-slogan" style="color: #0051D9;">共创・共享</div>
                         </div>
@@ -1547,11 +1580,11 @@
             <div class="tab-row">
                 <div class="tabs">
                     <button class="create-center-btn" onclick="window.location.href='ai.html'">创造中心</button>
-                    <div class="tab">生产力方案共享</div>
-                    <div class="tab">机器人设备共享</div>
-                    <div class="tab">资源共享</div>
-                    <div class="tab">共享消费</div>
-                    <div class="tab">我的社群</div>
+                    <div class="main-tab" data-tab="生产力方案共享">生产力方案共享</div>
+                    <div class="main-tab" data-tab="机器人设备共享">机器人设备共享</div>
+                    <div class="main-tab" data-tab="资源共享">资源共享</div>
+                    <div class="main-tab" data-tab="共享消费">共享消费</div>
+                    <div class="main-tab" data-tab="我的社群">我的社群</div>
                 </div>
             </div>
         </div>
@@ -1633,7 +1666,7 @@
                                 </button>
                                 <button class="function-btn">
                                     <span class="btn-icon">📄</span>
-                                    <span class="btn-text">资质认证</span>
+                                    <span class="btn-text">企业认证</span>
                                 </button>
                                 <button class="function-btn">
                                     <span class="btn-icon">👤</span>
@@ -1650,11 +1683,11 @@
                             <h3>供应链</h3>
                             <div class="card-grid">
                                 <div class="recommend-card">
-                                    <img src="images/gyl-1.png" alt="供应链管理系统" width="100%" height="120">
+                                    <img src="images/gyl-1.png" alt="供应链管理系统" width="100%">
                                     <div class="card-caption">东莞市圆形钢材板材有限公司</div>
                                 </div>
                                 <div class="recommend-card">
-                                    <img src="images/gyl-2.png" alt="智能物流仓储" width="100%" height="120">
+                                    <img src="images/gyl-2.png" alt="智能物流仓储" width="100%">
                                     <div class="card-caption">智能物流仓储</div>
                                 </div>
                             </div>
@@ -1663,11 +1696,11 @@
                             <h3>训练基地</h3>
                             <div class="card-grid">
                                 <div class="recommend-card">
-                                    <img src="images/xl-1.png" alt="工业机器人培训" width="100%" height="120">
+                                    <img src="images/xl-1.png" alt="工业机器人培训" width="100%">
                                     <div class="card-caption">工业机器人培训</div>
                                 </div>
                                 <div class="recommend-card">
-                                    <img src="images/xl-2.png" alt="智能制造实训" width="100%" height="120">
+                                    <img src="images/xl-2.png" alt="智能制造实训" width="100%">
                                     <div class="card-caption">智能制造实训</div>
                                 </div>
                             </div>
@@ -1676,11 +1709,11 @@
                             <h3>共享工厂</h3>
                             <div class="card-grid">
                                 <div class="recommend-card">
-                                    <img src="images/gx-1.png" alt="数字化共享工厂" width="100%" height="120">
+                                    <img src="images/gx-1.png" alt="数字化共享工厂" width="100%">
                                     <div class="card-caption">数字化共享工厂</div>
                                 </div>
                                 <div class="recommend-card">
-                                    <img src="images/gx-2.png" alt="智能加工中心" width="100%" height="120">
+                                    <img src="images/gx-2.png" alt="智能加工中心" width="100%">
                                     <div class="card-caption">智能加工中心</div>
                                 </div>
                             </div>
@@ -1688,8 +1721,8 @@
                         <div class="recommend-block human-resource">
                             <h3>人类资源</h3>
                             <div class="card-grid hr-card-grid" style="display: flex; flex-direction: column; gap: 12px;">
-                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 2px 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                                    <div class="hr-avatar" style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 4px 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                    <div class="hr-avatar" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
                                         <img src="images/tx-1.png" alt="张经理" style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
                                     <div class="info">
@@ -1697,8 +1730,8 @@
                                         <div class="specialty" style="font-size: 13px; color: #999; font-style: italic; font-weight: normal;">人力资源管理</div>
                                     </div>
                                 </div>
-                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 2px 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                                    <div class="hr-avatar" style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                <div class="recommend-card" style="display: flex; align-items: center; gap: 16px; padding: 4px 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                    <div class="hr-avatar" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
                                         <img src="images/tx-2.png" alt="李主管" style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
                                     <div class="info">
@@ -1717,41 +1750,51 @@
         <div class="recommend-section">
             <div class="case-title">精品推荐</div>
             <div class="recommend-grid">
-                <div class="case">
-                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=20')"></div>
-                    <div class="case-text">
-                        <div class="case-name">智能工厂整体解决方案</div>
-                        <div class="case-desc">全流程自动化，效率提升50%</div>
+                <a href="solution_detail.html" style="text-decoration: none; color: inherit;">
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=20')"></div>
+                        <div class="case-text">
+                            <div class="case-name">智能工厂整体解决方案</div>
+                            <div class="case-desc">全流程自动化，效率提升50%</div>
+                        </div>
                     </div>
-                </div>
-                <div class="case">
-                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=21')"></div>
-                    <div class="case-text">
-                        <div class="case-name">工业机器人租赁服务</div>
-                        <div class="case-desc">灵活配置，降低成本30%</div>
+                </a>
+                <a href="solution_detail.html" style="text-decoration: none; color: inherit;">
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=21')"></div>
+                        <div class="case-text">
+                            <div class="case-name">工业机器人租赁服务</div>
+                            <div class="case-desc">灵活配置，降低成本30%</div>
+                        </div>
                     </div>
-                </div>
-                <div class="case">
-                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=22')"></div>
-                    <div class="case-text">
-                        <div class="case-name">数字化车间改造</div>
-                        <div class="case-desc">数据驱动，管理更高效</div>
+                </a>
+                <a href="solution_detail.html" style="text-decoration: none; color: inherit;">
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=22')"></div>
+                        <div class="case-text">
+                            <div class="case-name">数字化车间改造</div>
+                            <div class="case-desc">数据驱动，管理更高效</div>
+                        </div>
                     </div>
-                </div>
-                <div class="case">
-                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=23')"></div>
-                    <div class="case-text">
-                        <div class="case-name">视觉检测系统</div>
-                        <div class="case-desc">AI识别，准确率99.9%</div>
+                </a>
+                <a href="solution_detail.html" style="text-decoration: none; color: inherit;">
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=23')"></div>
+                        <div class="case-text">
+                            <div class="case-name">视觉检测系统</div>
+                            <div class="case-desc">AI识别，准确率99.9%</div>
+                        </div>
                     </div>
-                </div>
-                <div class="case">
-                    <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=24')"></div>
-                    <div class="case-text">
-                        <div class="case-name">智能仓储解决方案</div>
-                        <div class="case-desc">自动化存储，空间利用提升60%</div>
+                </a>
+                <a href="solution_detail.html" style="text-decoration: none; color: inherit;">
+                    <div class="case">
+                        <div class="case-img" style="background-image:url('https://picsum.photos/800/500?random=24')"></div>
+                        <div class="case-text">
+                            <div class="case-name">智能仓储解决方案</div>
+                            <div class="case-desc">自动化存储，空间利用提升60%</div>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
   <!-- 机器人与设备专区 -->
@@ -1762,13 +1805,13 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; gap: 12px;">
                 <!-- 机器人板块 -->
                 <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px;">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #333;">机器人</h4>
+                    <h4 style="font-size: 16px; font-weight: 600; color: #333;">机器人</h4>
                     <!-- Tab区 -->
-                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;">
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">工业机器人</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">服务机器人</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">协作机器人</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">移动机器人</button>
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;" class="tab-buttons" data-section="robot">
+                        <button class="section-tab active" data-tab="工业机器人" style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">工业机器人</button>
+                        <button class="section-tab" data-tab="服务机器人" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">服务机器人</button>
+                        <button class="section-tab" data-tab="协作机器人" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">协作机器人</button>
+                        <button class="section-tab" data-tab="移动机器人" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">移动机器人</button>
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
@@ -1779,7 +1822,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">六轴工业机器人</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥12.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥10000/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>12.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>10000/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1789,7 +1832,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">协作机器人</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥6.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥5440/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>6.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>5440/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1799,7 +1842,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">AGV移动机器人</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥8.20<span style="font-size: 12px;">万</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8.20<span style="font-size: 12px;">万</span></div>
                             </div>
                         </div>
                     </div>
@@ -1807,13 +1850,13 @@
                 
                 <!-- 专机设备板块 -->
                 <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px;">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #333;">专机设备</h4>
+                    <h4 style="font-size: 16px; font-weight: 600; color: #333;">专机设备</h4>
                     <!-- Tab区 -->
-                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;">
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">行业专用设备</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">包装机械</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">风机机械设备</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">机床</button>
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;" class="tab-buttons" data-section="machine">
+                        <button class="section-tab active" data-tab="行业专用设备" style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">行业专用设备</button>
+                        <button class="section-tab" data-tab="包装机械" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">包装机械</button>
+                        <button class="section-tab" data-tab="风机机械设备" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">风机机械设备</button>
+                        <button class="section-tab" data-tab="机床" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">机床</button>
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
@@ -1824,7 +1867,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">液体防爆空气加热器</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥8600.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥688/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8600.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>688/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1834,7 +1877,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">工业节能电加热器</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥3000.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥240/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>3000.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>240/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1844,7 +1887,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">燃气蒸汽发生设备</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥5.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥4400/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>5.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>4400/天)</span></div>
                             </div>
                         </div>
                     </div>
@@ -1852,13 +1895,13 @@
                 
                 <!-- 手抓/夹治具板块 -->
                 <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px;">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #333;">手抓/夹治具</h4>
+                    <h4 style="font-size: 16px; font-weight: 600; color: #333;">手抓/夹治具</h4>
                     <!-- Tab区 -->
-                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;">
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">气动夹爪</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">液压夹爪</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">真空吸盘</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">磁力夹具</button>
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;" class="tab-buttons" data-section="gripper">
+                        <button class="section-tab active" data-tab="气动夹爪" style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">气动夹爪</button>
+                        <button class="section-tab" data-tab="液压夹爪" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">液压夹爪</button>
+                        <button class="section-tab" data-tab="真空吸盘" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">真空吸盘</button>
+                        <button class="section-tab" data-tab="磁力夹具" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">磁力夹具</button>
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
@@ -1869,7 +1912,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">气动平行夹爪</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥680.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥54/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>680.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>54/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1879,7 +1922,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">液压旋转夹爪</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥1280.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥102/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>1280.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>102/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1889,7 +1932,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">真空吸盘支架</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥260.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥21/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>260.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>21/天)</span></div>
                             </div>
                         </div>
                     </div>
@@ -1897,13 +1940,13 @@
                 
                 <!-- 周边设备板块 -->
                 <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px;">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #333;">周边设备</h4>
+                    <h4 style="font-size: 16px; font-weight: 600; color: #333;">周边设备</h4>
                     <!-- Tab区 -->
-                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;">
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">传感器</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">控制器</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">安全设备</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">线缆配件</button>
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;" class="tab-buttons" data-section="peripheral">
+                        <button class="section-tab active" data-tab="传感器" style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">传感器</button>
+                        <button class="section-tab" data-tab="控制器" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">控制器</button>
+                        <button class="section-tab" data-tab="安全设备" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">安全设备</button>
+                        <button class="section-tab" data-tab="线缆配件" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">线缆配件</button>
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
@@ -1914,7 +1957,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">工业视觉传感器</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥2800.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥224/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>2800.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>224/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1924,7 +1967,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">PLC控制器</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥4500.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥360/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>4500.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>360/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1934,7 +1977,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">安全光栅</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥1200.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥96/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>1200.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>96/天)</span></div>
                             </div>
                         </div>
                     </div>
@@ -1942,13 +1985,13 @@
                 
                 <!-- 工具设备板块 -->
                 <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px;">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #333;">工具设备</h4>
+                    <h4 style="font-size: 16px; font-weight: 600; color: #333;">工具设备</h4>
                     <!-- Tab区 -->
-                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;">
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">电动工具</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">手动工具</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">测量工具</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">切削工具</button>
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;" class="tab-buttons" data-section="tool">
+                        <button class="section-tab active" data-tab="电动工具" style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">电动工具</button>
+                        <button class="section-tab" data-tab="手动工具" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">手动工具</button>
+                        <button class="section-tab" data-tab="测量工具" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">测量工具</button>
+                        <button class="section-tab" data-tab="切削工具" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">切削工具</button>
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
@@ -1959,7 +2002,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">电动冲击钻</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥299.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥24/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>299.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>24/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1969,7 +2012,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">激光测距仪</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥199.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥16/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>199.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>16/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -1979,7 +2022,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">角磨机</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥349.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥28/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>349.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>28/天)</span></div>
                             </div>
                         </div>
                     </div>
@@ -1987,13 +2030,13 @@
                 
                 <!-- 零配件板块 -->
                 <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px;">
-                    <h4 style="font-size: 14px; font-weight: 600; color: #333;">零配件</h4>
+                    <h4 style="font-size: 16px; font-weight: 600; color: #333;">零配件</h4>
                     <!-- Tab区 -->
-                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;">
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">机械设备配件</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">电气配件</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">液压配件</button>
-                        <button style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="this.style.color='#666';">气动配件</button>
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;" class="tab-buttons" data-section="parts">
+                        <button class="section-tab active" data-tab="机械设备配件" style="padding: 8px 16px; border: none; border-bottom: 2px solid #0051d9; background: white; font-size: 14px; color: #0051d9; font-weight: 500; cursor: pointer;">机械设备配件</button>
+                        <button class="section-tab" data-tab="电气配件" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">电气配件</button>
+                        <button class="section-tab" data-tab="液压配件" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">液压配件</button>
+                        <button class="section-tab" data-tab="气动配件" style="padding: 8px 16px; border: none; border-bottom: 2px solid transparent; background: white; font-size: 14px; color: #666; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.color='#0051d9';" onmouseout="if(!this.classList.contains('active'))this.style.color='#666';">气动配件</button>
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
@@ -2004,7 +2047,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">深沟球轴承</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥25.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥2/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>25.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>2/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -2014,7 +2057,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">液压缸</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥380.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥30/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>380.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>30/天)</span></div>
                             </div>
                         </div>
                         <div class="content-card">
@@ -2024,7 +2067,7 @@
                             </div>
                             <div style="padding: 8px;">
                                 <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">气缸</div>
-                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥120.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥10/天)</span></div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>120.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>10/天)</span></div>
                             </div>
                         </div>
                     </div>
@@ -2149,12 +2192,32 @@
 
 
     <script>
-        // TAB切换功能
+        // 顶部主Tab切换功能
+        document.querySelectorAll('.main-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有main-tab的active状态
+                document.querySelectorAll('.main-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+
+                // 添加active状态到当前tab
+                tab.classList.add('active');
+
+                // 更新当前选中的tab并重新生成产业列表
+                const tabName = tab.getAttribute('data-tab');
+                currentTab = tabName;
+                generateIndustries(currentTab);
+            });
+        });
+
+        // TAB切换功能（原有功能 - 用于产业筛选）
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                // 更新当前选中的tab并重新生成产业列表
-                currentTab = tab.textContent.trim();
-                generateIndustries(currentTab);
+                const tabText = tab.textContent.trim();
+                if (industryData.hasOwnProperty(tabText)) {
+                    currentTab = tabText;
+                    generateIndustries(currentTab);
+                }
             });
         });
 
@@ -2164,6 +2227,28 @@
                 document.querySelectorAll('.model-tag').forEach(tag => tag.classList.remove('active'));
                 e.target.classList.add('active');
             }
+        });
+
+        // 机器人及设备板块Tab切换功能
+        document.querySelectorAll('.section-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabContainer = this.closest('.tab-buttons');
+                const section = tabContainer.getAttribute('data-section');
+                
+                // 移除同组所有tab的active状态
+                tabContainer.querySelectorAll('.section-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.style.borderBottom = '2px solid transparent';
+                    t.style.color = '#666';
+                    t.style.fontWeight = 'normal';
+                });
+                
+                // 添加active状态到当前tab
+                this.classList.add('active');
+                this.style.borderBottom = '2px solid #0051d9';
+                this.style.color = '#0051d9';
+                this.style.fontWeight = '500';
+            });
         });
 
         // 输入框自动高度适配
@@ -2183,15 +2268,7 @@
             }
         });
 
-        // 发送按钮点击跳转到AI页面
-        const sendBtn = document.querySelector('.send-btn');
-        if (sendBtn) {
-            sendBtn.addEventListener('click', () => {
-                window.location.href = 'ai.html';
-            });
-        }
 
-        // 根据URL参数选中对应tab并定位到tab栏位置
         function selectTabByParam() {
             const urlParams = new URLSearchParams(window.location.search);
             const tabParam = urlParams.get('tab');
@@ -2225,36 +2302,52 @@
         // 产业数据
         const industryData = {
             '生产力方案共享': [
-                { name: '机器人、设备共享', sub: ['AI员工资源', '人类资源', 'MCP资源', '应用软件资源', '数据资源', '虚拟币资源', '供应链资源', '训练基地资源'] },
-                { name: '共享工厂', sub: ['智能工厂', '柔性制造', '定制化生产', '协同制造'] }
+                { name: '工业', sub: ['智能制造', '工业自动化', '工业机器人', '工业互联网'] },
+                { name: '农业', sub: ['智慧农业', '农业自动化', '农业物联网', '农业机器人'] },
+                { name: '服务业', sub: ['智能服务', '服务机器人', '服务自动化', '服务数字化'] }
+            ],
+            '机器人设备共享': [
+                { name: '机器人', sub: ['工业机器人', '服务机器人', '协作机器人', '移动机器人'] },
+                { name: '专机设备', sub: ['数控机床', '加工中心', '检测设备', '自动化设备'] },
+                { name: '作业工具', sub: ['电动工具', '气动工具', '液压工具', '手动工具'] },
+                { name: '周边工具设备', sub: ['传感器', '控制器', '伺服系统', '视觉系统'] },
+                { name: '手抓/夹治具', sub: ['机械夹爪', '真空吸盘', '电磁吸盘', '定制夹治具'] },
+                { name: '零配件', sub: ['机械零件', '电气零件', '液压零件', '气动零件'] }
             ],
             '资源共享': [
-                { name: '设备资源', sub: ['数控机床', '加工中心', '检测设备', '自动化设备'] },
-                { name: '技术资源', sub: ['专利技术', '工艺方案', '设计服务', '研发成果'] },
-                { name: '人才资源', sub: ['专家顾问', '技术人员', '培训服务', '管理咨询'] },
-                { name: '场地资源', sub: ['厂房', '仓库', '实验室', '办公空间'] }
+                { name: 'AI员工资源', sub: [] },
+                { name: '人类资源', sub: [] },
+                { name: 'MCP资源', sub: [] },
+                { name: '应用软件资源', sub: [] },
+                { name: '数据资源', sub: [] },
+                { name: '虚拟币资源', sub: [] },
+                { name: '供应链资源', sub: [] },
+                { name: '训练基地资源', sub: [] },
+                { name: '共享工厂', sub: [] }
             ],
             '共享消费': [
-                { name: '智造品', sub: ['工业产品', '农业产品', '服务业产品', '智能硬件'] },
-                { name: '应用软件产品', sub: ['工业软件', '管理软件', '设计软件', '数据分析'] },
-                { name: '游戏产品', sub: ['手机游戏', 'PC游戏', 'VR游戏', '休闲游戏'] },
-                { name: '影视文学', sub: ['电影', '电视剧', '小说', '动漫'] },
-                { name: '游乐服务产品', sub: ['主题乐园', '休闲娱乐', '文化体验', '旅游服务'] },
-                { name: '教育培训产品', sub: ['职业培训', '技能提升', '认证考试', '在线课程'] },
-                { name: '健康医疗产品', sub: ['医疗器械', '健康管理', '医疗服务', '康复护理'] },
-                { name: '智能家居产品', sub: ['智能家电', '安防系统', '环境控制', '家庭自动化'] },
-                { name: '绿色环保产品', sub: ['节能设备', '环保材料', '可再生能源', '循环利用'] }
+                { name: '智造品', sub: ['由AI智能分类：工业、服务业全行业'] },
+                { name: '应用软件产品', sub: [] },
+                { name: '游戏产品', sub: [] },
+                { name: '影视/文学', sub: [] },
+                { name: '游乐/服务产品', sub: [] }
             ],
             '我的社群': [
-                { name: '行业社群', sub: ['汽车制造', '3C电子', '医疗器械', '新能源'] },
-                { name: '兴趣社群', sub: ['机器人爱好者', '自动化技术', '智能制造', 'AI应用'] },
-                { name: '专业社群', sub: ['PLC编程', '机器人调试', '视觉检测', '系统集成'] },
-                { name: '地区社群', sub: ['北京', '上海', '广州', '深圳'] }
+                { name: '技术探讨', sub: [] },
+                { name: '行业交流', sub: [] },
+                { name: '技术问答', sub: [] },
+                { name: '设备分享', sub: [] },
+                { name: '资源互助', sub: [] },
+                { name: '供需合作', sub: [] },
+                { name: '平台公告', sub: [] },
+                { name: '经验分享', sub: [] },
+                { name: '娱乐八卦', sub: [] },
+                { name: '吐槽建议', sub: [] }
             ]
         };
 
         // 当前选中的tab
-        let currentTab = document.querySelector('.tab').textContent.trim();
+        let currentTab = null;
 
         // 生成产业列表
         function generateIndustries(tabName) {
@@ -2328,14 +2421,29 @@
                 
                 let industries = [];
                 
-                // 填充所有tab的产业数据，限制数量
-                const tabNames = ['生产力方案共享', '资源共享', '共享消费', '我的社群'];
-                tabNames.forEach(tab => {
-                    const tabIndustries = industryData[tab] || [];
-                    industries = industries.concat(tabIndustries);
-                });
-                // 限制数量，共15个
-                industries = industries.slice(0, 15);
+                if (!tabName) {
+                    // 如果没有选中tab，显示默认的15个产业
+                    industries = [
+                        { name: '机器人、设备共享', sub: ['工业机器人', '服务机器人', '协作机器人', '移动机器人'] },
+                        { name: '共享工厂', sub: ['智能工厂', '柔性制造', '定制化生产', '协同制造'] },
+                        { name: '设备资源', sub: ['数控机床', '加工中心', '检测设备', '自动化设备'] },
+                        { name: '技术资源', sub: ['专利技术', '工艺方案', '设计服务', '研发成果'] },
+                        { name: '人才资源', sub: ['专家顾问', '技术人员', '培训服务', '管理咨询'] },
+                        { name: '场地资源', sub: ['厂房', '仓库', '实验室', '办公空间'] },
+                        { name: '智造品', sub: ['工业产品', '农业产品', '服务业产品', '智能硬件'] },
+                        { name: '应用软件产品', sub: ['工业软件', '管理软件', '设计软件', '数据分析'] },
+                        { name: '游戏产品', sub: ['手机游戏', 'PC游戏', 'VR游戏', '休闲游戏'] },
+                        { name: '影视文学', sub: ['电影', '电视剧', '小说', '动漫'] },
+                        { name: '游乐服务产品', sub: ['主题乐园', '休闲娱乐', '文化体验', '旅游服务'] },
+                        { name: '教育培训产品', sub: ['职业培训', '技能提升', '认证考试', '在线课程'] },
+                        { name: '健康医疗产品', sub: ['医疗器械', '健康管理', '医疗服务', '康复护理'] },
+                        { name: '智能家居产品', sub: ['智能家电', '安防系统', '环境控制', '家庭自动化'] },
+                        { name: '绿色环保产品', sub: ['节能设备', '环保材料', '可再生能源', '循环利用'] }
+                    ];
+                } else {
+                    // 只显示当前选中tab的产业数据
+                    industries = industryData[tabName] || [];
+                }
                 
                 // 填充产业数据
                 industries.forEach((industry, index) => {
@@ -2348,6 +2456,20 @@
                     // 添加鼠标悬停事件
                     item.addEventListener('mouseenter', (e) => {
                         showSubFilter(e.target);
+                    });
+                    
+                    // 添加鼠标离开事件
+                    item.addEventListener('mouseleave', () => {
+                        // 延迟检查鼠标是否在三级菜单上
+                        setTimeout(() => {
+                            if (!document.querySelector('.sub-filter-popup:hover')) {
+                                // 鼠标不在三级菜单上，取消二级菜单的选中状态
+                                item.style.color = '';
+                                item.style.backgroundColor = '';
+                                item.style.fontWeight = '';
+                                item.style.transform = '';
+                            }
+                        }, 200);
                     });
                     
                     // 添加点击事件
@@ -2376,12 +2498,32 @@
             const sub = JSON.parse(item.dataset.sub);
             
             const subFilter = document.getElementById('sub-filter');
-            if (industry) {
+            if (industry && sub && sub.length > 0) {
                 subFilter.style.display = 'block';
                 generateSubFilter(sub, item);
+                
+                // 高亮对应的二级菜单
+                highlightParentSideNav(item);
             } else {
                 subFilter.style.display = 'none';
             }
+        }
+
+        // 高亮对应的二级菜单
+        function highlightParentSideNav(item) {
+            // 移除所有二级菜单的高亮
+            document.querySelectorAll('.filter-item').forEach(navItem => {
+                navItem.style.color = '';
+                navItem.style.backgroundColor = '';
+                navItem.style.fontWeight = '';
+                navItem.style.transform = '';
+            });
+            
+            // 高亮当前二级菜单
+            item.style.color = 'var(--klein-blue)';
+            item.style.backgroundColor = '#f0f7ff';
+            item.style.fontWeight = '500';
+            item.style.transform = 'translateX(4px)';
         }
 
         // 计算并调整三级筛选位置
@@ -2423,11 +2565,23 @@
                 const subItem = document.createElement('div');
                 subItem.className = 'filter-item';
                 subItem.textContent = sub;
+                
+                // 添加鼠标悬停事件，保持二级菜单高亮
+                subItem.addEventListener('mouseenter', () => {
+                    highlightParentSideNav(item);
+                });
+                
                 subItem.addEventListener('click', () => {
                     // 点击时跳转到list页面
                     window.location.href = 'list.html';
                 });
                 subFilterItems.appendChild(subItem);
+            });
+            
+            // 为三级筛选容器添加鼠标悬停事件，保持二级菜单高亮
+            const subFilter = document.getElementById('sub-filter');
+            subFilter.addEventListener('mouseenter', () => {
+                highlightParentSideNav(item);
             });
             
             // 生成内容后调整位置
@@ -2451,6 +2605,13 @@
             setTimeout(() => {
                 if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
                     document.getElementById('sub-filter').style.display = 'none';
+                    // 鼠标离开筛选区域，取消所有二级菜单的选中状态
+                    document.querySelectorAll('.filter-item').forEach(navItem => {
+                        navItem.style.color = '';
+                        navItem.style.backgroundColor = '';
+                        navItem.style.fontWeight = '';
+                        navItem.style.transform = '';
+                    });
                 }
             }, 200);
         });
@@ -2464,6 +2625,13 @@
             setTimeout(() => {
                 if (!document.querySelector('.filter:hover') && !document.querySelector('.sub-filter-popup:hover')) {
                     document.getElementById('sub-filter').style.display = 'none';
+                    // 鼠标离开三级筛选，取消所有二级菜单的选中状态
+                    document.querySelectorAll('.filter-item').forEach(navItem => {
+                        navItem.style.color = '';
+                        navItem.style.backgroundColor = '';
+                        navItem.style.fontWeight = '';
+                        navItem.style.transform = '';
+                    });
                 }
             }, 200);
         });
@@ -2601,7 +2769,7 @@
                     // 已登录状态
                     personalContent.innerHTML = `
                         <div class="personal-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
                                 <div class="avatar" style="width: 60px; height: 60px; font-size: 24px;"></div>
                                 <div style="display: flex; flex-direction: column;">
                                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -2613,6 +2781,27 @@
                                             </svg>
                                             普通企业
                                         </span>
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
+                                                <!-- 六边形徽章 -->
+                                                <div style="width: 30px; height: 36px; position: relative; display: flex; align-items: center; justify-content: center;">
+                                                    <!-- 六边形背景 -->
+                                                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #9c27b0, #673ab7); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; align-items: center; justify-content: center; position: relative;">
+                                                        <!-- 星星 -->
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffeb3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; bottom: 6px;">
+                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                                        </svg>
+                                                        <!-- 等级数字 -->
+                                                        <span style="font-size: 16px; font-weight: bold; color: white;">5</span>
+                                                    </div>
+                                                    <!-- 顶部星星装饰 -->
+                                                    <div style="position: absolute; top: -4px; font-size: 10px; color: #ffeb3b;">★</div>
+                                                </div>
+                                                <!-- 红色丝带 -->
+                                                <div style="width: 44px; height: 4px; background: #f44336; border-radius: 4px; position: relative; top: -4px;"></div>
+                                            </div>
+                                            <span style="font-size: 12px; color: #9c27b0; font-weight: 500;">5级</span>
+                                        </div>
                                     </div>
                                     <div style="font-size: 14px; color: #666;margin-top: 6px;">东莞市嘉东网络科技有限公司</div>
                                     <div style="font-size: 14px; color: #F37021;margin-top: 6px;">我的元宝：375</div>
@@ -2632,7 +2821,7 @@
                             <button class="function-btn" style="position: relative;">
                                 <span class="btn-icon">📩</span>
                                 <span class="btn-text">消息中心</span>
-                                <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 10px; padding: 1px 6px; border-radius: 10px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
+                                <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 12px; padding: 1px 6px; border-radius: 10px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
                             </button>
                             <button class="function-btn">
                                 <span class="btn-icon">📊</span>
@@ -2640,7 +2829,7 @@
                             </button>
                             <button class="function-btn">
                                 <span class="btn-icon">📄</span>
-                                <span class="btn-text">资质认证</span>
+                                <span class="btn-text">企业认证</span>
                             </button>
                             <button class="function-btn">
                                 <span class="btn-icon">👤</span>
@@ -2679,7 +2868,7 @@
                             </button>
                             <button class="function-btn">
                                 <span class="btn-icon">📄</span>
-                                <span class="btn-text">资质认证</span>
+                                <span class="btn-text">企业认证</span>
                             </button>
                             <button class="function-btn">
                                 <span class="btn-icon">👤</span>

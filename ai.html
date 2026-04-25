@@ -102,7 +102,6 @@
                             height: 100%;
                             display: none;
                             z-index: 99999;
-                            background-color: rgba(29, 33, 41, 0.6);
                             backdrop-filter: blur(2px);
                         }
 
@@ -2668,7 +2667,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(29, 33, 41, 0.6);
+            /* background-color: rgba(29, 33, 41, 0.6); */
             backdrop-filter: blur(2px);
             transition: all 0.3s ease;
         }
@@ -2676,12 +2675,12 @@
         .modal-content {
             position: relative;
             background-color: var(--white);
-            padding: 30px 36px;
             border-radius: 12px;
             width: 420px;
-            max-width: 90%;
+            height: 500px;
             box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
             line-height: 1.5;
+            border: 1px solid var(--border-gray);
             font-family: "Microsoft Yahei", sans-serif;
             transform: translateY(-20px);
             transition: all 0.3s ease;
@@ -2695,8 +2694,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
+            padding: 12px 10px 12px 20px;
             border-bottom: 1px solid var(--border-gray);
         }
         
@@ -2729,13 +2727,11 @@
         
         .login-tabs {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-gray);
+            padding: 12px 10px 12px 20px;
         }
         
         .login-tab {
-            padding: 8px 0;
-            margin-right: 30px;
+            padding: 8px 24px;
             cursor: pointer;
             font-size: 15px;
             color: var(--classic-gray);
@@ -2756,6 +2752,7 @@
         
         .login-form {
             margin-bottom: 20px;
+            padding: 12px;
         }
         
         .form-input {
@@ -2782,7 +2779,7 @@
         
         .password-input {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 30px;
         }
         
         .password-input .form-input {
@@ -2815,7 +2812,7 @@
         .code-input {
             display: flex;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 30px;
         }
         
         .code-input .form-input {
@@ -2850,7 +2847,7 @@
         }
         
         .login-button {
-            width: 100%;
+            width: 80%;
             padding: 12px;
             background-color: var(--klein-blue);
             color: var(--white);
@@ -2859,7 +2856,7 @@
             cursor: pointer;
             font-size: 15px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin: auto;
             transition: all 0.3s;
             height: 44px;
             display: flex;
@@ -2898,10 +2895,6 @@
         
         .login-links span {
             margin: 0 8px;
-        }
-        
-        .other-login {
-            margin-top: 20px;
         }
         
         .other-login-line {
@@ -2993,7 +2986,7 @@
         
         .other-login-btn:nth-child(1)::before {
             content: "";
-            width: 80%;
+            width: 70%;
             height: 70%;
             background-image: url('images/wx.jpg');
             background-size: contain;
@@ -3005,7 +2998,7 @@
         .other-login-btn:nth-child(2)::before {
             content: "";
             width: 80%;
-            height: 70%;
+            height: 80%;
             background-image: url('images/zfb.jpg');
             background-size: contain;
             background-repeat: no-repeat;
@@ -3086,14 +3079,12 @@
                 <span>|</span>
                 <a href="#">注册账号</a>
             </div>
-            <div class="other-login">
-                <div class="other-login-line">
-                    <span>其他登录方式</span>
-                </div>
-                <div class="other-login-buttons">
-                    <div class="other-login-btn"></div>
-                    <div class="other-login-btn"></div>
-                </div>
+            <div class="other-login-line">
+                <span>其他登录方式</span>
+            </div>
+            <div class="other-login-buttons">
+                <div class="other-login-btn"></div>
+                <div class="other-login-btn"></div>
             </div>
         </div>
     </div>

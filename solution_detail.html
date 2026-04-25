@@ -65,15 +65,17 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 22px;
             border-radius: 6px;
-            padding: 6px 0;
         }
 
         .logo-slogan {
-            font-size: 12px;
-            font-weight: normal;
-            color: var(--klein-blue);
+            font-size: 14px;
+            font-weight: 500;
+            background: linear-gradient(135deg, var(--klein-blue), var(--hermes-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-top: 2px;
         }
         .user-area {
@@ -288,14 +290,12 @@
                 <span>|</span>
                 <a href="#">注册账号</a>
             </div>
-            <div class="other-login">
-                <div class="other-login-line">
-                    <span>其他登录方式</span>
-                </div>
-                <div class="other-login-buttons">
-                    <div class="other-login-btn"></div>
-                    <div class="other-login-btn"></div>
-                </div>
+            <div class="other-login-line">
+                <span>其他登录方式</span>
+            </div>
+            <div class="other-login-buttons">
+                <div class="other-login-btn"></div>
+                <div class="other-login-btn"></div>
             </div>
         </div>
     </div>
@@ -313,7 +313,6 @@
             align-items: center;
             justify-content: center;
             z-index: 99999;
-            background-color: rgba(29, 33, 41, 0.6);
             backdrop-filter: blur(2px);
         }
         .login-modal.show,
@@ -324,20 +323,19 @@
         .modal-content {
             position: relative;
             background-color: #FFFFFF;
-            padding: 30px 36px;
             border-radius: 12px;
             width: 420px;
-            max-width: 90%;
+            height: 500px;
             box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
             line-height: 1.5;
+            border: 1px solid #E5E7EB;
             font-family: "Microsoft Yahei", sans-serif;
         }
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
+            padding: 12px 10px 12px 20px;
             border-bottom: 1px solid #E5E7EB;
         }
         .modal-header h2 {
@@ -366,12 +364,10 @@
         }
         .login-tabs {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #E5E7EB;
+            padding: 12px 10px 12px 20px;
         }
         .login-tab {
-            padding: 8px 0;
-            margin-right: 30px;
+            padding: 8px 24px;
             cursor: pointer;
             font-size: 15px;
             color: #86909C;
@@ -389,6 +385,7 @@
         }
         .login-form {
             margin-bottom: 20px;
+            padding: 12px;
         }
         .form-input {
             width: 100%;
@@ -411,7 +408,7 @@
         }
         .password-input {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 30px;
         }
         .password-input .form-input {
             padding-right: 40px;
@@ -440,7 +437,7 @@
         .code-input {
             display: flex;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 30px;
         }
         .code-input .form-input {
             flex: 1;
@@ -470,7 +467,7 @@
             background-color: #F2F3F5;
         }
         .login-button {
-            width: 100%;
+            width: 80%;
             padding: 12px;
             background-color: #0051D9;
             color: #FFFFFF;
@@ -479,7 +476,7 @@
             cursor: pointer;
             font-size: 15px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin: auto;
             transition: all 0.3s;
             height: 44px;
             display: flex;
@@ -512,9 +509,6 @@
         }
         .login-links span {
             margin: 0 8px;
-        }
-        .other-login {
-            margin-top: 20px;
         }
         .other-login-line {
             position: relative;
@@ -593,7 +587,7 @@
         }
         .other-login-btn:nth-child(1)::before {
             content: "";
-            width: 80%;
+            width: 70%;
             height: 70%;
             background-image: url('images/wx.jpg');
             background-size: contain;
@@ -604,7 +598,7 @@
         .other-login-btn:nth-child(2)::before {
             content: "";
             width: 80%;
-            height: 70%;
+            height: 80%;
             background-image: url('images/zfb.jpg');
             background-size: contain;
             background-repeat: no-repeat;
