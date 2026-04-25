@@ -527,6 +527,19 @@
             display: none;
         }
 
+        .content-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
+            transform: translateY(-2px);
+        }
+
         .divider {
             color: #d1d5db;
             font-size: 16px;
@@ -1485,15 +1498,23 @@
                                             }
                                         </style>
                                         <script>
-                                            document.querySelector('.upload-btn').addEventListener('click', function() {
-                                                document.getElementById('imageUpload').click();
-                                            });
-                                            
-                                            document.getElementById('imageUpload').addEventListener('change', function(e) {
-                                                if (e.target.files && e.target.files[0]) {
-                                                    const fileName = e.target.files[0].name;
-                                                    alert('已选择文件: ' + fileName);
-                                                    // 这里可以添加文件上传逻辑
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const uploadBtn = document.querySelector('.upload-btn');
+                                                const imageUpload = document.getElementById('imageUpload');
+                                                if (uploadBtn) {
+                                                    uploadBtn.addEventListener('click', function() {
+                                                        if (imageUpload) {
+                                                            imageUpload.click();
+                                                        }
+                                                    });
+                                                }
+                                                if (imageUpload) {
+                                                    imageUpload.addEventListener('change', function(e) {
+                                                        if (e.target.files && e.target.files[0]) {
+                                                            const fileName = e.target.files[0].name;
+                                                            alert('已选择文件: ' + fileName);
+                                                        }
+                                                    });
                                                 }
                                             });
                                         </script>
@@ -1751,7 +1772,7 @@
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=101" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
@@ -1761,7 +1782,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥12.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥10000/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=102" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🦾</div>
@@ -1771,7 +1792,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥6.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥5440/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=103" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
@@ -1796,7 +1817,7 @@
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=105" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff3e8; color: #F37021; font-size: 24px;">🔥</div>
@@ -1806,7 +1827,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥8600.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥688/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=106" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff3e8; color: #F37021; font-size: 24px;">💨</div>
@@ -1816,7 +1837,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥3000.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥240/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=107" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff3e8; color: #F37021; font-size: 24px;">⚡</div>
@@ -1841,7 +1862,7 @@
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=117" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8ffe8; color: #28a745; font-size: 24px;">🤚</div>
@@ -1851,7 +1872,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥680.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥54/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=118" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8ffe8; color: #28a745; font-size: 24px;">🖐️</div>
@@ -1861,7 +1882,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥1280.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥102/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=119" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8ffe8; color: #28a745; font-size: 24px;">🍮</div>
@@ -1886,7 +1907,7 @@
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=121" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff0f0; color: #dc3545; font-size: 24px;">📡</div>
@@ -1896,7 +1917,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥2800.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥224/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=122" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff0f0; color: #dc3545; font-size: 24px;">🎮</div>
@@ -1906,7 +1927,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥4500.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥360/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=123" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #fff0f0; color: #dc3545; font-size: 24px;">🛡️</div>
@@ -1931,7 +1952,7 @@
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=109" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f0f7ff; color: #0051d9; font-size: 24px;">🔧</div>
@@ -1941,7 +1962,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥299.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥24/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=110" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f0f7ff; color: #0051d9; font-size: 24px;">📏</div>
@@ -1951,7 +1972,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥199.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥16/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=111" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f0f7ff; color: #0051d9; font-size: 24px;">🔩</div>
@@ -1976,7 +1997,7 @@
                     </div>
                     <!-- 内容区 -->
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=113" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f5f5f5; color: #666; font-size: 24px;">🔴</div>
@@ -1986,7 +2007,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥25.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥2/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=114" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f5f5f5; color: #666; font-size: 24px;">🟠</div>
@@ -1996,7 +2017,7 @@
                                 <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;">¥380.00 <span style="color: #999; font-weight: normal; font-size: 14px;">(租 ¥30/天)</span></div>
                             </div>
                         </div>
-                        <div style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0, 81, 217, 0.15); this.style.transform='translateY(-2px);'" onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
+                        <div class="content-card">
                             <div style="height: 100px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
                                 <img src="https://picsum.photos/200/200?random=115" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                 <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #f5f5f5; color: #666; font-size: 24px;">🟡</div>
