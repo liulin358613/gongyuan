@@ -815,6 +815,157 @@
             }
         }
 
+        /* 面包屑导航样式 */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: var(--deep-gray);
+        }
+        
+        .breadcrumb a {
+            color: var(--klein-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--hermes-orange);
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--border);
+        }
+        
+        .breadcrumb-current {
+            color: var(--deep-gray);
+            font-weight: 500;
+        }
+
+        /* 侧边导航样式 */
+        .content-row {
+            display: flex;
+            gap: 0;
+            margin-top: 20px;
+            position: relative;
+            min-height: 630px;
+        }
+
+        .filter {
+            width: 220px;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* 自定义滚动条样式 */
+        .filter::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .filter::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .filter::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .filter::-webkit-scrollbar-thumb:hover {
+            background: var(--ai-desc);
+        }
+
+        .filter-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--deep-gray);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: calc(100% - 20px);
+            overflow: hidden;
+        }
+
+        .filter-item {
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--deep-gray);
+            transition: all 0.2s;
+            position: relative;
+            width: 100%;
+            text-align: left;
+        }
+
+        .filter-item:hover {
+            color: var(--klein-blue);
+            background-color: #f0f7ff;
+            font-weight: 500;
+            transform: translateX(4px);
+        }
+
+        #sub-filter-items .filter-item {
+            padding: 8px 14px;
+            font-size: 14px;
+        }
+
+        #sub-filter-items .filter-item:hover {
+            color: var(--klein-blue);
+            background-color: #f0f7ff;
+            font-weight: 500;
+            transform: translateX(4px);
+        }
+
+        .filter-item.active {
+            background-color: var(--light-bg);
+            color: var(--klein-blue);
+            font-weight: 500;
+        }
+
+        /* 三级筛选浮层 */
+        .sub-filter-popup {
+            position: absolute;
+            left: 220px;
+            top: 0;
+            width: 200px;
+            background: var(--white);
+            border-radius: 0 12px 12px 0;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            border-left: none;
+            padding: 16px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .sub-filter-popup:hover {
+            display: block;
+        }
+
+        .card-grid {
+            flex: 1;
+            min-width: 0;
+        }
+
         @media (max-width: 768px) {
             .content-row {
                 flex-direction: column;
@@ -823,6 +974,8 @@
             .filter {
                 width: 100%;
                 margin-bottom: 10px;
+                position: static;
+                max-height: none;
             }
 
             .tab {
@@ -842,7 +995,7 @@
             <!-- 搜索容器 -->
             <div class="blank-container" style="padding: 40px 30px;">
                 <div class="search-container" style="display: flex; align-items: center; gap: 28px;">
-                        <div class="logo-section" onclick="window.parent.location.reload();" style="cursor: pointer;">
+                        <div class="logo-section" onclick="window.location.href='index.html';" style="cursor: pointer;">
                             <div class="search-logo" style="color: #0051D9;">Raas.Dao</div>
                             <div class="logo-slogan" style="color: #0051D9;">共创・共享</div>
                         </div>
@@ -945,6 +1098,42 @@
             </div>
         </div>
     </div>
+
+    <!-- 主内容区域 -->
+    <main class="container">
+
+        <!-- 方案卡片区域 -->
+         <div class="content-container">
+            
+            <!-- 面包屑导航 -->
+            <div class="breadcrumb">
+                <a href="index.html">首页</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">产品列表</span>
+            </div>
+            
+            <div class="content-row">
+                <div class="filter">
+                    <div class="filter-section">
+                        <div class="filter-items" id="industry-filter">
+                            <div class="filter-item">全部产业</div>
+                            <!-- 产业项将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 三级筛选浮层 -->
+                <div class="sub-filter-popup" id="sub-filter" style="display: none;">
+                    <div class="filter-items" id="sub-filter-items">
+                        <!-- 细分领域将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div class="card-grid">
+                    <!-- 这里保持不变，仅添加侧边导航 -->
+                </div>
+            </div>
+         </div>
+       
+    </main>
 
     <!-- 登录弹窗容器 -->
     <div class="modal-overlay" id="loginModal">
@@ -1059,6 +1248,313 @@
                 window.location.reload();
             }, 500);
         }
+
+        // 产业数据
+        const industryData = {
+            '生产力方案共享': [
+                { name: '供应链', sub: ['智能仓储', '物流配送', '采购管理', '供应商管理'] },
+                { name: '训练基地', sub: ['技能培训', '资质认证', '实训设备', '课程体系'] },
+                { name: '共享工厂', sub: ['生产设备', '车间场地', '工艺流程', '质量控制'] },
+                { name: '人类资源', sub: ['人才招聘', '职业规划', '薪酬管理', '绩效考核'] }
+            ],
+            '机器人设备共享': [
+                { name: '工业机器人', sub: ['焊接机器人', '搬运机器人', '装配机器人', '喷涂机器人'] },
+                { name: '服务机器人', sub: ['餐饮机器人', '酒店机器人', '医疗机器人', '教育机器人'] },
+                { name: '协作机器人', sub: ['轻量级协作', '高精度协作', '移动协作', '双臂协作'] },
+                { name: '移动机器人', sub: ['AGV', 'AMR', '巡检机器人', '配送机器人'] }
+            ],
+            '资源共享': [
+                { name: '设备资源', sub: ['数控设备', '检测设备', '3D打印', '自动化产线'] },
+                { name: '技术资源', sub: ['专利技术', '研发成果', '工艺方案', '设计服务'] },
+                { name: '人才资源', sub: ['专家顾问', '技术人员', '管理人才', '培训讲师'] },
+                { name: '场地资源', sub: ['厂房', '仓库', '实验室', '办公空间'] }
+            ],
+            '共享消费': [
+                { name: '智造品', sub: ['智能硬件', '工业产品', '消费电子', '家居用品'] },
+                { name: '应用软件产品', sub: ['工业软件', '管理软件', '设计软件', '数据分析'] },
+                { name: '游戏产品', sub: ['手机游戏', 'PC游戏', 'VR游戏', '休闲游戏'] },
+                { name: '影视文学', sub: ['电影', '电视剧', '小说', '动漫'] }
+            ],
+            '我的社群': [
+                { name: '行业交流', sub: ['技术讨论', '市场分析', '趋势预测', '经验分享'] },
+                { name: '资源对接', sub: ['供应链对接', '技术合作', '人才交流', '项目合作'] },
+                { name: '活动组织', sub: ['行业峰会', '技术培训', '展览展示', ' networking'] },
+                { name: '兴趣小组', sub: ['技术研究', '创业孵化', '投资交流', '公益活动'] }
+            ]
+        };
+
+        // 填充产业数据
+        function populateIndustries(tabName) {
+            const industryFilter = document.getElementById('industry-filter');
+            if (!industryFilter) return;
+            
+            industryFilter.innerHTML = '';
+            
+            let industries = [];
+            
+            if (!tabName) {
+                // 如果没有选中tab，显示默认的15个产业
+                industries = [
+                    { name: '机器人、设备共享', sub: ['工业机器人', '服务机器人', '协作机器人', '移动机器人'] },
+                    { name: '共享工厂', sub: ['智能工厂', '柔性制造', '定制化生产', '协同制造'] },
+                    { name: '设备资源', sub: ['数控机床', '加工中心', '检测设备', '自动化设备'] },
+                    { name: '技术资源', sub: ['专利技术', '工艺方案', '设计服务', '研发成果'] },
+                    { name: '人才资源', sub: ['专家顾问', '技术人员', '培训服务', '管理咨询'] },
+                    { name: '场地资源', sub: ['厂房', '仓库', '实验室', '办公空间'] },
+                    { name: '智造品', sub: ['工业产品', '农业产品', '服务业产品', '智能硬件'] },
+                    { name: '应用软件产品', sub: ['工业软件', '管理软件', '设计软件', '数据分析'] },
+                    { name: '游戏产品', sub: ['手机游戏', 'PC游戏', 'VR游戏', '休闲游戏'] },
+                    { name: '影视文学', sub: ['电影', '电视剧', '小说', '动漫'] },
+                    { name: '游乐服务产品', sub: ['主题乐园', '休闲娱乐', '文化体验', '旅游服务'] },
+                    { name: '教育培训产品', sub: ['职业培训', '技能提升', '认证考试', '在线课程'] },
+                    { name: '健康医疗产品', sub: ['医疗器械', '健康管理', '医疗服务', '康复护理'] },
+                    { name: '智能家居产品', sub: ['智能家电', '安防系统', '环境控制', '家庭自动化'] },
+                    { name: '绿色环保产品', sub: ['节能设备', '环保材料', '可再生能源', '循环利用'] }
+                ];
+            } else {
+                // 只显示当前选中tab的产业数据
+                industries = industryData[tabName] || [];
+            }
+            
+            // 填充产业数据
+            industries.forEach((industry, index) => {
+                const item = document.createElement('div');
+                item.className = 'filter-item';
+                item.textContent = industry.name;
+                item.dataset.industry = industry.name;
+                item.dataset.sub = JSON.stringify(industry.sub);
+                
+                // 添加鼠标悬停事件
+                item.addEventListener('mouseenter', (e) => {
+                    showSubFilter(e.target);
+                });
+                
+                // 添加鼠标离开事件
+                item.addEventListener('mouseleave', (e) => {
+                    // 延迟检查鼠标是否在三级菜单上
+                    setTimeout(() => {
+                        const subFilter = document.getElementById('sub-filter');
+                        const isHoveringSubFilter = subFilter && subFilter.matches(':hover');
+                        const isHoveringOtherFilterItem = document.querySelector('.filter-item:hover');
+                        
+                        if (!isHoveringSubFilter && !isHoveringOtherFilterItem) {
+                            // 鼠标不在三级菜单上，也不在其他二级菜单上，取消二级菜单的选中状态
+                            item.style.color = '';
+                            item.style.backgroundColor = '';
+                            item.style.fontWeight = '';
+                            // 隐藏三级菜单
+                            hideSubFilter();
+                        }
+                    }, 200);
+                });
+                
+                // 添加点击事件
+                item.addEventListener('click', () => {
+                    // 处理产业点击
+                    handleIndustryClick(industry.name);
+                });
+                
+                industryFilter.appendChild(item);
+            });
+        }
+
+        // 高亮对应的二级菜单
+        function highlightParentSideNav(item) {
+            // 移除所有二级菜单的高亮
+            document.querySelectorAll('.filter-item').forEach(navItem => {
+                navItem.style.color = '';
+                navItem.style.backgroundColor = '';
+                navItem.style.fontWeight = '';
+                navItem.style.transform = '';
+            });
+            
+            // 高亮当前二级菜单
+            item.style.color = 'var(--klein-blue)';
+            item.style.backgroundColor = '#f0f7ff';
+            item.style.fontWeight = '500';
+            item.style.transform = 'translateX(4px)';
+        }
+
+        // 计算并调整三级筛选位置
+        function adjustSubFilterPosition(item) {
+            const subFilter = document.getElementById('sub-filter');
+            const rect = item.getBoundingClientRect();
+            const contentRowRect = document.querySelector('.content-row').getBoundingClientRect();
+            
+            // 强制回流以获取正确的尺寸
+            subFilter.offsetHeight;
+            
+            const subFilterRect = subFilter.getBoundingClientRect();
+            
+            // 计算基础位置
+            let top = rect.top - contentRowRect.top;
+            
+            // 计算屏幕高度
+            const windowHeight = window.innerHeight;
+            
+            // 计算三级筛选框底部位置
+            const subFilterBottom = rect.top + subFilterRect.height;
+            
+            // 如果三级筛选框超出屏幕底部，调整位置
+            if (subFilterBottom > windowHeight - 20) { // 20px 底部边距
+                top = windowHeight - subFilterRect.height - contentRowRect.top - 20;
+                // 确保位置不会小于0
+                top = Math.max(0, top);
+            }
+            
+            subFilter.style.top = top + 'px';
+        }
+
+        // 生成三级筛选
+        function generateSubFilter(subItems, item) {
+            const subFilterItems = document.getElementById('sub-filter-items');
+            subFilterItems.innerHTML = '';
+            
+            subItems.forEach(sub => {
+                const subItem = document.createElement('div');
+                subItem.className = 'filter-item';
+                subItem.textContent = sub;
+                
+                // 添加鼠标悬停事件，保持二级菜单高亮
+                subItem.addEventListener('mouseenter', () => {
+                    highlightParentSideNav(item);
+                });
+                
+                subItem.addEventListener('click', () => {
+                    // 处理细分领域点击
+                    handleSubIndustryClick(sub);
+                });
+                
+                subFilterItems.appendChild(subItem);
+            });
+            
+            // 为三级筛选容器添加鼠标悬停事件，保持二级菜单高亮
+            const subFilter = document.getElementById('sub-filter');
+            subFilter.addEventListener('mouseenter', () => {
+                highlightParentSideNav(item);
+            });
+            
+            // 生成内容后调整位置
+            adjustSubFilterPosition(item);
+        }
+
+        // 显示三级筛选
+        function showSubFilter(target) {
+            const industry = target.dataset.industry;
+            const sub = JSON.parse(target.dataset.sub || '[]');
+            
+            const subFilter = document.getElementById('sub-filter');
+            if (industry && sub && sub.length > 0) {
+                subFilter.style.display = 'block';
+                generateSubFilter(sub, target);
+                
+                // 高亮对应的二级菜单
+                highlightParentSideNav(target);
+            } else {
+                subFilter.style.display = 'none';
+            }
+        }
+
+        // 隐藏三级筛选
+        function hideSubFilter() {
+            const subFilter = document.getElementById('sub-filter');
+            if (subFilter) {
+                subFilter.style.display = 'none';
+                // 取消所有二级菜单的选中状态
+                document.querySelectorAll('.filter-item').forEach(navItem => {
+                    navItem.style.color = '';
+                    navItem.style.backgroundColor = '';
+                    navItem.style.fontWeight = '';
+                    navItem.style.transform = '';
+                });
+            }
+        }
+
+        // 处理产业点击
+        function handleIndustryClick(industryName) {
+            console.log('点击了产业:', industryName);
+            // 这里可以添加产业点击后的逻辑
+        }
+
+        // 处理细分领域点击
+        function handleSubIndustryClick(subIndustryName) {
+            console.log('点击了细分领域:', subIndustryName);
+            // 这里可以添加细分领域点击后的逻辑
+        }
+
+        // 处理标签切换
+        function handleTabClick(tabName) {
+            // 这里可以添加标签切换后的逻辑
+            console.log('切换到标签:', tabName);
+            // 更新产业数据
+            populateIndustries(tabName);
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化产业数据
+            populateIndustries();
+            
+            // 添加标签点击事件
+            const mainTabs = document.querySelectorAll('.main-tab');
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 移除所有标签的active类
+                    mainTabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前标签的active类
+                    tab.classList.add('active');
+                    // 处理标签点击
+                    const tabName = tab.dataset.tab;
+                    handleTabClick(tabName);
+                    // 隐藏三级筛选
+                    document.getElementById('sub-filter').style.display = 'none';
+                });
+            });
+            
+            // 鼠标离开筛选区域时隐藏三级筛选
+            const filterElement = document.querySelector('.filter');
+            if (filterElement) {
+                filterElement.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        const subFilter = document.getElementById('sub-filter');
+                        if (!document.querySelector('.filter:hover') && (!subFilter || !subFilter.matches(':hover'))) {
+                            document.getElementById('sub-filter').style.display = 'none';
+                            // 鼠标离开筛选区域，取消所有二级菜单的选中状态
+                            document.querySelectorAll('.filter-item').forEach(navItem => {
+                                navItem.style.color = '';
+                                navItem.style.backgroundColor = '';
+                                navItem.style.fontWeight = '';
+                                navItem.style.transform = '';
+                            });
+                        }
+                    }, 200);
+                });
+            }
+            
+            // 鼠标悬停在三级筛选上时保持显示
+            const subFilter = document.getElementById('sub-filter');
+            if (subFilter) {
+                subFilter.addEventListener('mouseenter', () => {
+                    subFilter.style.display = 'block';
+                });
+                
+                subFilter.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        const filterElement = document.querySelector('.filter');
+                        if ((!filterElement || !filterElement.matches(':hover')) && !subFilter.matches(':hover')) {
+                            subFilter.style.display = 'none';
+                            // 鼠标离开三级筛选，取消所有二级菜单的选中状态
+                            document.querySelectorAll('.filter-item').forEach(navItem => {
+                                navItem.style.color = '';
+                                navItem.style.backgroundColor = '';
+                                navItem.style.fontWeight = '';
+                                navItem.style.transform = '';
+                            });
+                        }
+                    }, 200);
+                });
+            }
+        });
     </script>
 </body>
 </html>
