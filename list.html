@@ -820,53 +820,113 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 16px;
+            margin: 14px;
             font-size: 14px;
             color: var(--deep-gray);
         }
         
         .breadcrumb a {
-            color: var(--klein-blue);
+            color: #999;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            padding: 2px 6px;
+            border-radius: 4px;
         }
         
         .breadcrumb a:hover {
-            color: var(--hermes-orange);
-            text-decoration: underline;
+            color: var(--klein-blue);
+            text-decoration: none;
         }
         
         .breadcrumb-separator {
-            color: var(--border);
+            color: var(--ai-desc);
+            font-size: 12px;
+        }
+        
+        .breadcrumb-separator::before {
+            content: '›';
+            font-size: 16px;
+            font-weight: 300;
         }
         
         .breadcrumb-current {
             color: var(--deep-gray);
             font-weight: 500;
+            padding: 2px 6px;
+            background: transparent;
+            border-radius: 4px;
         }
 
         /* 侧边导航样式 */
         .content-row {
             display: flex;
-            gap: 0;
-            margin-top: 20px;
+            gap: 8px;
+            margin: 14px 0;
             position: relative;
             min-height: 630px;
+            align-items: stretch;
+        }
+        
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 220px;
+            flex-shrink: 0;
+        }
+        
+        .filter:first-child {
+            flex-shrink: 0;
+        }
+        
+        .filter:last-child {
+            flex: 1;
+            min-height: 300px;
+        }
+        
+        .card-grid {
+            flex: 1;
+            min-width: 0;
+            border-radius: 8px;
+            background:#ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sort-stats-container {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .card-content-container {
+            min-height: 400px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 16px 10px;
+            flex: 1;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 220px;
+            flex-shrink: 0;
         }
 
         .filter {
-            width: 220px;
             background: var(--white);
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 16px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
-            flex-shrink: 0;
-            position: sticky;
-            top: 100px;
-            max-height: calc(100vh - 120px);
-            overflow-y: auto;
-            overflow-x: hidden;
+            position: static;
+        }
+        
+        .filter-section .filter-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
         }
 
         /* 自定义滚动条样式 */
@@ -900,8 +960,6 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            max-height: calc(100% - 20px);
-            overflow: hidden;
         }
 
         .filter-item {
@@ -944,15 +1002,15 @@
         /* 三级筛选浮层 */
         .sub-filter-popup {
             position: absolute;
-            left: 220px;
+            left: 200px;
             top: 0;
             width: 200px;
             background: var(--white);
-            border-radius: 0 12px 12px 0;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            /* border-radius: 0 12px 12px 0; */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border);
             border-left: none;
-            padding: 16px;
+            padding: 8px;
             z-index: 1000;
             display: none;
         }
@@ -961,9 +1019,135 @@
             display: block;
         }
 
+        .sort-stats-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .sort-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .sort-btn {
+            padding: 2px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .sort-btn:hover {
+            border-color: #4a90e2;
+        }
+        
+        .sort-btn.active {
+            background-color: #4a90e2;
+            color: white;
+            border-color: #4a90e2;
+        }
+        
+        .stats-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .product-count {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .view-controls {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .view-btn {
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .view-btn:hover {
+            border-color: #4a90e2;
+        }
+        
+        .view-btn.active {
+            background-color: #4a90e2;
+            color: white;
+            border-color: #4a90e2;
+        }
+        
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn:hover {
+            border-color: #4a90e2;
+            color: #4a90e2;
+        }
+        
+        .page-info {
+            font-size: 14px;
+            color: #666;
+        }
+        
         .card-grid {
             flex: 1;
             min-width: 0;
+            border-radius: 8px;
+            background:#ffffff;
+        }
+        
+        .card-content-container {
+            min-height: 400px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 16px 10px;
+        }
+        
+        .content-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .content-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .filter-section .filter-items {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-section .filter-items .content-card {
+            max-width: 100%;
         }
 
         @media (max-width: 768px) {
@@ -983,6 +1167,11 @@
                 font-size: 15px;
             }
         }
+        /* //热门推荐卡片 */
+        .card-image-container {
+            height: 92px;
+        }
+        
     </style>
 </head>
 <body>
@@ -1113,11 +1302,50 @@
             </div>
             
             <div class="content-row">
-                <div class="filter">
-                    <div class="filter-section">
-                        <div class="filter-items" id="industry-filter">
-                            <div class="filter-item">全部产业</div>
-                            <!-- 产业项将通过JavaScript动态生成 -->
+                <div class="filter-container">
+                    <div class="filter">
+                        <div class="filter-section">
+                            <div class="filter-items" id="industry-filter">
+                                <div class="filter-item">全部产业</div>
+                                <!-- 产业项将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter">
+                        <div class="filter-section">
+                            <div class="filter-title">热门推荐</div>
+                            <div class="filter-items" style="gap: 8px;">
+                                <div class="content-card">
+                                    <div class="card-image-container" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                        <img src="https://picsum.photos/200/200?random=201" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                                    </div>
+                                    <div style="padding: 8px;">
+                                        <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">工业机器人</div>
+                                        <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>12.50<span style="font-size: 12px;">万</span></div>
+                                    </div>
+                                </div>
+                                <div class="content-card">
+                                    <div class="card-image-container" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                        <img src="https://picsum.photos/200/200?random=202" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                                    </div>
+                                    <div style="padding: 8px;">
+                                        <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">AGV移动机器人</div>
+                                        <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8.20<span style="font-size: 12px;">万</span></div>
+                                    </div>
+                                </div>
+                                 <div class="content-card">
+                                    <div class="card-image-container" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                        <img src="https://picsum.photos/200/200?random=202" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                                    </div>
+                                    <div style="padding: 8px;">
+                                        <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">AGV移动机器人</div>
+                                        <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8.20<span style="font-size: 12px;">万</span></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1128,7 +1356,256 @@
                     </div>
                 </div>
                 <div class="card-grid">
-                    <!-- 这里保持不变，仅添加侧边导航 -->
+                    <!-- 排序、统计容器 -->
+                    <div class="sort-stats-container">
+                        <div class="sort-options">
+                            <button class="sort-btn active">默认</button>
+                            <button class="sort-btn">人气</button>
+                            <button class="sort-btn">销量</button>
+                        </div>
+                        <div class="stats-controls">
+                            <span class="product-count">共 23 条</span>
+                        </div>
+                    </div>
+                    <!-- 内容容器 -->
+                    <div class="card-content-container">
+                        <!-- 第一行 -->
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=101" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">六轴工业机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">高精度工业自动化解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>12.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>10000/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=102" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🦾</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">协作机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">灵活协作型机器人解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>6.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>5440/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=103" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">AGV移动机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能物流搬运解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8.20<span style="font-size: 12px;">万</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=104" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">服务机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能服务型机器人解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>5.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>4400/天)</span></div>
+                            </div>
+                        </div>
+                        <!-- 第二行 -->
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=105" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">焊接机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">高精度焊接解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>9.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>7840/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=106" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🦾</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">码垛机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">高效码垛解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>7.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>6000/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=107" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">巡检机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能巡检解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>6.20<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>4960/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=108" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">清洁机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能清洁解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>3.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>2800/天)</span></div>
+                            </div>
+                        </div>
+                        <!-- 第三行 -->
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=109" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">工业机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能工业自动化解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>10.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>8400/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=110" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🦾</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">教育机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能教育解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>4.20<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>3360/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=111" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">医疗机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能医疗解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>15.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>12640/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=112" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">配送机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能配送解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>5.20<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>4160/天)</span></div>
+                            </div>
+                        </div>
+                        <!-- 第四行 -->
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=113" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">安防机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能安防解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>8.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>7040/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=114" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🦾</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">娱乐机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能娱乐解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>3.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>3040/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=115" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">农业机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能农业解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>7.20<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>5760/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=116" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">建筑机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能建筑解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>12.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>10240/天)</span></div>
+                            </div>
+                        </div>
+                        <!-- 第五行 -->
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=117" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">矿山机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能矿山解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>18.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>14800/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=118" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🦾</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">水下机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能水下作业解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>15.20<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>12160/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=119" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🚜</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">消防机器人</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能消防解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>13.80<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>11040/天)</span></div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div style="height: 160px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://picsum.photos/200/200?random=120" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">🤖</div>
+                            </div>
+                            <div style="padding: 8px;">
+                                <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">巡检无人机</div>
+                                <div style="font-size: 14px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">智能巡检解决方案</div>
+                                <div style="font-size: 16px; color: #F37021; font-weight: 500; margin-bottom: 4px;"><span style="font-size: 14px;">¥</span>9.50<span style="font-size: 12px;">万</span> <span style="color: #999; font-weight: normal; font-size: 14px;">(租 <span style="font-size: 12px;">¥</span>7600/天)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 页码容器 -->
+                    <div class="pagination-container" style="padding: 16px 10px; display: flex; justify-content: right; align-items: center; gap: 10px; border-top: 1px solid #e0e0e0; ">
+                        <span style="font-size: 14px; color: #666;">共 23 条</span>
+                        <button class="page-btn" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #e0e0e0; background: #fff; color: #666; border-radius: 4px; cursor: pointer;">&lt;</button>
+                        <button class="page-btn active" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #4a90e2; background: #4a90e2; color: #fff; border-radius: 4px; cursor: pointer;">1</button>
+                        <button class="page-btn" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #e0e0e0; background: #fff; color: #666; border-radius: 4px; cursor: pointer;">2</button>
+                        <button class="page-btn" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #e0e0e0; background: #fff; color: #666; border-radius: 4px; cursor: pointer;">&gt;</button>
+                        <span style="font-size: 14px; color: #666;">前往</span>
+                        <input type="text" style="width: 40px; height: 28px; border: 1px solid #e0e0e0; border-radius: 4px; text-align: center; font-size: 14px;" value="1">
+                        <span style="font-size: 14px; color: #666;margin-right: 30px;">页</span>
+                    </div>
                 </div>
             </div>
          </div>
@@ -1292,8 +1769,11 @@
             
             let industries = [];
             
-            if (!tabName) {
-                // 如果没有选中tab，显示默认的15个产业
+            // 检查tabName是否有效
+            const validTabName = tabName && tabName !== 'null' && tabName !== 'undefined';
+            
+            if (!validTabName) {
+                // 如果没有选中tab或tab无效，显示默认的15个产业
                 industries = [
                     { name: '机器人、设备共享', sub: ['工业机器人', '服务机器人', '协作机器人', '移动机器人'] },
                     { name: '共享工厂', sub: ['智能工厂', '柔性制造', '定制化生产', '协同制造'] },
@@ -1350,8 +1830,11 @@
                 
                 // 添加点击事件
                 item.addEventListener('click', () => {
-                    // 处理产业点击
-                    handleIndustryClick(industry.name);
+                    // 获取当前选中的tab
+                    const activeTab = document.querySelector('.main-tab.active');
+                    const tabName = activeTab ? activeTab.dataset.tab : '';
+                    // 跳转到带有参数的URL
+                    window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&industry=${encodeURIComponent(industry.name)}`;
                 });
                 
                 industryFilter.appendChild(item);
@@ -1421,8 +1904,11 @@
                 });
                 
                 subItem.addEventListener('click', () => {
-                    // 处理细分领域点击
-                    handleSubIndustryClick(sub);
+                    // 获取当前选中的tab
+                    const activeTab = document.querySelector('.main-tab.active');
+                    const tabName = activeTab ? activeTab.dataset.tab : '';
+                    // 跳转到带有参数的URL
+                    window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&industry=${encodeURIComponent(item.dataset.industry)}&sub=${encodeURIComponent(sub)}`;
                 });
                 
                 subFilterItems.appendChild(subItem);
@@ -1490,13 +1976,100 @@
             populateIndustries(tabName);
         }
 
+        // 从URL参数中获取值
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 更新面包屑导航
+        function updateBreadcrumb(tab, industry, sub) {
+            const breadcrumb = document.querySelector('.breadcrumb');
+            if (!breadcrumb) return;
+            
+            let breadcrumbHTML = '<a href="index.html">首页</a>';
+            
+            // 检查参数有效性
+            const validTab = tab && tab !== 'null' && tab !== 'undefined';
+            const validIndustry = industry && industry !== 'null' && industry !== 'undefined';
+            const validSub = sub && sub !== 'null' && sub !== 'undefined';
+            
+            // 构建面包屑导航
+            if (validIndustry) {
+                // 如果有industry参数，显示二级菜单
+                if (validTab) {
+                    // 如果有tab参数，显示一级tab
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><a href="list.html?tab=${encodeURIComponent(tab)}">${tab}</a>`;
+                }
+                
+                // 如果有sub参数，显示二级菜单作为链接，三级菜单作为当前页
+                if (validSub) {
+                    const tabParam = validTab ? encodeURIComponent(tab) : '';
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><a href="list.html?tab=${tabParam}&industry=${encodeURIComponent(industry)}">${industry}</a>`;
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${sub}</span>`;
+                } else {
+                    // 如果没有sub参数，当前页是二级菜单
+                    breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${industry}</span>`;
+                }
+            } else if (validTab) {
+                // 如果只有tab参数，显示一级tab
+                breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${tab}</span>`;
+            } else if (validSub) {
+                // 如果只有sub参数，显示三级菜单
+                breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">${sub}</span>`;
+            } else {
+                // 如果没有任何参数，显示产品列表
+                breadcrumbHTML += `<span class="breadcrumb-separator"></span><span class="breadcrumb-current">产品列表</span>`;
+            }
+            
+            breadcrumb.innerHTML = breadcrumbHTML;
+        }
+
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
+            // 从URL参数中获取值
+            const tabParam = getUrlParam('tab');
+            const industryParam = getUrlParam('industry');
+            const subParam = getUrlParam('sub');
+            const searchParam = getUrlParam('search');
+            
             // 初始化产业数据
-            populateIndustries();
+            populateIndustries(tabParam);
+            
+            // 选中对应的tab
+            const mainTabs = document.querySelectorAll('.main-tab');
+            let tabFound = false;
+            mainTabs.forEach(tab => {
+                if (tabParam && tabParam !== 'null' && tabParam !== 'undefined' && tab.dataset.tab === tabParam) {
+                    tab.classList.add('active');
+                    tabFound = true;
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // 如果没有找到对应的tab且tabParam不为null/undefined，保持第一个tab为active
+            if (!tabFound && tabParam && tabParam !== 'null' && tabParam !== 'undefined' && mainTabs.length > 0) {
+                mainTabs[0].classList.add('active');
+            }
+            
+            // 填充搜索框内容
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput && searchParam && searchParam !== 'null' && searchParam !== 'undefined') {
+                searchInput.value = searchParam;
+            }
+            
+            // 为list页面的搜索发送按钮添加点击事件
+            const searchSendBtn = document.querySelector('.send-btn');
+            if (searchSendBtn) {
+                searchSendBtn.addEventListener('click', function() {
+                    const searchInput = document.querySelector('.search-input');
+                    const searchText = searchInput ? searchInput.value.trim() : '';
+                    window.location.href = `list.html?search=${encodeURIComponent(searchText)}`;
+                });
+            }
             
             // 添加标签点击事件
-            const mainTabs = document.querySelectorAll('.main-tab');
             mainTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     // 移除所有标签的active类
@@ -1508,6 +2081,8 @@
                     handleTabClick(tabName);
                     // 隐藏三级筛选
                     document.getElementById('sub-filter').style.display = 'none';
+                    // 更新面包屑导航
+                    updateBreadcrumb(tabName, null, null);
                 });
             });
             
@@ -1554,7 +2129,122 @@
                     }, 200);
                 });
             }
+            
+            // 如果有搜索参数且没有industry参数，随机选择一个二级菜单
+            let finalIndustryParam = industryParam;
+            if (searchParam && searchParam !== 'null' && searchParam !== 'undefined' && (!industryParam || industryParam === 'null' || industryParam === 'undefined')) {
+                // 获取所有二级菜单
+                const filterItems = document.querySelectorAll('.filter-item');
+                if (filterItems.length > 1) { // 排除"全部产业"选项
+                    // 随机选择一个二级菜单
+                    const randomIndex = Math.floor(Math.random() * (filterItems.length - 1)) + 1; // 从1开始，跳过"全部产业"
+                    finalIndustryParam = filterItems[randomIndex].textContent.trim();
+                }
+            }
+            
+            // 更新面包屑导航
+            updateBreadcrumb(tabParam, finalIndustryParam, subParam);
+            
+            // 动态填充推荐区卡片
+            populateRecommendedCards();
+            
+            // 为所有卡片添加点击事件
+            addCardClickEvents();
         });
+        
+        // 为所有卡片添加点击事件
+        function addCardClickEvents() {
+            // 为内容卡片添加点击事件
+            const contentCards = document.querySelectorAll('.card-content-container .content-card');
+            contentCards.forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function() {
+                    window.location.href = 'solution_detail.html';
+                });
+            });
+            
+            // 为推荐卡片添加点击事件
+            const recommendedCards = document.querySelectorAll('.filter:last-child .content-card');
+            recommendedCards.forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function() {
+                    window.location.href = 'solution_detail.html';
+                });
+            });
+        }
+        
+        // 动态填充推荐区卡片
+        function populateRecommendedCards() {
+            const recommendedSection = document.querySelector('.filter:last-child .filter-items');
+            if (!recommendedSection) return;
+            
+            // 计算推荐区的高度（使用offsetHeight以获取实际高度）
+            const recommendedSectionHeight = recommendedSection.offsetHeight;
+            
+            // 计算单个卡片的高度（包括间距）
+            const cardHeight = 160; // 卡片高度约为160px（100px图片 + 60px内容）
+            
+            // 计算可以容纳的卡片数量
+            const maxCards = Math.max(1, Math.ceil(recommendedSectionHeight / cardHeight));
+            
+            // 卡片数据
+            const cardData = [
+                { name: '工业机器人', description: '智能工业自动化解决方案', price: '12.50万', img: '201', icon: '🤖' },
+                { name: 'AGV移动机器人', description: '智能物流搬运解决方案', price: '8.20万', img: '202', icon: '🚜' },
+                { name: '协作机器人', description: '灵活协作型机器人解决方案', price: '6.80万', img: '203', icon: '🦾' },
+                { name: '服务机器人', description: '智能服务型机器人解决方案', price: '5.50万', img: '204', icon: '🤖' },
+                { name: '焊接机器人', description: '高精度焊接解决方案', price: '9.80万', img: '205', icon: '🤖' },
+                { name: '码垛机器人', description: '高效码垛解决方案', price: '7.50万', img: '206', icon: '🦾' },
+                { name: '巡检机器人', description: '智能巡检解决方案', price: '6.20万', img: '207', icon: '🚜' },
+                { name: '清洁机器人', description: '智能清洁解决方案', price: '3.50万', img: '208', icon: '🤖' },
+                { name: '矿山机器人', description: '智能矿山解决方案', price: '18.50万', img: '209', icon: '🤖' },
+                { name: '水下机器人', description: '智能水下作业解决方案', price: '15.20万', img: '210', icon: '🦾' },
+                { name: '消防机器人', description: '智能消防解决方案', price: '13.80万', img: '211', icon: '🚜' },
+                { name: '巡检无人机', description: '智能巡检解决方案', price: '9.50万', img: '212', icon: '🤖' },
+                { name: '教育机器人', description: '智能教育解决方案', price: '4.20万', img: '213', icon: '🤖' },
+                { name: '医疗机器人', description: '智能医疗解决方案', price: '15.80万', img: '214', icon: '🦾' },
+                { name: '配送机器人', description: '智能配送解决方案', price: '5.20万', img: '215', icon: '🚜' }
+            ];
+            
+            // 清空现有卡片
+            recommendedSection.innerHTML = '';
+            
+            // 添加新卡片
+            for (let i = 0; i < maxCards; i++) {
+                const data = cardData[i % cardData.length];
+                const card = createRecommendedCard(data);
+                recommendedSection.appendChild(card);
+            }
+        }
+        
+        // 创建推荐卡片
+        function createRecommendedCard(data) {
+            const card = document.createElement('div');
+            card.className = 'content-card';
+            card.style.cursor = 'pointer';
+            card.innerHTML = `
+                <div class="card-image-container" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                    <img src="https://picsum.photos/200/200?random=${data.img}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: #e8f4ff; color: #0051d9; font-size: 24px;">${data.icon}</div>
+                </div>
+                <div style="padding: 8px;">
+                    <div style="font-size: 14px; font-weight: 500; color: #333; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">${data.name}</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4;">${data.description}</div>
+                    <div style="font-size: 16px; color: #F37021; font-weight: 500;"><span style="font-size: 14px;">¥</span>${data.price}</div>
+                </div>
+            `;
+            // 添加点击事件
+            card.addEventListener('click', function() {
+                window.location.href = 'solution_detail.html';
+            });
+            return card;
+        }
+        
+        // 监听窗口大小变化，重新填充推荐区卡片
+        window.addEventListener('resize', populateRecommendedCards);
     </script>
+
+    <!-- 公共页脚引用 -->
+    <iframe src="footer.html" style="width: 100%; height: 200px; border: none;"></iframe>
 </body>
 </html>

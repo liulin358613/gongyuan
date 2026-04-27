@@ -1552,7 +1552,7 @@
                                             });
                                         </script>
                                     </div>
-                                    <button class="send-btn" style="background: #06b6d4; width: 36px; height: 36px;">
+                                    <button class="send-btn" style="background: #06b6d4; width: 36px; height: 36px;" onclick="searchSubmit()">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <line x1="12" y1="3" x2="12" y2="21"></line>
                                             <polyline points="3 12 12 3 21 12"></polyline>
@@ -2474,8 +2474,8 @@
                     
                     // 添加点击事件
                     item.addEventListener('click', () => {
-                        // 点击时显示三级筛选
-                        showSubFilter(item);
+                        // 跳转到list页面，带上tab和industry参数
+                        window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&industry=${encodeURIComponent(industry.name)}`;
                     });
                     
                     industryFilter.appendChild(item);
@@ -2572,8 +2572,10 @@
                 });
                 
                 subItem.addEventListener('click', () => {
-                    // 点击时跳转到list页面
-                    window.location.href = 'list.html';
+                    // 跳转到list页面，带上tab、industry和sub参数
+                    const tabName = currentTab;
+                    const industryName = item.dataset.industry;
+                    window.location.href = `list.html?tab=${encodeURIComponent(tabName)}&industry=${encodeURIComponent(industryName)}&sub=${encodeURIComponent(sub)}`;
                 });
                 subFilterItems.appendChild(subItem);
             });
@@ -2703,6 +2705,15 @@
 
         // 启动自动轮播
         startAutoPlay();
+
+        // 搜索提交函数
+        function searchSubmit() {
+            // 获取搜索框的值
+            const searchInput = document.querySelector('.search-input');
+            const searchText = searchInput ? searchInput.value.trim() : '';
+            // 跳转到list页面
+            window.location.href = `list.html?search=${encodeURIComponent(searchText)}`;
+        }
 
     </script>
 
