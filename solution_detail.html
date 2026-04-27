@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>工业智能生产力平台</title>
+    <title>RaaS商城解决方案详情页</title>
     <style>
         /* 基础重置 */
         * {
@@ -29,7 +29,6 @@
             background: var(--light-bg);
             color: #333;
             line-height: 1.6;
-            padding-top: 60px;
         }
 
         /* 通用容器 */
@@ -39,45 +38,156 @@
             /* padding: 0 20px; */
         }
 
-        /* ========== 顶部固定导航 ========== */
-        .fixed-header {
+    </style>
+    <style>
+        /* 基础重置与全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        /* 登录弹窗容器样式 */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 70px;
-            background: var(--klein-blue);
-            z-index: 9999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-        }
-        .logo {
-            width: 220px;
-            height: auto;
-            min-height: 50px;
-            background: var(--white);
-            color: var(--klein-blue);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            height: 100%;
+            display: none;
             justify-content: center;
-            font-weight: bold;
-            font-size: 22px;
-            border-radius: 6px;
+            align-items: center;
+            z-index: 99999;
+            backdrop-filter: blur(3px);
         }
 
-        .logo-slogan {
+        /* 确保iframe背景透明 */
+        .modal-iframe {
+            background-color: transparent !important;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-iframe {
+            width: 420px;
+            height: 500px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .modal-iframe {
+                width: 90%;
+                height: 500px;
+            }
+        }
+
+        /* 退出确认弹窗样式 */
+        .logout-modal-content {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            padding: 30px 36px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
+            text-align: center;
+            z-index: 100000;
+        }
+
+        .logout-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1D2129;
+            margin-bottom: 16px;
+        }
+
+        .logout-modal-message {
+            font-size: 14px;
+            color: #86909C;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .logout-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .logout-modal-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
-            background: linear-gradient(135deg, var(--klein-blue), var(--hermes-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-top: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
         }
+
+        .logout-modal-btn.cancel {
+            background-color: #FFFFFF;
+            color: #1D2129;
+        }
+
+        .logout-modal-btn.cancel:hover {
+            background-color: #F7F8FA;
+        }
+
+        .logout-modal-btn.confirm {
+            background-color: #F37021;
+            color: #FFFFFF;
+            border-color: #F37021;
+        }
+
+        .logout-modal-btn.confirm:hover {
+            background-color: #e0631d;
+            border-color: #e0631d;
+        }
+
+        :root {
+            /* 主色调 */
+            --klein-blue: #0051D9;
+            --hermes-orange: #F37021;
+            --deep-gray: #1D2129;
+            --light-bg: #F2F3F5;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+
+            /* AI对话框配色 */
+            --ai-chat-bg: #FFFFFF;
+            --ai-input-bg: #FFFFFF;
+            --ai-text: #1D2129;
+            --ai-desc: #86909C;
+            --ai-border: #E5E7EB;
+            --ai-send: var(--hermes-orange);
+            --ai-tag-bg: #F2F3F5;
+            --ai-tag-hover: #E5E7EB;
+
+            /* 响应式断点 */
+            --breakpoint-md: 992px;
+            --breakpoint-sm: 768px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            color: #333;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 36px;
+        }
+
+        /* 通用容器 */
+        .container {
+            width: 1440px;
+            margin: 0 auto;
+        }
+
+
         .user-area {
             display: flex;
             align-items: center;
@@ -96,85 +206,571 @@
             border: none;
             padding: 8px 16px;
             border-radius: 4px;
-            font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
         }
         .login:hover {
             background: var(--hermes-orange);
-            color: #fff;
-        }
-        .user-area .login-btn {
-            background: #FFFFFF;
-            color: #0051D9;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-        }
-        .user-area .login-btn:hover {
-            background: #F37021;
-            color: #fff;
-        }
-        .user-area .location {
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: default;
-        }
-        .user-area .location .location-icon {
-            width: 16px;
-            height: 16px;
-            color: #F37021;
-        }
-        .user-area .location .city-name {
-            color: #F37021;
-        }
-        .user-area .location .switch-city {
-            color: #86909C;
-        }
-        .user-area .company-name {
-            color: #0051D9;
-            font-weight: 600;
-        }
-        .user-area .user-name {
-            color: #F37021;
-        }
-        .user-area .logout-btn {
-            color: #FF4D4F;
-            cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        .user-area .logout-btn:hover {
-            background: #FFF1F0;
-            color: #F5222D;
+            color: var(--white);
         }
 
+        /* 头部区域 */
+        header {
+            /* background: var(--klein-blue); */
+            /* padding: 14px 0; */
+            color: var(--white);
+        }
+
+        /* AI智能体对话框 */
+        .ai-chat-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            background: var(--ai-chat-bg);
+            border-radius: 24px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--ai-border);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* 搜索容器 */
+        .blank-container {
+            width: 100%;
+            max-width: 1440px;
+            padding: 50px 30px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 0;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .search-logo {
+            font-size: 44px;
+            font-weight: bold;
+            color: var(--klein-blue);
+            white-space: nowrap;
+            font-family: 'Arial', sans-serif;
+            text-shadow: 0 2px 4px rgba(0, 81, 217, 0.1);
+            padding: 0;
+            margin: 0;
+        }
+
+        .logo-slogan {
+            font-size: 16px;
+            color: var(--deep-gray);
+            font-weight: 500;
+            background: linear-gradient(135deg, var(--klein-blue), var(--hermes-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: left;
+            white-space: nowrap;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .search-main {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 80%;
+        }
+
+        .search-input-row {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 44px;
+        }
+
+        /* 底部输入框 */
+        .input-container {
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-gray);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-box textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #9c9fa4;
+            font-size: 16px;
+            resize: none;
+            height: 24px;
+            max-height: 160px;
+            line-height: 24px;
+            padding: 4px 0;
+            overflow: hidden !important;
+            scrollbar-width: none;
+        }
+
+        .input-box textarea::-webkit-scrollbar {
+            display: none;
+        }
+
+        .input-box textarea::placeholder {
+            color: var(--classic-gray);
+            font-size: 16px;
+        }
+
+        .input-tool-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-gray);
+            gap: 12px;
+            min-height: 40px;
+        }
+
+        .input-tool-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .input-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .input-tag {
+            background: var(--light-gray);
+            color: var(--deep-gray);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .input-tag:hover {
+            background: var(--border-gray);
+        }
+
+
+        .send-btn {
+            background: #06b6d4;
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            padding: 0;
+            line-height: 1;
+            min-width: 36px;
+            min-height: 36px;
+            z-index: 9999;
+        }
+
+        .send-btn:hover {
+            background: #04a4be;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .quote-btn {
+            background: var(--hermes-orange);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(243, 112, 33, 0.2);
+        }
+
+        .quote-btn:hover {
+            background: #e66a1a;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(243, 112, 33, 0.3);
+        }
+
+        .cart-btn {
+            background: white;
+            color: var(--klein-blue);
+            border: 1px solid var(--klein-blue);
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .cart-btn:hover {
+            background: var(--klein-blue);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 81, 217, 0.2);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: var(--hermes-orange);
+            color: white;
+            border-radius: 10px;
+            min-width: 24px;
+            height: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            padding: 0 6px;
+        }
+
+        .search-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .tag {
+            background: white;
+            color: var(--deep-gray);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .tag:hover {
+            background: var(--klein-blue);
+            color: white;
+            border-color: var(--klein-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 81, 217, 0.2);
+        }
+
+        .ai-input-box textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--ai-text);
+            font-size: 16px;
+            resize: none;
+            height: 24px;
+            max-height: 160px;
+            line-height: 24px;
+            padding: 4px 0;
+            overflow: hidden !important;
+            scrollbar-width: none;
+        }
+
+        .ai-input-box textarea::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ai-input-box textarea::placeholder {
+            color: var(--ai-desc);
+            font-size: 16px;
+        }
+
+        .ai-tool-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--ai-border);
+        }
+
+        .ai-tool-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn {
+            color: var(--ai-desc);
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            color: var(--klein-blue);
+        }
+
+        .upload-btn input {
+            display: none;
+        }
+
+        .content-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .section-tab.active {
+            border-bottom: 2px solid #0051d9;
+            color: #0051d9;
+            font-weight: 500;
+        }
+
+        .divider {
+            color: #d1d5db;
+            font-size: 16px;
+            padding: 0 4px;
+        }
+
+        .ai-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .ai-tag {
+            background: var(--ai-tag-bg);
+            color: var(--ai-text);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        .ai-tag:hover {
+            background: var(--ai-tag-hover);
+        }
+
+        /* 模型标签样式 */
+        .model-tags {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .model-tag {
+            background: var(--light-bg);
+            color: var(--deep-gray);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .model-tag:hover {
+            background: var(--border);
+            color: var(--klein-blue);
+        }
+
+        .model-tag.active {
+            background: var(--klein-blue);
+            color: white;
+        }
+
+        .send-btn {
+            background: var(--ai-send);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background-color 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #04a4be;
+        }
+
+        /* 标签导航容器 */
+        .tab-container {
+            border-bottom: 1px solid var(--border);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1000;
+        }
+
+        /* 导航标签栏 */
+        .tab-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            height: 60px;
+        }
+
+        .tab {
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 24px;
+            font-weight: 500;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .tab:hover {
+            color: var(--klein-blue);
+            background-color: var(--light-bg);
+        }
+
+        .main-tab {
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 24px;
+            font-weight: 500;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .main-tab:hover {
+            color: var(--klein-blue);
+            background-color: var(--light-bg);
+        }
+
+        .main-tab.active {
+            color: var(--klein-blue);
+            border-bottom: 3px solid var(--klein-blue);
+            font-weight: 600;
+        }
+
+        .create-center-btn {
+            padding: 12px 30px;
+            margin: 0 12px;
+            background: linear-gradient(135deg, var(--hermes-orange), #FF8A4C);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: center;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(243, 112, 33, 0.3);
+        }
+
+        .create-center-btn:hover {
+            background: linear-gradient(135deg, #e0631d, #FF7A3C);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(243, 112, 33, 0.4);
+        }
+
+        .create-center-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(243, 112, 33, 0.3);
+        }
 
         .ai-team-btn {
             background: var(--hermes-orange);
-            color: #fff;
+            color: var(--white);
             border: none;
             border-radius: 8px;
-            padding: 14px 32px;
-            font-size: 18px;
+            padding: 14px 36px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            white-space: nowrap;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(243, 112, 33, 0.3);
             position: relative;
             overflow: hidden;
-            min-width: 180px;
         }
 
         .ai-team-btn::before {
@@ -197,717 +793,369 @@
             box-shadow: 0 6px 16px rgba(243, 112, 33, 0.4);
         }
 
-        /* 响应式 */
-        @media (max-width: 768px) {
-        }
-
-        /* 滚动条美化 */
-        /* 全局滚动条 */
+        /* 自定义滚动条样式 */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
 
-        /* 滚动条轨道 */
         ::-webkit-scrollbar-track {
             background: var(--light-bg);
             border-radius: 4px;
         }
 
-        /* 滚动条滑块 */
         ::-webkit-scrollbar-thumb {
-            background: var(--light-gray);
+            background: var(--border);
             border-radius: 4px;
             transition: background 0.3s;
         }
 
-        /* 滚动条滑块悬停 */
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--klein-blue);
+            background: var(--ai-desc);
         }
 
-        /* 滚动条角落 */
-        ::-webkit-scrollbar-corner {
-            background: var(--light-bg);
+        /* 响应式适配 */
+        @media (max-width: 1350px) {
+            .container {
+                width: 100%;
+                padding: 0 40px;
+                box-sizing: border-box;
+            }
         }
 
-        /* Firefox 滚动条 */
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: var(--light-gray) var(--light-bg);
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .main-tab {
+                padding: 0 12px;
+                font-size: 15px;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .search-main {
+                width: 100%;
+                max-width: none;
+            }
         }
 
+        @media (max-width: 992px) {
+            .case-know-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-row {
+                flex-direction: column;
+            }
+
+            .filter {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .tab {
+            padding: 0 12px;
+            font-size: 15px;
+        }
+        }
+
+        /* 面包屑导航样式 */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 14px;
+            font-size: 14px;
+            color: var(--deep-gray);
+        }
+        
+        .breadcrumb a {
+            color: #999;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--klein-blue);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--ai-desc);
+            font-size: 12px;
+        }
+        
+        .breadcrumb-separator::before {
+            content: '›';
+            font-size: 16px;
+            font-weight: 300;
+        }
+        
+        .breadcrumb-current {
+            color: var(--deep-gray);
+            font-weight: 500;
+            padding: 2px 6px;
+            background: transparent;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
 <body>
-    <!-- 顶部固定导航 -->
-    <div class="fixed-header">
-        <div class="logo" onclick="goToIndex()">
-            RaaS.Dao
-            <span class="logo-slogan">共创・共享</span>
-        </div>
-        <div class="user-area" id="userArea">
-            <!-- 登录状态将通过JavaScript动态更新 -->
-        </div>
-    </div>
-    <!-- 退出确认对话框 -->
-    <div id="logoutModal" class="logout-modal">
-        <div class="logout-modal-content">
-            <h3 class="logout-modal-title">确认退出</h3>
-            <p class="logout-modal-message">您确定要退出登录吗？退出后需要重新登录才能继续使用。</p>
-            <div class="logout-modal-buttons">
-                <button id="logoutCancelBtn" class="logout-modal-btn cancel">取消</button>
-                <button id="logoutConfirmBtn" class="logout-modal-btn confirm">确定</button>
-            </div>
-        </div>
-    </div>
-    <!-- 登录弹窗 -->
-    <div id="loginModal" class="login-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>账号登录</h2>
-                <button class="close-btn" id="closeBtn">×</button>
-            </div>
-            <div class="login-tabs">
-                <div class="login-tab active">密码登录</div>
-                <div class="login-tab">验证码登录</div>
-            </div>
-            <div class="login-form">
-                <input type="text" class="form-input" placeholder="请输入手机号/用户名">
-                <div class="password-input">
-                    <input type="password" class="form-input" placeholder="请输入密码">
-                    <button class="eye-btn">👁️</button>
+    <!-- 公共头部引用 -->
+    <iframe src="header.html" style="width: 100%; height: 36px; border: none; position: fixed; top: 0; left: 0; z-index: 99998;"></iframe>
+
+    <!-- 头部区域 -->
+    <header>
+        <div class="container">
+            <!-- 搜索容器 -->
+            <div class="blank-container" style="padding: 40px 30px;">
+                <div class="search-container" style="display: flex; align-items: center; gap: 28px;">
+                        <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                            <div class="search-logo" style="color: #0051D9;">Raas.Dao</div>
+                            <div class="logo-slogan" style="color: #0051D9;">共创・共享</div>
+                        </div>
+                    <div class="search-main" style="flex: 1; max-width: 900px;">
+                        <div class="chat-input-wrapper">
+                            <div class="input-container" style="border-radius: 24px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); padding: 16px 30px;border: 1px solid #ededed">
+                                <div class="input-box">
+                                    <textarea placeholder="请输入..." class="search-input" rows="1" style="font-size: 16px; height: 40px; line-height: 40px;"></textarea>
+                                </div>
+                                <div class="input-tool-row" style="padding-top: 8px; gap: 8px;">
+                                    <div class="input-tool-left" style="gap: 12px; display: flex; align-items: center;">
+                                        <div class="upload-btn" style="color: #666; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid #e0e0e0; border-radius: 4px; transition: all 0.3s; background: #f9fafb;">
+                                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                                <circle cx="12" cy="13" r="4"></circle>
+                                            </svg>
+                                            以图找品
+                                        </div>
+                                        <span style="color: #ccc; margin: 0 4px;">|</span>
+                                        <div style="display: flex; gap: 8px; align-items: center;">
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">供应链</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">训练基地</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">共享工厂</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">设备租赁</div>
+                                            <div class="quick-tag" style="color: #666; font-size: 13px; cursor: pointer; padding: 2px 8px; border: 1px solid #e0e0e0; border-radius: 12px; transition: all 0.3s; background: #f9fafb;">影视/文学</div>
+                                        </div>
+                                        <style>
+                                            .quick-tag:hover {
+                                                background: #06b6d4;
+                                                color: white;
+                                                border-color: #06b6d4;
+                                                transform: translateY(-1px);
+                                                box-shadow: 0 2px 4px rgba(6, 182, 212, 0.2);
+                                            }
+                                            .upload-btn:hover {
+                                                background: #06b6d4;
+                                                color: white;
+                                                border-color: #06b6d4;
+                                                transform: translateY(-1px);
+                                                box-shadow: 0 2px 4px rgba(6, 182, 212, 0.2);
+                                            }
+                                        </style>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const uploadBtn = document.querySelector('.upload-btn');
+                                                const imageUpload = document.getElementById('imageUpload');
+                                                if (uploadBtn) {
+                                                    uploadBtn.addEventListener('click', function() {
+                                                        if (imageUpload) {
+                                                            imageUpload.click();
+                                                        }
+                                                    });
+                                                }
+                                                if (imageUpload) {
+                                                    imageUpload.addEventListener('change', function(e) {
+                                                        if (e.target.files && e.target.files[0]) {
+                                                            const fileName = e.target.files[0].name;
+                                                            alert('已选择文件: ' + fileName);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                    <button class="send-btn" onclick="window.location.href='list.html'" style="background: #06b6d4; width: 36px; height: 36px;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="12" y1="3" x2="12" y2="21"></line>
+                                            <polyline points="3 12 12 3 21 12"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-section" style="display: flex; align-items: center;">
+                        <button class="cart-btn" style="display: flex; align-items: center; gap: 6px; padding: 8px 40px; border: 1px solid #08b6d4; border-radius: 6px; background: #ffffff; color: #08b6d4; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                            <span class="btn-icon">🛒</span>
+                            <span class="btn-text">购物车</span>
+                            <span class="cart-badge" style="background: #f37021; color: white; font-size: 12px; padding: 1px 6px; border-radius: 10px; font-weight: bold;">99+</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="code-input" style="display: none;">
-                    <input type="text" class="form-input" placeholder="请输入验证码">
-                    <button class="code-btn">获取验证码</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 标签导航 -->
+    <div class="tab-container">
+        <div class="container">
+            <div class="tab-row">
+                <div class="tabs">
+                    <button class="create-center-btn" onclick="window.parent.location.href='ai.html'">创造中心</button>
+                    <div class="main-tab" data-tab="生产力方案共享" onclick="window.location.href='list.html?tab=生产力方案共享'">生产力方案共享</div>
+                    <div class="main-tab" data-tab="机器人设备共享" onclick="window.location.href='list.html?tab=机器人设备共享'">机器人设备共享</div>
+                    <div class="main-tab" data-tab="资源共享" onclick="window.location.href='list.html?tab=资源共享'">资源共享</div>
+                    <div class="main-tab" data-tab="共享消费" onclick="window.location.href='list.html?tab=共享消费'">共享消费</div>
+                    <div class="main-tab" data-tab="我的社群" onclick="window.location.href='list.html?tab=我的社群'">我的社群</div>
                 </div>
-                <button class="login-button">登录</button>
-            </div>
-            <div class="login-links">
-                <a href="#">忘记密码</a>
-                <span>|</span>
-                <a href="#">注册账号</a>
-            </div>
-            <div class="other-login-line">
-                <span>其他登录方式</span>
-            </div>
-            <div class="other-login-buttons">
-                <div class="other-login-btn"></div>
-                <div class="other-login-btn"></div>
             </div>
         </div>
     </div>
 
-    <style>
-        /* 弹窗通用样式 */
-        .login-modal,
-        .logout-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            backdrop-filter: blur(2px);
-        }
-        .login-modal.show,
-        .logout-modal.show {
-            display: flex;
-        }
-        /* 登录弹窗样式 */
-        .modal-content {
-            position: relative;
-            background-color: #FFFFFF;
-            border-radius: 12px;
-            width: 420px;
-            height: 500px;
-            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
-            line-height: 1.5;
-            border: 1px solid #E5E7EB;
-            font-family: "Microsoft Yahei", sans-serif;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 10px 12px 20px;
-            border-bottom: 1px solid #E5E7EB;
-        }
-        .modal-header h2 {
-            margin: 0;
-            font-size: 20px;
-            color: #1D2129;
-            font-weight: 600;
-        }
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: #86909C;
-            transition: all 0.3s;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        .close-btn:hover {
-            color: #0051D9;
-            background-color: #F2F3F5;
-        }
-        .login-tabs {
-            display: flex;
-            padding: 12px 10px 12px 20px;
-        }
-        .login-tab {
-            padding: 8px 24px;
-            cursor: pointer;
-            font-size: 15px;
-            color: #86909C;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        .login-tab.active {
-            color: #0051D9;
-            border-bottom-color: #0051D9;
-            font-weight: 500;
-        }
-        .login-tab:hover:not(.active) {
-            color: #0051D9;
-            opacity: 0.8;
-        }
-        .login-form {
-            margin-bottom: 20px;
-            padding: 12px;
-        }
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s;
-            line-height: 1.4;
-            color: #1D2129;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: #0051D9;
-            box-shadow: 0 0 0 3px rgba(0, 81, 217, 0.1);
-        }
-        .form-input::placeholder {
-            color: #86909C;
-        }
-        .password-input {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        .password-input .form-input {
-            padding-right: 40px;
-            margin-bottom: 0;
-        }
-        .eye-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: #86909C;
-            transition: all 0.3s;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .eye-btn:hover {
-            color: #0051D9;
-        }
-        .code-input {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-        .code-input .form-input {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        .code-btn {
-            padding: 0 16px;
-            background-color: #F2F3F5;
-            color: #1D2129;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            white-space: nowrap;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .code-btn:hover {
-            border-color: #0051D9;
-            color: #0051D9;
-            background-color: #FFFFFF;
-        }
-        .code-btn:active {
-            background-color: #F2F3F5;
-        }
-        .login-button {
-            width: 80%;
-            padding: 12px;
-            background-color: #0051D9;
-            color: #FFFFFF;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            margin: auto;
-            transition: all 0.3s;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .login-button:hover {
-            background-color: #0047c9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.2);
-        }
-        .login-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.2);
-        }
-        .login-links {
-            text-align: center;
-            font-size: 13px;
-            color: #86909C;
-            margin-bottom: 20px;
-        }
-        .login-links a {
-            color: #0051D9;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .login-links a:hover {
-            color: #0047c9;
-            text-decoration: underline;
-        }
-        .login-links span {
-            margin: 0 8px;
-        }
-        .other-login-line {
-            position: relative;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .other-login-line::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background-color: #E5E7EB;
-            z-index: 1;
-        }
-        .other-login-line span {
-            position: relative;
-            background-color: #FFFFFF;
-            padding: 0 16px;
-            z-index: 2;
-            font-size: 13px;
-            color: #86909C;
-        }
-        .other-login-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-        }
-        .other-login-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1px solid #E5E7EB;
-            background-color: #FFFFFF;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            position: relative;
-        }
-        .other-login-btn:hover {
-            border-color: #0051D9;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 81, 217, 0.15);
-        }
-        .other-login-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(0, 81, 217, 0.15);
-        }
-        /* 第三方登录图标样式 */
-        .other-login-btn:nth-child(1) {
-            background-color: transparent;
-            color: #FFFFFF;
-            border-color: #E5E7EB;
-        }
-        .other-login-btn:nth-child(1):hover {
-            background-color: transparent;
-            border-color: #0051D9;
-        }
-        .other-login-btn:nth-child(2) {
-            background-color: transparent;
-            color: #FFFFFF;
-            border-color: #E5E7EB;
-        }
-        .other-login-btn:nth-child(2):hover {
-            background-color: transparent;
-            border-color: #0051D9;
-        }
-        /* 图标样式 */
-        .other-login-btn::before {
-            font-size: 18px;
-        }
-        .other-login-btn:nth-child(1)::before {
-            content: "";
-            width: 70%;
-            height: 70%;
-            background-image: url('images/wx.jpg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            display: inline-block;
-        }
-        .other-login-btn:nth-child(2)::before {
-            content: "";
-            width: 80%;
-            height: 80%;
-            background-image: url('images/zfb.jpg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            display: inline-block;
-        }
-        /* 退出确认对话框样式 */
-        .logout-modal-content {
-            background-color: #FFFFFF;
-            border-radius: 12px;
-            padding: 30px 36px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 8px 32px rgba(0, 81, 217, 0.15);
-            text-align: center;
-            animation: modalFadeIn 0.3s ease;
-        }
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .logout-modal-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1D2129;
-            margin-bottom: 16px;
-        }
-        .logout-modal-message {
-            font-size: 14px;
-            color: #86909C;
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
-        .logout-modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-        .logout-modal-btn {
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid #E5E7EB;
-        }
-        .logout-modal-btn.cancel {
-            background-color: #FFFFFF;
-            color: #1D2129;
-        }
-        .logout-modal-btn.cancel:hover {
-            background-color: #F7F8FA;
-        }
-        .logout-modal-btn.confirm {
-            background-color: #F37021;
-            color: #FFFFFF;
-            border-color: #F37021;
-        }
-        .logout-modal-btn.confirm:hover {
-            background-color: #e0631d;
-            border-color: #e0631d;
-        }
-    </style>
+    <!-- 面包屑导航 -->
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span class="breadcrumb-separator"></span>
+            <a href="list.html?tab=生产力方案共享">生产力方案共享</a>
+            <span class="breadcrumb-separator"></span>
+            <a href="list.html?tab=生产力方案共享&industry=汽车制造">汽车制造</a>
+            <span class="breadcrumb-separator"></span>
+            <span class="breadcrumb-current">机器人焊接 + 自动上下料</span>
+        </div>
+    </div>
+
+    <!-- 登录弹窗容器 -->
+    <div class="modal-overlay" id="loginModal">
+        <iframe class="modal-iframe" src="login_modal.html" style="background-color: transparent;"></iframe>
+    </div>
+
+    <!-- 退出确认弹窗 -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="logout-modal-content">
+            <h3 class="logout-modal-title">退出登录</h3>
+            <p class="logout-modal-message">确定要退出登录吗？</p>
+            <div class="logout-modal-buttons">
+                <button class="logout-modal-btn cancel" onclick="hideLogoutModal()">取消</button>
+                <button class="logout-modal-btn confirm" onclick="logout()">确定</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // 页面加载时更新头部
-        window.addEventListener('DOMContentLoaded', function() {
-            const userArea = document.getElementById('userArea');
-            // 检查登录状态
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            console.log('登录状态:', isLoggedIn);
-            
-            if (isLoggedIn) {
-                // 已登录状态
-                userArea.innerHTML = `
-                    <div class="welcome">
-                        <span>👋</span>
-                        <span>
-                            <span class="company-name">东莞嘉东科技有限公司</span> 
-                            <span class="user-name">林工</span> 
-                            欢迎您！
-                            <span class="logout-btn" onclick="showLogoutConfirm()">[退出]</span>
-                        </span>
-                    </div>
-                    <button class="login-btn">
-                        <span class="msg-icon">📩</span>
-                        <span>消息 12</span>
-                    </button>
-                    <button class="login-btn" onclick="goToPersonalCenter()">
-                        <span>👤</span>
-                        <span>个人中心</span>
-                    </button>
-                    <div class="location">
-                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span class="city-name">北京</span>
-                        <span class="switch-city">[切换城市]</span>
-                    </div>
-                `;
-                console.log('已登录状态头部加载完成');
-            } else {
-                // 未登录状态
-                userArea.innerHTML = `
-                    <div class="welcome">
-                        <span>👋</span>
-                        <span>欢迎使用智能生产力平台</span>
-                    </div>
-                    <button class="login-btn" onclick="showLoginModal()">
-                        <span>👤</span>
-                        <span>登录</span>
-                    </button>
-                    <div class="location">
-                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span class="city-name">北京</span>
-                        <span class="switch-city">[切换城市]</span>
-                    </div>
-                `;
-                console.log('未登录状态头部加载完成');
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadBtn = document.querySelector('.upload-btn');
+            const imageUpload = document.getElementById('imageUpload');
+            if (uploadBtn) {
+                uploadBtn.addEventListener('click', function() {
+                    if (imageUpload) {
+                        imageUpload.click();
+                    }
+                });
             }
+            if (imageUpload) {
+                imageUpload.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        const fileName = e.target.files[0].name;
+                        alert('已选择文件: ' + fileName);
+                    }
+                });
+            }
+
+            // 处理来自子页面的消息
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'SHOW_LOGIN_MODAL') {
+                    showLoginModal();
+                    // 阻止消息继续向上传播
+                    event.stopPropagation();
+                } else if (event.data.type === 'SHOW_LOGOUT_MODAL') {
+                    showLogoutModal();
+                    // 阻止消息继续向上传播
+                    event.stopPropagation();
+                } else if (event.data.type === 'LOGIN_SUCCESS') {
+                    // 登录成功，隐藏登录弹窗并刷新页面
+                    handleLoginSuccess();
+                    // 阻止消息继续向上传播
+                    event.stopPropagation();
+                } else if (event.data.type === 'CLOSE_MODAL') {
+                    // 关闭登录弹窗
+                    hideLoginModal();
+                    // 阻止消息继续向上传播
+                    event.stopPropagation();
+                }
+            });
         });
-        
-        // 跳转到首页函数
-        function goToIndex() {
-            window.location.href = 'index.html';
-        }
-        
-        // 跳转到个人中心函数
-        function goToPersonalCenter() {
-            window.location.href = 'personal_center.html';
-        }
-        
-        // 显示登录弹窗函数
+
+        // 显示登录弹窗
         function showLoginModal() {
-            const loginModal = document.getElementById('loginModal');
-            if (loginModal) {
-                loginModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.classList.add('show');
             }
         }
-        
-        // 隐藏登录弹窗函数
+
+        // 隐藏登录弹窗
         function hideLoginModal() {
-            const loginModal = document.getElementById('loginModal');
-            if (loginModal) {
-                loginModal.classList.remove('show');
-                document.body.style.overflow = '';
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.classList.remove('show');
             }
         }
-        
-        // 显示退出确认对话框
-        function showLogoutConfirm() {
-            const logoutModal = document.getElementById('logoutModal');
-            if (logoutModal) {
-                logoutModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
+
+        // 显示退出确认弹窗
+        function showLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.classList.add('show');
             }
         }
-        
-        // 隐藏退出确认对话框
-        function hideLogoutConfirm() {
-            const logoutModal = document.getElementById('logoutModal');
-            if (logoutModal) {
-                logoutModal.classList.remove('show');
-                document.body.style.overflow = '';
+
+        // 隐藏退出确认弹窗
+        function hideLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.classList.remove('show');
             }
         }
-        
-        // 退出登录函数
+
+        // 执行退出登录
         function logout() {
             localStorage.removeItem('isLoggedIn');
+            hideLogoutModal();
+            // 刷新页面以更新导航栏状态
             window.location.reload();
         }
-        
-        // 初始化登录弹窗
-        window.addEventListener('DOMContentLoaded', function() {
-            const closeBtn = document.getElementById('closeBtn');
-            const loginModal = document.getElementById('loginModal');
-            const loginTabs = document.querySelectorAll('.login-tab');
-            const passwordInput = document.querySelector('.password-input');
-            const codeInput = document.querySelector('.code-input');
-            const eyeBtn = document.querySelector('.eye-btn');
-            const passwordField = document.querySelector('.password-input .form-input');
-            const loginButton = document.querySelector('.login-button');
-            
-            // 关闭登录弹窗
-            if (closeBtn) {
-                closeBtn.addEventListener('click', hideLoginModal);
-            }
-            
-            // 点击弹窗外部关闭
-            if (loginModal) {
-                loginModal.addEventListener('click', function(e) {
-                    if (e.target === loginModal) {
-                        hideLoginModal();
-                    }
-                });
-                
-                // 按ESC键关闭弹窗
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && loginModal.classList.contains('show')) {
-                        hideLoginModal();
-                    }
-                });
-            }
-            
-            // 登录方式切换
-            if (loginTabs) {
-                loginTabs.forEach((tab, index) => {
-                    tab.addEventListener('click', () => {
-                        loginTabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        
-                        if (index === 0) {
-                            // 密码登录
-                            if (passwordInput) passwordInput.style.display = 'block';
-                            if (codeInput) codeInput.style.display = 'none';
-                        } else {
-                            // 验证码登录
-                            if (passwordInput) passwordInput.style.display = 'none';
-                            if (codeInput) codeInput.style.display = 'flex';
-                        }
-                    });
-                });
-            }
-            
-            // 密码显示/隐藏
-            if (eyeBtn && passwordField) {
-                eyeBtn.addEventListener('click', () => {
-                    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordField.setAttribute('type', type);
-                    eyeBtn.textContent = type === 'password' ? '👁️' : '🙈';
-                });
-            }
-            
-            // 登录按钮点击
-            if (loginButton) {
-                loginButton.addEventListener('click', () => {
-                    // 模拟登录成功
-                    localStorage.setItem('isLoggedIn', 'true');
-                    hideLoginModal();
-                    // 刷新页面，显示已登录头部
-                    window.location.reload();
-                });
-            }
-        });
-        
-        // 初始化退出确认对话框
-        window.addEventListener('DOMContentLoaded', function() {
-            const logoutCancelBtn = document.getElementById('logoutCancelBtn');
-            const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
-            const logoutModal = document.getElementById('logoutModal');
-            
-            if (logoutCancelBtn) {
-                logoutCancelBtn.addEventListener('click', hideLogoutConfirm);
-            }
-            
-            if (logoutConfirmBtn) {
-                logoutConfirmBtn.addEventListener('click', function() {
-                    hideLogoutConfirm();
-                    logout();
-                });
-            }
-            
-            if (logoutModal) {
-                logoutModal.addEventListener('click', function(e) {
-                    if (e.target === logoutModal) {
-                        hideLogoutConfirm();
-                    }
-                });
-                
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && logoutModal.classList.contains('show')) {
-                        hideLogoutConfirm();
-                    }
-                });
-            }
-        });
-    </script>
 
-    <!-- 面包屑导航和AI团队按钮 -->
-    <div class="container">
-        <div style="margin: 20px 0 -18px 0; font-size: 14px; color: var(--light-gray); display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center;">
-                <a href="index.html" style="color: var(--light-gray); text-decoration: none; transition: color 0.3s;">首页</a>
-                <span style="margin: 0 8px;">/</span>
-                <a href="#" style="color: var(--light-gray); text-decoration: none; transition: color 0.3s;">农业方案库</a>
-                <span style="margin: 0 8px;">/</span>
-                <span style="color: var(--deep-gray);">【汽车制造】机器人焊接 + 自动上下料</span>
-            </div>
-            <button class="ai-team-btn" onclick="window.location.href='ai.html'">创造中心</button>
-        </div>
-    </div>
+        // 处理登录成功
+        function handleLoginSuccess() {
+            // 设置登录状态到localStorage
+            localStorage.setItem('isLoggedIn', 'true');
+            console.log('登录成功，设置isLoggedIn为true');
+            // 隐藏登录弹窗
+            hideLoginModal();
+            // 刷新页面以更新导航栏状态
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        }
+    </script>
 
     <!-- 内容区 -->
     <div class="container">
-        <div style="min-height: 600px; background-color: var(--white); border-radius: 0; box-shadow: var(--card-shadow); margin: 30px 0;">
-            <div style="display: grid; grid-template-columns: 4fr 1fr; gap: 10px;">
+        <div style="min-height: 600px; background-color: var(--white); border-radius: 0; box-shadow: var(--card-shadow); margin: 0 0 30px 0;">
+            <div style="display: grid; grid-template-columns: 4fr 1fr; gap: 8px;">
                 <!-- 左侧内容区 -->
                 <div>
                     <!-- 方案详情 -->
