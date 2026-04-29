@@ -1647,28 +1647,28 @@
                             <hr class="divider">
                             <div class="function-buttons">
 
-                                <button class="function-btn">
+                                <button class="function-btn" onclick="goToPersonalCenter()">
                                     <span class="btn-icon">💰</span>
                                     <span class="btn-text">我的报价</span>
                                 </button>
-                                 <button class="function-btn">
+                                 <button class="function-btn" onclick="goToPersonalCenter()">
                                     <span class="btn-icon">📋</span>
                                     <span class="btn-text">我的订单</span>
                                 </button>
-                                <button class="function-btn" style="position: relative;">
+                                <button class="function-btn" style="position: relative;" onclick="goToAiPage()">
                                     <span class="btn-icon">📩</span>
                                     <span class="btn-text">消息中心</span>
                                     <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
                                 </button>
-                                <button class="function-btn">
+                                <button class="function-btn" onclick="goToPersonalCenter()">
                                     <span class="btn-icon">📊</span>
                                     <span class="btn-text">BI中心</span>
                                 </button>
-                                <button class="function-btn">
+                                <button class="function-btn" onclick="goToPersonalCenter()">
                                     <span class="btn-icon">📄</span>
                                     <span class="btn-text">企业认证</span>
                                 </button>
-                                <button class="function-btn">
+                                <button class="function-btn" onclick="goToPersonalCenter()">
                                     <span class="btn-icon">👤</span>
                                     <span class="btn-text">个人中心</span>
                                 </button>
@@ -2826,28 +2826,28 @@
                         </div>
                         <hr class="divider">
                         <div class="function-buttons">
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">💰</span>
                                 <span class="btn-text">我的报价</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">📋</span>
                                 <span class="btn-text">我的订单</span>
                             </button>
-                            <button class="function-btn" style="position: relative;">
+                            <button class="function-btn" style="position: relative;" onclick="goToAiPage()">
                                 <span class="btn-icon">📩</span>
                                 <span class="btn-text">消息中心</span>
                                 <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 12px; padding: 1px 6px; border-radius: 10px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">📊</span>
                                 <span class="btn-text">BI中心</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">📄</span>
                                 <span class="btn-text">企业认证</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">👤</span>
                                 <span class="btn-text">个人中心</span>
                             </button>
@@ -2865,28 +2865,28 @@
                         </div>
                         <hr class="divider">
                         <div class="function-buttons">
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">💰</span>
                                 <span class="btn-text">我的报价</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">📋</span>
                                 <span class="btn-text">我的订单</span>
                             </button>
-                            <button class="function-btn" style="position: relative;">
+                            <button class="function-btn" style="position: relative;" onclick="goToAiPage()">
                                 <span class="btn-icon">📩</span>
                                 <span class="btn-text">消息中心</span>
                                 <span style="position: absolute; top: 0px; right: 0px; background: #f37021; color: white; font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: bold; min-width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;">99+</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">📊</span>
                                 <span class="btn-text">BI中心</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">📄</span>
                                 <span class="btn-text">企业认证</span>
                             </button>
-                            <button class="function-btn">
+                            <button class="function-btn" onclick="goToPersonalCenter()">
                                 <span class="btn-icon">👤</span>
                                 <span class="btn-text">个人中心</span>
                             </button>
@@ -2908,6 +2908,38 @@
                             });
                         }
                     }, 100);
+                }
+            }
+        }
+
+        // 处理个人中心点击事件
+        function goToPersonalCenter() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                // 已登录，跳转个人中心页面
+                window.location.href = 'personal_center.html';
+            } else {
+                // 未登录，显示登录弹窗
+                const modalOverlay = document.getElementById('loginModalOverlay');
+                if (modalOverlay) {
+                    modalOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        }
+
+        // 处理消息中心点击事件
+        function goToAiPage() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                // 已登录，跳转AI页面
+                window.location.href = 'ai.html';
+            } else {
+                // 未登录，显示登录弹窗
+                const modalOverlay = document.getElementById('loginModalOverlay');
+                if (modalOverlay) {
+                    modalOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
                 }
             }
         }

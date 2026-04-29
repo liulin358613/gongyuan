@@ -47,6 +47,18 @@
             });
         });
 
+        // 处理个人中心点击事件
+        function goToPersonalCenter() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                // 已登录，跳转个人中心页面
+                window.top.location.href = 'personal_center.html';
+            } else {
+                // 未登录，显示登录弹窗
+                window.parent.postMessage({ type: 'SHOW_LOGIN_MODAL' }, '*');
+            }
+        }
+
         // 显示退出确认对话框
         function showLogoutConfirm() {
             // 向父页面发送显示退出确认弹窗的消息
@@ -73,7 +85,7 @@
             <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
+                <a href="#" onclick="goToPersonalCenter()" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">企业认证</a>
                 <div style="display: flex; align-items: center; gap: 6px; color: #FFFFFF;">
                     <svg style="width: 14px; height: 14px; color: #F37021;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -97,7 +109,7 @@
             <div style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: #6c757d; line-height: 36px;">
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">消息中心<span style="color: #F37021; font-weight: bold;">(99+)</span></a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">我的订单</a>
-                <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
+                <a href="#" onclick="goToPersonalCenter()" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">个人中心</a>
                 <a href="#" style="color: #FFFFFF; text-decoration: none; display: inline-block; line-height: 36px;">企业认证</a>
                 <div style="display: flex; align-items: center; gap: 6px; color: #FFFFFF;">
                     <svg style="width: 14px; height: 14px; color: #F37021;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
