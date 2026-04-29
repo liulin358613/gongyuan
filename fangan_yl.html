@@ -28,14 +28,14 @@
             background: var(--white);
             color: #333;
             line-height: 1.6;
-            height: 100%;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
         .container {
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             padding-top: 0;
+            overflow-x: auto;
         }
 
         ::-webkit-scrollbar {
@@ -57,12 +57,27 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--light-gray);
         }
+
+        @media (max-width: 690px) {
+            .truncate-name {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .truncate-2lines {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- 内容区 -->
-    <div class="container" style="overflow-y: auto;">
-        <div style="min-height: calc(100vh - 120px); background-color: var(--white); border-radius: 0; box-shadow: var(--card-shadow);">
+    <div class="container" style="overflow-y: auto; overflow-x: auto; min-width: 100%;">
+        <div style="min-height: calc(100vh - 120px); background-color: var(--white); border-radius: 0; box-shadow: var(--card-shadow); min-width: 850px; max-width: 1100px; margin: 0;">
             <div>
                 <!-- 左侧内容区 -->
                 <div>
@@ -70,8 +85,8 @@
                     <div style="border: 1px solid var(--border); border-radius: 0; overflow: hidden;  box-shadow: var(--card-shadow);">
                         <!-- 方案详情 -->
                         <div style="padding: 0; background-color: var(--white); border-bottom: 1px solid var(--border);">
-                            <div style="padding: 10px 10px 16px 10px; min-height: 320px;">
-                            <div style="display: flex; gap: 20px;">
+                            <div style="padding: 16px 10px 16px 10px; min-height: 320px; overflow-x: auto;">
+                            <div style="display: flex; gap: 20px; flex-wrap: nowrap; min-width: 850px;">
                                 <!-- 左侧图片区 -->
                                 <div style="flex: 0 0 400px;">
                                     <!-- 主图 -->
@@ -79,7 +94,7 @@
                                         <img id="mainImage" src="images/1.png" alt="方案封面图" style="width: 100%; height: 180px; object-fit: cover;">
                                     </div>
                                     <!-- 缩略图 -->
-                                    <div style="display: flex; gap: 8px;">
+                                    <div style="display: flex; gap: 8px; flex-wrap: nowrap; min-width: fit-content;">
                                         <div onclick="changeImage('images/1.png')" style="border: 1px solid var(--klein-blue); padding: 3px; border-radius: 4px; background-color: var(--white); width: 80px; height: 80px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer;">
                                             <img src="images/1.png" alt="缩略图1" style="width: 100%; height: 100%; object-fit: cover; border-radius: 3px;">
                                         </div>
@@ -99,19 +114,19 @@
                                 </div>
                                 
                                 <!-- 右侧信息区 -->
-                                <div style="flex: 1;">
-                                    <div style="display: grid; grid-template-columns: 68px 1fr; gap: 14px 20px; align-items: start;">
+                                <div style="flex: 1; min-width: 400px;">
+                                    <div style="display: grid; grid-template-columns: 68px 1fr; gap: 10px 14px; align-items: start;">
                                         <div style="font-size: 14px; color: var(--light-gray); font-weight: 500; line-height: 1.4; text-align: justify; text-align-last: justify;">名称</div>
-                                        <div style="font-size: 16px; color: var(--deep-gray); font-weight: 500; line-height: 1.4;">【汽车制造】机器人焊接 + 自动上下料 <span style="font-size: 14px; color: var(--light-gray); font-weight: normal;">（方案编号：SOL-2026-001）</span></div>
+                                        <div style="font-size: 16px; color: var(--deep-gray); font-weight: 500; line-height: 1.4;" class="truncate-name">【汽车制造】机器人焊接 + 自动上下料 <span style="font-size: 14px; color: var(--light-gray); font-weight: normal;">（方案编号：SOL-2026-001）</span></div>
                                         
                                         <div style="font-size: 14px; color: var(--light-gray); font-weight: 500; line-height: 1.4; text-align: justify; text-align-last: justify;">概述</div>
-                                        <div style="font-size: 14px; color: var(--deep-gray); line-height: 1.6;">六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。</div>
+                                        <div style="font-size: 14px; color: var(--deep-gray); line-height: 1.6;" class="truncate-2lines">六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。六轴机器人+视觉定位，24小时无人化作业，高精度稳定运行。</div>
                                         
                                         <div style="font-size: 14px; color: var(--light-gray); font-weight: 500; line-height: 1.4; text-align: justify; text-align-last: justify;">适用范围</div>
-                                        <div style="font-size: 14px; color: var(--deep-gray); line-height: 1.6;">适用于汽车整车制造、汽车零部件焊接、工程机械制造、钢结构焊接、家电制造等行业的自动化焊接生产线，特别适合对焊接精度、效率和质量一致性要求较高的生产场景。</div>
+                                        <div style="font-size: 14px; color: var(--deep-gray); line-height: 1.6;" class="truncate-2lines">适用于汽车整车制造、汽车零部件焊接、工程机械制造、钢结构焊接、家电制造等行业的自动化焊接生产线，特别适合对焊接精度、效率和质量一致性要求较高的生产场景.</div>
                                         
                                         <div style="font-size: 14px; color: var(--light-gray); font-weight: 500; line-height: 1.4; text-align: justify; text-align-last: justify;">备注</div>
-                                        <div style="font-size: 14px; color: var(--deep-gray); line-height: 1.6;">本方案需要根据具体生产环境进行定制化调整本方案需要根据具体生产环境进行定制化调整本方案需要根据具体生产环境进行定制化调整</div>
+                                        <div style="font-size: 14px; color: var(--deep-gray); line-height: 1.6;" class="truncate-2lines">本方案需要根据具体生产环境进行定制化调整本方案需要根据具体生产环境进行定制化调整本方案需要根据具体生产环境进行定制化调整</div>
                                     </div>
                                     
                                     <!-- 操作按钮 -->
@@ -176,7 +191,7 @@
                         <div style="height: 3px; background-color: #e0e6ed;"></div>
                         
                         <!-- Tab 区域 -->
-                        <div id="tab-area" style="display: flex; background-color: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); overflow: hidden; min-height: 748px;">
+                        <div id="tab-area" style="display: flex; background-color: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); overflow: hidden; min-height: 748px; min-width: 850px;">
                             <!-- Tab 导航 -->
                             <div style="width: 120px; background-color: var(--light-bg); border-right: 1px solid var(--border);">
                                 <div class="tab-content-btn active" data-tab="3d" style="padding: 16px 22px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 500; color: var(--klein-blue); background-color: var(--white); transition: all 0.3s; border-left: 4px solid var(--klein-blue); position: relative;">3D文件</div>
@@ -384,6 +399,16 @@
                                             </table>
                                         </div>
                                     </div>
+                                    
+                                    <!-- 下载按钮 -->
+                                    <div style="display: flex; justify-content: center; margin-top: 16px;">
+                                        <div style="position: relative;">
+                                            <button onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0, 81, 217, 0.2)';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='var(--klein-blue)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 81, 217, 0.1)';" style="background-color: #fff; color: var(--klein-blue); border: 1px solid var(--klein-blue); border-radius: 6px; padding: 10px 20px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                                                <span>📥</span>
+                                                <span>下载全部BOM清单</span>
+                                            </button>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                                 
@@ -393,36 +418,47 @@
                                         <h3 style="font-size: 16px; font-weight: bold; color: var(--deep-gray); margin: 0; text-align: left;">【技术文档】</h3>
                                     </div>
                                     <div style="padding: 0 10px 10px 10px;">
-                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-                                        <div style="background-color: var(--light-bg); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent;">
-                                            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">方案设计说明书.pdf</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：2.3 MB</div>
-                                        </div>
-                                        <div style="background-color: var(--light-bg); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent;">
-                                            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">电气原理图.pdf</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：1.8 MB</div>
-                                        </div>
-                                        <div style="background-color: var(--light-bg); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent;">
-                                            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">安装调试手册.pdf</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：3.1 MB</div>
-                                        </div>
-                                        <div style="background-color: var(--light-bg); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent;">
-                                            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">维护保养指南.pdf</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：1.5 MB</div>
-                                        </div>
-                                        <div style="background-color: var(--light-bg); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent;">
-                                            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">安全操作规程.pdf</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：800 KB</div>
-                                        </div>
-                                        <div style="background-color: var(--light-bg); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; border: 1px solid transparent;">
-                                            <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">故障排查手册.pdf</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：1.2 MB</div>
+                                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                                        <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 16px; background-color: var(--light-bg); border-radius: 8px; text-decoration: none; color: var(--deep-gray); transition: all 0.3s;">
+                                            <div style="font-size: 20px;">📄</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-weight: 500; line-height: 1.4;">组装说明</div>
+                                                <div style="font-size: 14px; color: var(--light-gray); line-height: 1.4;">PDF格式 | 1.5MB</div>
+                                            </div>
+                                        </a>
+                                        <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 16px; background-color: var(--light-bg); border-radius: 8px; text-decoration: none; color: var(--deep-gray); transition: all 0.3s;">
+                                            <div style="font-size: 20px;">📄</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-weight: 500; line-height: 1.4;">电器操作说明</div>
+                                                <div style="font-size: 14px; color: var(--light-gray); line-height: 1.4;">PDF格式 | 1.2MB</div>
+                                            </div>
+                                        </a>
+                                        <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 16px; background-color: var(--light-bg); border-radius: 8px; text-decoration: none; color: var(--deep-gray); transition: all 0.3s;">
+                                            <div style="font-size: 20px;">📄</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-weight: 500; line-height: 1.4;">测试说明</div>
+                                                <div style="font-size: 14px; color: var(--light-gray); line-height: 1.4;">PDF格式 | 0.8MB</div>
+                                            </div>
+                                        </a>
+                                        <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 16px; background-color: var(--light-bg); border-radius: 8px; text-decoration: none; color: var(--deep-gray); transition: all 0.3s;">
+                                            <div style="font-size: 20px;">📄</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-weight: 500; line-height: 1.4;">方案技术方案书</div>
+                                                <div style="font-size: 14px; color: var(--light-gray); line-height: 1.4;">PDF格式 | 2.5MB</div>
+                                            </div>
+                                        </a>
+                                        
+                                        <!-- 下载按钮 -->
+                                        <div style="display: flex; justify-content: center; margin-top: 16px;">
+                                            <div style="position: relative;">
+                                                <button onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0, 81, 217, 0.2)'" onmouseout="this.style.backgroundColor='#fff'; this.style.color='var(--klein-blue)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 81, 217, 0.1)'" style="background-color: #fff; color: var(--klein-blue); border: 1px solid var(--klein-blue); border-radius: 6px; padding: 10px 20px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                                                    <span>📥</span>
+                                                    <span>下载全部技术文档</span>
+                                                </button>
+                                                <div style="position: absolute; top: -16px; right: -10px; background-color: #FF9500; color: #fff; border-radius: 5px; width: 60px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                                    10元宝
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     </div>
@@ -434,47 +470,28 @@
                                         <h3 style="font-size: 16px; font-weight: bold; color: var(--deep-gray); margin: 0; text-align: left;">【运控程序】</h3>
                                     </div>
                                     <div style="padding: 0 10px 10px 10px;">
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-                                        <div onclick="selectFile(this)" style="background-color: rgba(0, 81, 217, 0.1); border: 1px solid var(--klein-blue); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                                <div style="font-size: 24px;">🔧</div>
+                                    <div style="display: flex; flex-direction: column; gap: 0;">
+                                        <div style="height: 400px; background-color: var(--light-bg); border-radius: 0; border: 1px solid var(--border); padding: 20px; margin: 0;">
+                                            <h4 style="font-size: 16px; font-weight: bold; color: var(--klein-blue); margin-bottom: 16px;">运控程序说明</h4>
+                                            <p style="font-size: 14px; color: var(--deep-gray); line-height: 1.6; margin-bottom: 24px;">运控程序是机器人控制系统的核心，负责机器人的运动控制、路径规划和与外部设备的通信。本方案提供的运控程序经过专业团队精心开发，具有以下核心功能：</p>
+                                            <ul style="font-size: 14px; color: var(--deep-gray); line-height: 1.6; margin-bottom: 24px; padding-left: 20px;">
+                                                <li style="margin-bottom: 8px;"><strong>机器人运动轨迹规划</strong>：精确计算机器人运动路径，确保焊接精度和效率</li>
+                                                <li style="margin-bottom: 8px;"><strong>焊接参数控制</strong>：实时调整焊接电流、电压等参数，保证焊接质量</li>
+                                                <li style="margin-bottom: 8px;"><strong>视觉系统集成</strong>：与视觉定位系统无缝对接，实现精准定位</li>
+                                                <li style="margin-bottom: 8px;"><strong>与PLC的通信接口</strong>：支持多种工业通信协议，方便与生产线集成</li>
+                                                <li style="margin-bottom: 8px;"><strong>故障诊断与报警</strong>：实时监测系统状态，及时发现并处理异常情况</li>
+                                            </ul>
+                                            <div style="margin-top: 30px; display: flex; justify-content: center;">
                                                 <div style="position: relative;">
-                                                    <button onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='var(--klein-blue)';" style="background-color: #fff; color: var(--klein-blue); border: 1px solid var(--klein-blue); border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; transition: all 0.3s;">下载</button>
-                                                    <div style="position: absolute; top: -14px; right: -8px; background-color: #FF9500; color: #fff; border-radius: 4px; width: 50px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">10元宝</div>
+                                                    <button onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0, 81, 217, 0.2)';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='var(--klein-blue)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 81, 217, 0.1)';" style="background-color: #fff; color: var(--klein-blue); border: 1px solid var(--klein-blue); border-radius: 6px; padding: 10px 20px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                                                        <span>📥</span>
+                                                        <span>下载运控程序</span>
+                                                    </button>
+                                                    <div style="position: absolute; top: -16px; right: -10px; background-color: #FF9500; color: #fff; border-radius: 5px; width: 60px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                                        10元宝
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--klein-blue); margin-bottom: 4px;">机器人焊接程序.vp</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：512 KB | 更新时间：2026-01-15</div>
-                                        </div>
-                                        <div onclick="selectFile(this)" style="background-color: var(--light-bg); border: 1px solid transparent; border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                                <div style="font-size: 24px;">🔧</div>
-                                                <div style="position: relative;">
-                                                    <button onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='var(--klein-blue)';" style="background-color: #fff; color: var(--klein-blue); border: 1px solid var(--klein-blue); border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; transition: all 0.3s;">下载</button>
-                                                </div>
-                                            </div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">上下料控制程序.vp</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：256 KB | 更新时间：2026-01-15</div>
-                                        </div>
-                                        <div onclick="selectFile(this)" style="background-color: var(--light-bg); border: 1px solid transparent; border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                                <div style="font-size: 24px;">🔧</div>
-                                                <div style="position: relative;">
-                                                    <button onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='var(--klein-blue)';" style="background-color: #fff; color: var(--klein-blue); border: 1px solid var(--klein-blue); border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; transition: all 0.3s;">下载</button>
-                                                </div>
-                                            </div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">视觉定位算法.vp</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：128 KB | 更新时间：2026-01-15</div>
-                                        </div>
-                                        <div onclick="selectFile(this)" style="background-color: var(--light-bg); border: 1px solid transparent; border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                                <div style="font-size: 24px;">🔧</div>
-                                                <div style="position: relative;">
-                                                    <button onmouseover="this.style.backgroundColor='var(--klein-blue)'; this.style.color='white';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='var(--klein-blue)';" style="background-color: #fff; color: var(--klein-blue); border: 1px solid var(--klein-blue); border-radius: 4px; padding: 4px 10px; font-size: 12px; cursor: pointer; transition: all 0.3s;">下载</button>
-                                                </div>
-                                            </div>
-                                            <div style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 4px;">系统集成程序.vp</div>
-                                            <div style="font-size: 12px; color: var(--light-gray);">大小：768 KB | 更新时间：2026-01-15</div>
                                         </div>
                                     </div>
                                     </div>
@@ -561,40 +578,38 @@
                                     <div style="background-color: var(--light-bg); padding: 10px 15px; border-bottom: 2px solid var(--white); margin: 0 0 10px 0;">
                                         <h3 style="font-size: 16px; font-weight: bold; color: var(--deep-gray); margin: 0; text-align: left;">【知识库】</h3>
                                     </div>
-                                    <div style="padding: 0 10px 10px 10px;">
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-                                        <div class="knowledge-card" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <h4 style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 8px;">六轴机器人焊接技术详解</h4>
-                                            <p style="font-size: 13px; color: var(--light-gray); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">本文详细介绍了六轴机器人在焊接领域的应用，包括焊接原理、技术参数、调试方法等内容，帮助用户深入了解机器人焊接技术。</p>
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
-                                                <div style="font-size: 12px; color: var(--light-gray);">阅读量：1,234</div>
-                                                <div style="font-size: 12px; color: var(--klein-blue); cursor: pointer;">查看详情 →</div>
+                                    <div style="padding: 15px;">
+                                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                                        <a href="#" style="display: block; text-decoration: none; color: var(--deep-gray);">
+                                            <div class="knowledge-card" onclick="toggleCard(this)" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; transform: translateY(0); padding: 16px; cursor: pointer;">
+                                                <h4 style="font-size: 15px; font-weight: 500; color: var(--deep-gray); margin: 0 0 8px 0; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.3s;">机器人焊接技术要点</h4>
+                                                <p style="font-size: 13px; color: var(--light-gray); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin: 0; transition: all 0.3s;">机器人焊接是一种高精度、高效率的焊接方式，需要注意焊接参数设置、机器人轨迹规划、焊接材料选择、保护气体使用等技术要点。</p>
                                             </div>
-                                        </div>
-                                        <div class="knowledge-card" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <h4 style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 8px;">视觉定位系统安装指南</h4>
-                                            <p style="font-size: 13px; color: var(--light-gray); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">介绍视觉定位系统的安装步骤、调试方法和常见问题解决方案，帮助用户快速上手视觉定位技术。</p>
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
-                                                <div style="font-size: 12px; color: var(--light-gray);">阅读量：856</div>
-                                                <div style="font-size: 12px; color: var(--klein-blue); cursor: pointer;">查看详情 →</div>
+                                        </a>
+                                        <a href="#" style="display: block; text-decoration: none; color: var(--deep-gray);">
+                                            <div class="knowledge-card" onclick="toggleCard(this)" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; transform: translateY(0); padding: 16px; cursor: pointer;">
+                                                <h4 style="font-size: 15px; font-weight: 500; color: var(--deep-gray); margin: 0 0 8px 0; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.3s;">自动化生产线维护保养</h4>
+                                                <p style="font-size: 13px; color: var(--light-gray); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin: 0; transition: all 0.3s;">定期检查机器人关节和减速器，添加润滑油，检查焊接设备电缆和接头，确保连接可靠，同时要注意设备的清洁和防护。</p>
                                             </div>
-                                        </div>
-                                        <div class="knowledge-card" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <h4 style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 8px;">焊接电源选型指南</h4>
-                                            <p style="font-size: 13px; color: var(--light-gray); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">详细介绍焊接电源的选型要点，包括功率选择、接口匹配、兼容性等方面，帮助用户选择合适的焊接电源。</p>
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
-                                                <div style="font-size: 12px; color: var(--light-gray);">阅读量：678</div>
-                                                <div style="font-size: 12px; color: var(--klein-blue); cursor: pointer;">查看详情 →</div>
+                                        </a>
+                                        <a href="#" style="display: block; text-decoration: none; color: var(--deep-gray);">
+                                            <div class="knowledge-card" onclick="toggleCard(this)" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; transform: translateY(0); padding: 16px; cursor: pointer;">
+                                                <h4 style="font-size: 15px; font-weight: 500; color: var(--deep-gray); margin: 0 0 8px 0; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.3s;">工业机器人选型指南</h4>
+                                                <p style="font-size: 13px; color: var(--light-gray); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin: 0; transition: all 0.3s;">选择合适的工业机器人需要考虑负载能力、工作范围、重复定位精度、速度、加速度、工作环境等因素。</p>
                                             </div>
-                                        </div>
-                                        <div class="knowledge-card" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s;">
-                                            <h4 style="font-size: 14px; font-weight: 500; color: var(--deep-gray); margin-bottom: 8px;">自动化生产线安全规范</h4>
-                                            <p style="font-size: 13px; color: var(--light-gray); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">介绍自动化生产线的安全操作规程、防护措施和应急处理方法，确保生产过程安全可靠。</p>
-                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
-                                                <div style="font-size: 12px; color: var(--light-gray);">阅读量：1,500</div>
-                                                <div style="font-size: 12px; color: var(--klein-blue); cursor: pointer;">查看详情 →</div>
+                                        </a>
+                                        <a href="#" style="display: block; text-decoration: none; color: var(--deep-gray);">
+                                            <div class="knowledge-card" onclick="toggleCard(this)" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; transform: translateY(0); padding: 16px; cursor: pointer;">
+                                                <h4 style="font-size: 15px; font-weight: 500; color: var(--deep-gray); margin: 0 0 8px 0; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.3s;">机器视觉系统应用</h4>
+                                                <p style="font-size: 13px; color: var(--light-gray); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin: 0; transition: all 0.3s;">机器视觉系统在工业自动化中广泛应用，可用于产品检测、定位、识别、测量等任务，提高生产效率和质量。</p>
                                             </div>
-                                        </div>
+                                        </a>
+                                        <a href="#" style="display: block; text-decoration: none; color: var(--deep-gray);">
+                                            <div class="knowledge-card" onclick="toggleCard(this)" style="background-color: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; transform: translateY(0); padding: 16px; cursor: pointer;">
+                                                <h4 style="font-size: 15px; font-weight: 500; color: var(--deep-gray); margin: 0 0 8px 0; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.3s;">智能工厂建设方案</h4>
+                                                <p style="font-size: 13px; color: var(--light-gray); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; margin: 0; transition: all 0.3s;">智能工厂建设需要整合工业机器人、物联网、大数据、人工智能等技术，实现生产过程的自动化、数字化和智能化。</p>
+                                            </div>
+                                        </a>
                                     </div>
                                     </div>
                                 </div>
@@ -704,6 +719,24 @@
                 document.getElementById('subtab-' + subtabId).style.display = 'block';
             });
         });
+
+        // 方案卡片展开/收起功能
+        function toggleCard(card) {
+            const p = card.querySelector('p');
+            if (p.style.webkitLineClamp === 'unset') {
+                // 收起卡片
+                p.style.display = '-webkit-box';
+                p.style.webkitLineClamp = '1';
+                p.style.webkitBoxOrient = 'vertical';
+                p.style.overflow = 'hidden';
+            } else {
+                // 展开卡片
+                p.style.display = 'block';
+                p.style.webkitLineClamp = 'unset';
+                p.style.webkitBoxOrient = 'unset';
+                p.style.overflow = 'visible';
+            }
+        }
     </script>
 </body>
 </html>

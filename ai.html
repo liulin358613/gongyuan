@@ -424,20 +424,20 @@
                 }
             }
             
-            // 检查是否已经存在"方案咨询"tab
-            const existingTab = previewTabs.find(tab => tab.title === '方案咨询');
+            // 检查是否已经存在"方案详情"tab
+            const existingTab = previewTabs.find(tab => tab.title === '方案详情');
             if (!existingTab) {
                 // 添加新tab
                 previewTabs.push({
                     id: 'consult-tab',
-                    title: '方案咨询'
+                    title: '方案详情'
                 });
                 
                 // 更新Tab栏
                 updateTabs();
             }
             
-            // 激活方案咨询tab
+            // 激活方案详情tab
             activateTab('consult-tab');
             
             // 更新预览内容为fangan_yl.html
@@ -446,7 +446,7 @@
             // 更新标题栏
             const previewTitle = document.querySelector('.preview-title');
             if (previewTitle) {
-                previewTitle.textContent = '方案咨询';
+                previewTitle.textContent = '方案详情';
             }
         }
         
@@ -4706,7 +4706,7 @@
                     document.querySelector('.preview-toolbar').style.display = 'none';
                     // 更新预览内容
                     updateFileManagementContent(tabId);
-                } else if (currentTab.title === '方案咨询') {
+                } else if (currentTab.title === '方案详情') {
                     // 隐藏图片列表区域和工具栏
                     document.querySelector('.preview-file-list').style.display = 'none';
                     document.querySelector('.preview-toolbar').style.display = 'none';
@@ -4731,10 +4731,13 @@
                 previewContent.style.paddingTop = '0';
                 // 移除右内边距
                 previewContent.style.paddingRight = '0';
+                // 移除左内边距
+                previewContent.style.paddingLeft = '0';
             }else{
                 previewContent.style.paddingBottom = '16px';
                 previewContent.style.paddingTop = '16px';
                 previewContent.style.paddingRight = '16px';
+                previewContent.style.paddingLeft = '16px';
             }
         }
 
