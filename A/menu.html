@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>功能菜单</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px;
+            overflow: hidden;
+        }
+        .tab-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table thead {
+            background: #f8fafc;
+        }
+        .table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .table td {
+            padding: 14px 20px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+        .badge {
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+        .badge-blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+        }
+        .badge-green {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-color: #6366f1;
+            color: white;
+        }
+        .form-control {
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .expand-icon {
+            cursor: pointer;
+            color: #6366f1;
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        .expand-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        .child-row {
+            display: table-row;
+        }
+        .child-row.hidden {
+            display: none;
+        }
+        .child-name {
+            text-indent: 2em;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.hidden {
+            display: none;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 700px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .modal-body {
+            padding: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+        .form-group label .required {
+            color: #ef4444;
+            margin-right: 4px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .form-radio-group {
+            display: flex;
+            gap: 24px;
+        }
+        .form-radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .form-radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #6366f1;
+        }
+        .form-radio-item span {
+            font-size: 14px;
+            color: #475569;
+        }
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .upload-area {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.05);
+        }
+        .upload-area .fa {
+            font-size: 24px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .upload-area span {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-outline:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .dialog-overlay.hidden {
+            display: none;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .dialog-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .dialog-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .dialog-icon .fa {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .dialog-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .dialog-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .tabs-wrapper {
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            padding-left: 24px;
+        }
+        .tabs {
+            display: flex;
+            gap: 32px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .tabs li {
+            position: relative;
+            padding: 14px 40px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .tabs li.active {
+            color: #6366f1;
+        }
+        .tabs li.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 1px;
+        }
+        .tabs li:hover:not(.active) {
+            color: #94a3b8;
+        }
+        .tab-content {
+            display: block;
+        }
+        .tab-content.hidden {
+            display: none;
+        }
+        .badge-gray {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .isolation-dimensions {
+            margin-bottom: 12px;
+        }
+        .isolation-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            margin-bottom: 12px;
+        }
+        .isolation-item {
+            flex: 1;
+        }
+        .btn-delete {
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 14px;
+            align-self: flex-end;
+        }
+        .btn-add-isolation {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px dashed #cbd5e1;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-add-isolation:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+            cursor: pointer;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-switch .slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        .toggle-switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .toggle-switch input:checked + .slider {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">功能菜单</h1>
+            <p class="page-subtitle">管理系统功能菜单配置</p>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <div class="tabs-wrapper">
+            <ul class="tabs">
+                <li class="active" onclick="switchTab('function-menu')">功能菜单</li>
+                <li onclick="switchTab('data-perm')">数据权限</li>
+                <li onclick="switchTab('field-perm')">字段权限</li>
+            </ul>
+        </div>
+        <main class="main-content">
+        <div id="function-menu" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-container">
+                        <table class="table">
+                        <thead>
+                            <tr>
+                                <th>权限ID</th>
+                                <th>icon</th>
+                                <th>功能菜单/按钮</th>
+                                <th>类型</th>
+                                <th>路由地址</th>
+                                <th>备注说明</th>
+                                <th>创建时间</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><i class="fa fa-cog text-gray-500"></i></td>
+                                <td>系统设置</td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/system/settings</td>
+                                <td>系统全局配置入口</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>2026-03-15 14:32:18</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">下移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><i class="fa fa-list text-gray-500"></i></td>
+                                <td>功能菜单 <i class="fa fa-chevron-down expand-icon" onclick="toggleExpand('menu-child')"></i></td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/system/menu</td>
+                                <td>-</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>2026-03-14 09:45:30</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">下移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="menu-child">
+                                <td>3</td>
+                                <td></td>
+                                <td class="child-name">添加菜单</td>
+                                <td><span class="badge badge-green">按钮</span></td>
+                                <td>/system/menu/add</td>
+                                <td>-</td>
+                                <td>2026-03-11 10:19:25</td>
+                                <td>2026-03-11 10:19:25</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="menu-child">
+                                <td>4</td>
+                                <td></td>
+                                <td class="child-name">编辑菜单</td>
+                                <td><span class="badge badge-green">按钮</span></td>
+                                <td>/system/menu/edit</td>
+                                <td>编辑已有菜单项</td>
+                                <td>2026-03-11 10:19:26</td>
+                                <td>2026-03-12 11:20:45</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr class="child-row" id="menu-child">
+                                <td>5</td>
+                                <td></td>
+                                <td class="child-name">删除菜单</td>
+                                <td><span class="badge badge-green">按钮</span></td>
+                                <td>/system/menu/delete</td>
+                                <td>删除指定菜单项</td>
+                                <td>2026-03-11 10:19:27</td>
+                                <td>2026-03-13 16:55:12</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><i class="fa fa-users text-gray-500"></i></td>
+                                <td>角色管理</td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/system/roles</td>
+                                <td>管理系统角色权限</td>
+                                <td>2026-03-11 10:20:00</td>
+                                <td>2026-03-16 10:15:33</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><i class="fa fa-user-circle text-gray-500"></i></td>
+                                <td>账号管理</td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/system/accounts</td>
+                                <td>管理系统用户账号</td>
+                                <td>2026-03-11 10:20:15</td>
+                                <td>2026-03-17 09:00:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><i class="fa fa-shopping-cart text-gray-500"></i></td>
+                                <td>现货订单</td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/order/spot</td>
+                                <td>现货订单管理</td>
+                                <td>2026-03-12 08:30:00</td>
+                                <td>2026-03-18 14:22:10</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><i class="fa fa-wrench text-gray-500"></i></td>
+                                <td>设备管理</td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/equipment/manage</td>
+                                <td>-</td>
+                                <td>2026-03-13 11:15:00</td>
+                                <td>2026-03-19 15:40:25</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><i class="fa fa-user text-gray-500"></i></td>
+                                <td>客户管理</td>
+                                <td><span class="badge badge-blue">菜单</span></td>
+                                <td>/customer/manage</td>
+                                <td>客户信息管理</td>
+                                <td>2026-03-14 09:45:00</td>
+                                <td>2026-03-20 11:30:18</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2">上移</button>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+                    <div></div>
+                    <div class="pagination">
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-double-left"></i>
+                        </button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">4</button>
+                        <button class="pagination-btn">5</button>
+                        <button class="pagination-btn">6</button>
+                        <button class="pagination-btn">7</button>
+                        <button class="pagination-btn">8</button>
+                        <button class="pagination-btn">9</button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-double-right"></i>
+                        </button>
+                        <select class="form-control w-auto ml-2">
+                            <option>10条/页</option>
+                            <option>20条/页</option>
+                            <option>50条/页</option>
+                        </select>
+                        <span class="text-gray-500 text-sm ml-2">跳至</span>
+                        <input type="text" class="form-control w-16 ml-2" value="5">
+                        <span class="text-gray-500 text-sm ml-2">页</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="data-perm" class="tab-content hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                    <button class="btn btn-primary" onclick="openDataPermModal()">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-container">
+                        <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>业务模块</th>
+                                <th>数据表名</th>
+                                <th>隔离维度</th>
+                                <th>状态</th>
+                                <th>备注</th>
+                                <th>创建时间</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>订单管理</td>
+                                <td>order_view</td>
+                                <td>业务员(user_id),业务部门(dept_id)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>-</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>仓库管理</td>
+                                <td>stock_view</td>
+                                <td>部门(dept_id)、区域(area_id)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>库存数据隔离</td>
+                                <td>2026-03-12 08:30:00</td>
+                                <td>2026-03-15 14:20:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>客户管理</td>
+                                <td>customer_view</td>
+                                <td>所属区域(area_id)、客户等级(level)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>客户数据隔离</td>
+                                <td>2026-03-13 11:15:00</td>
+                                <td>2026-03-18 09:30:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>产品管理</td>
+                                <td>product_view</td>
+                                <td>产品分类(category_id)、品牌(brand_id)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>产品数据隔离</td>
+                                <td>2026-03-14 09:45:00</td>
+                                <td>2026-03-19 16:40:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>设备管理</td>
+                                <td>equipment_view</td>
+                                <td>设备类型(type_id)、归属部门(dept_id)</td>
+                                <td><span class="badge badge-gray">关闭</span></td>
+                                <td>-</td>
+                                <td>2026-03-15 10:20:00</td>
+                                <td>2026-03-17 11:25:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>报表统计</td>
+                                <td>report_view</td>
+                                <td>时间范围(date_range)、业务线(business_line)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>报表数据隔离</td>
+                                <td>2026-03-16 14:30:00</td>
+                                <td>2026-03-20 10:15:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>系统日志</td>
+                                <td>system_log</td>
+                                <td>操作类型(action_type)、操作用户(user_id)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>日志数据隔离</td>
+                                <td>2026-03-17 09:00:00</td>
+                                <td>2026-03-19 15:30:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>权限管理</td>
+                                <td>permission_view</td>
+                                <td>角色(role_id)、模块(module_id)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>权限数据隔离</td>
+                                <td>2026-03-18 10:30:00</td>
+                                <td>2026-03-20 14:45:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>消息通知</td>
+                                <td>notification_view</td>
+                                <td>接收人(user_id)、消息类型(type)</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>消息数据隔离</td>
+                                <td>2026-03-19 11:45:00</td>
+                                <td>2026-03-20 09:20:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>数据字典</td>
+                                <td>dict_view</td>
+                                <td>字典类型(type)</td>
+                                <td><span class="badge badge-gray">关闭</span></td>
+                                <td>-</td>
+                                <td>2026-03-20 08:00:00</td>
+                                <td>2026-03-20 08:00:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditDataPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+                    <div></div>
+                    <div class="pagination">
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-double-left"></i>
+                        </button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">4</button>
+                        <button class="pagination-btn">5</button>
+                        <button class="pagination-btn">6</button>
+                        <button class="pagination-btn">7</button>
+                        <button class="pagination-btn">8</button>
+                        <button class="pagination-btn">9</button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-double-right"></i>
+                        </button>
+                        <select class="form-control w-auto ml-2">
+                            <option>10条/页</option>
+                            <option>20条/页</option>
+                            <option>50条/页</option>
+                        </select>
+                        <span class="text-gray-500 text-sm ml-2">跳至</span>
+                        <input type="text" class="form-control w-16 ml-2" value="5">
+                        <span class="text-gray-500 text-sm ml-2">页</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="field-perm" class="tab-content hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                    <button class="btn btn-primary" onclick="openFieldPermModal()">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-container">
+                        <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>字段名称</th>
+                                <th>数据表字段</th>
+                                <th>适用业务模块</th>
+                                <th>备注</th>
+                                <th>状态</th>
+                                <th>创建时间</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>价格</td>
+                                <td>price</td>
+                                <td>订单</td>
+                                <td>-</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>2026-03-11 10:19:23</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>供应商报价</td>
+                                <td>quote</td>
+                                <td>报价单</td>
+                                <td>-</td>
+                                <td><span class="badge badge-gray">关闭</span></td>
+                                <td>2026-03-12 08:30:00</td>
+                                <td>2026-03-15 14:20:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>采购成本</td>
+                                <td>cost</td>
+                                <td>仓库</td>
+                                <td>-</td>
+                                <td><span class="badge badge-gray">关闭</span></td>
+                                <td>2026-03-13 11:15:00</td>
+                                <td>2026-03-18 09:30:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>客户等级</td>
+                                <td>level</td>
+                                <td>客户管理</td>
+                                <td>-</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>2026-03-14 09:45:00</td>
+                                <td>2026-03-19 16:40:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>产品分类</td>
+                                <td>category_id</td>
+                                <td>产品管理</td>
+                                <td>-</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>2026-03-15 10:20:00</td>
+                                <td>2026-03-17 11:25:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>设备类型</td>
+                                <td>type_id</td>
+                                <td>设备管理</td>
+                                <td>-</td>
+                                <td><span class="badge badge-gray">关闭</span></td>
+                                <td>2026-03-16 14:30:00</td>
+                                <td>2026-03-20 10:15:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>操作类型</td>
+                                <td>action_type</td>
+                                <td>系统日志</td>
+                                <td>-</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>2026-03-17 09:00:00</td>
+                                <td>2026-03-19 15:30:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>角色ID</td>
+                                <td>role_id</td>
+                                <td>权限管理</td>
+                                <td>-</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>2026-03-18 10:30:00</td>
+                                <td>2026-03-20 14:45:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>消息类型</td>
+                                <td>type</td>
+                                <td>消息通知</td>
+                                <td>-</td>
+                                <td><span class="badge badge-green">启用</span></td>
+                                <td>2026-03-19 11:45:00</td>
+                                <td>2026-03-20 09:20:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>字典类型</td>
+                                <td>dict_type</td>
+                                <td>数据字典</td>
+                                <td>-</td>
+                                <td><span class="badge badge-gray">关闭</span></td>
+                                <td>2026-03-20 08:00:00</td>
+                                <td>2026-03-20 08:00:00</td>
+                                <td>
+                                    <button class="text-indigo-600 text-sm mr-2" onclick="openEditFieldPermModal()">编辑</button>
+                                    <button class="text-red-600 text-sm" onclick="openDeleteDialog()">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+                    <div></div>
+                    <div class="pagination">
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-double-left"></i>
+                        </button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn">4</button>
+                        <button class="pagination-btn">5</button>
+                        <button class="pagination-btn">6</button>
+                        <button class="pagination-btn">7</button>
+                        <button class="pagination-btn">8</button>
+                        <button class="pagination-btn">9</button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                        <button class="pagination-btn">
+                            <i class="fa fa-angle-double-right"></i>
+                        </button>
+                        <select class="form-control w-auto ml-2">
+                            <option>10条/页</option>
+                            <option>20条/页</option>
+                            <option>50条/页</option>
+                        </select>
+                        <span class="text-gray-500 text-sm ml-2">跳至</span>
+                        <input type="text" class="form-control w-16 ml-2" value="5">
+                        <span class="text-gray-500 text-sm ml-2">页</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </main>
+    </div>
+
+    <div id="add-modal" class="modal-overlay hidden" onclick="closeAddModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">添加菜单/按钮</span>
+                <button class="modal-close" onclick="closeAddModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>菜单名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入菜单名称" value="系统管理">
+                </div>
+                <div class="form-group">
+                    <label>父级菜单：</label>
+                    <select class="form-control">
+                        <option>请选择</option>
+                        <option>系统设置</option>
+                        <option>功能菜单</option>
+                        <option>角色管理</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>单选：</label>
+                    <div class="form-radio-group">
+                        <label class="form-radio-item">
+                            <input type="radio" name="menu-type" value="menu">
+                            <span>菜单</span>
+                        </label>
+                        <label class="form-radio-item">
+                            <input type="radio" name="menu-type" value="button" checked>
+                            <span>按钮</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>路由地址：</label>
+                    <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label>备注说明：</label>
+                    <textarea class="form-control form-textarea" placeholder="请输入备注说明">备注说明</textarea>
+                </div>
+                <div class="form-group">
+                    <label>上传图标：</label>
+                    <div class="upload-area">
+                        <i class="fa fa-plus"></i>
+                        <span>上传</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">确定</button>
+                <button class="btn btn-outline" onclick="closeAddModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay hidden" onclick="closeEditModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">编辑菜单/按钮</span>
+                <button class="modal-close" onclick="closeEditModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>菜单名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入菜单名称" value="系统设置">
+                </div>
+                <div class="form-group">
+                    <label>父级菜单：</label>
+                    <select class="form-control">
+                        <option>请选择</option>
+                        <option selected>无</option>
+                        <option>功能菜单</option>
+                        <option>角色管理</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>单选：</label>
+                    <div class="form-radio-group">
+                        <label class="form-radio-item">
+                            <input type="radio" name="menu-type-edit" value="menu" checked>
+                            <span>菜单</span>
+                        </label>
+                        <label class="form-radio-item">
+                            <input type="radio" name="menu-type-edit" value="button">
+                            <span>按钮</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>路由地址：</label>
+                    <input type="text" class="form-control" placeholder="请输入" value="/system/settings">
+                </div>
+                <div class="form-group">
+                    <label>备注说明：</label>
+                    <textarea class="form-control form-textarea" placeholder="请输入备注说明">系统全局配置入口</textarea>
+                </div>
+                <div class="form-group">
+                    <label>上传图标：</label>
+                    <div class="upload-area">
+                        <i class="fa fa-plus"></i>
+                        <span>上传</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">确定</button>
+                <button class="btn btn-outline" onclick="closeEditModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="data-perm-modal" class="modal-overlay hidden" onclick="closeDataPermModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+            <div class="modal-header">
+                <span class="modal-title">添加数据隔离维度</span>
+                <button class="modal-close" onclick="closeDataPermModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>业务模块：</label>
+                    <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label><span class="required">*</span>数据表：</label>
+                    <select class="form-control">
+                        <option>请选择</option>
+                        <option>order_view</option>
+                        <option>stock_view</option>
+                        <option>customer_view</option>
+                        <option>product_view</option>
+                        <option>equipment_view</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>隔离维度：</label>
+                    <div class="isolation-dimensions">
+                        <div class="isolation-row">
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离维度名称：</label>
+                                <input type="text" class="form-control" placeholder="请输入">
+                            </div>
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离表字段：</label>
+                                <select class="form-control">
+                                    <option>请选择</option>
+                                    <option>user_id</option>
+                                    <option>dept_id</option>
+                                    <option>area_id</option>
+                                    <option>type_id</option>
+                                </select>
+                            </div>
+                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
+                        </div>
+                        <div class="isolation-row">
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离维度名称：</label>
+                                <input type="text" class="form-control" placeholder="请输入">
+                            </div>
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离表字段：</label>
+                                <select class="form-control">
+                                    <option>请选择</option>
+                                    <option>user_id</option>
+                                    <option>dept_id</option>
+                                    <option>area_id</option>
+                                    <option>type_id</option>
+                                </select>
+                            </div>
+                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
+                        </div>
+                    </div>
+                    <button class="btn-add-isolation" onclick="addIsolationRow()">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>备注说明：</label>
+                    <textarea class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">确定</button>
+                <button class="btn btn-outline" onclick="closeDataPermModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-data-perm-modal" class="modal-overlay hidden" onclick="closeEditDataPermModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+            <div class="modal-header">
+                <span class="modal-title">编辑数据隔离维度</span>
+                <button class="modal-close" onclick="closeEditDataPermModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>业务模块：</label>
+                    <input type="text" class="form-control" value="订单管理">
+                </div>
+                <div class="form-group">
+                    <label><span class="required">*</span>数据表：</label>
+                    <select class="form-control">
+                        <option>请选择</option>
+                        <option selected>order_view</option>
+                        <option>stock_view</option>
+                        <option>customer_view</option>
+                        <option>product_view</option>
+                        <option>equipment_view</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>隔离维度：</label>
+                    <div class="isolation-dimensions">
+                        <div class="isolation-row">
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离维度名称：</label>
+                                <input type="text" class="form-control" value="业务员">
+                            </div>
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离表字段：</label>
+                                <select class="form-control">
+                                    <option>请选择</option>
+                                    <option selected>user_id</option>
+                                    <option>dept_id</option>
+                                    <option>area_id</option>
+                                    <option>type_id</option>
+                                </select>
+                            </div>
+                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
+                        </div>
+                        <div class="isolation-row">
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离维度名称：</label>
+                                <input type="text" class="form-control" value="部门">
+                            </div>
+                            <div class="isolation-item">
+                                <label><span class="required">*</span>隔离表字段：</label>
+                                <select class="form-control">
+                                    <option>请选择</option>
+                                    <option>user_id</option>
+                                    <option selected>dept_id</option>
+                                    <option>area_id</option>
+                                    <option>type_id</option>
+                                </select>
+                            </div>
+                            <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
+                        </div>
+                    </div>
+                    <button class="btn-add-isolation" onclick="addIsolationRow()">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>状态：</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>备注说明：</label>
+                    <textarea class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">确定</button>
+                <button class="btn btn-outline" onclick="closeEditDataPermModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-dialog" class="dialog-overlay hidden" onclick="closeDeleteDialog()">
+        <div class="dialog-content" onclick="event.stopPropagation()">
+            <div class="dialog-body">
+                <div class="dialog-icon">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="dialog-title">确认删除</div>
+                <div class="dialog-message">确定要删除吗？删除后不可恢复</div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDialog()">取消</button>
+                <button class="btn btn-danger" style="background: #ef4444; color: white; border: none;">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="field-perm-modal" class="modal-overlay hidden" onclick="closeFieldPermModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+            <div class="modal-header">
+                <span class="modal-title">添加字段</span>
+                <button class="modal-close" onclick="closeFieldPermModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>字段名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label><span class="required">*</span>数据表字段：</label>
+                    <select class="form-control">
+                        <option>请选择</option>
+                        <option>price</option>
+                        <option>quote</option>
+                        <option>cost</option>
+                        <option>level</option>
+                        <option>category_id</option>
+                        <option>type_id</option>
+                        <option>action_type</option>
+                        <option>role_id</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>适用业务：</label>
+                    <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label>备注说明：</label>
+                    <textarea class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">确定</button>
+                <button class="btn btn-outline" onclick="closeFieldPermModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-field-perm-modal" class="modal-overlay hidden" onclick="closeEditFieldPermModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="width: 700px;">
+            <div class="modal-header">
+                <span class="modal-title">编辑字段</span>
+                <button class="modal-close" onclick="closeEditFieldPermModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><span class="required">*</span>字段名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入" value="价格">
+                </div>
+                <div class="form-group">
+                    <label><span class="required">*</span>数据表字段：</label>
+                    <select class="form-control">
+                        <option>请选择</option>
+                        <option selected>price</option>
+                        <option>quote</option>
+                        <option>cost</option>
+                        <option>level</option>
+                        <option>category_id</option>
+                        <option>type_id</option>
+                        <option>action_type</option>
+                        <option>role_id</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>适用业务：</label>
+                    <input type="text" class="form-control" placeholder="请输入" value="订单">
+                </div>
+                <div class="form-group">
+                    <label>状态：</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>备注说明：</label>
+                    <textarea class="form-control form-textarea" placeholder="请输入备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">确定</button>
+                <button class="btn btn-outline" onclick="closeEditFieldPermModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleExpand(childClass) {
+            const icon = event.target;
+            const childRows = document.querySelectorAll(`tr[id="${childClass}"]`);
+            
+            childRows.forEach(row => {
+                row.classList.toggle('hidden');
+            });
+            
+            icon.classList.toggle('collapsed');
+        }
+
+        function openAddModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+        }
+
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function openDeleteDialog() {
+            document.getElementById('delete-dialog').classList.remove('hidden');
+        }
+
+        function closeDeleteDialog() {
+            document.getElementById('delete-dialog').classList.add('hidden');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tabs li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            
+            const activeLi = document.querySelector(`.tabs li[onclick="switchTab('${tabName}')"]`);
+            if (activeLi) {
+                activeLi.classList.add('active');
+            }
+            
+            document.getElementById(tabName).classList.remove('hidden');
+        }
+
+        function openDataPermModal() {
+            document.getElementById('data-perm-modal').classList.remove('hidden');
+        }
+
+        function closeDataPermModal() {
+            document.getElementById('data-perm-modal').classList.add('hidden');
+        }
+
+        function addIsolationRow() {
+            const container = document.querySelector('.isolation-dimensions');
+            const newRow = document.createElement('div');
+            newRow.className = 'isolation-row';
+            newRow.innerHTML = `
+                <div class="isolation-item">
+                    <label><span class="required">*</span>隔离维度名称：</label>
+                    <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <div class="isolation-item">
+                    <label><span class="required">*</span>隔离表字段：</label>
+                    <select class="form-control">
+                        <option>请选择</option>
+                        <option>user_id</option>
+                        <option>dept_id</option>
+                        <option>area_id</option>
+                        <option>type_id</option>
+                    </select>
+                </div>
+                <button class="btn-delete" onclick="removeIsolationRow(this)">删除</button>
+            `;
+            container.appendChild(newRow);
+        }
+
+        function removeIsolationRow(btn) {
+            const row = btn.parentElement;
+            row.remove();
+        }
+
+        function openEditDataPermModal() {
+            document.getElementById('edit-data-perm-modal').classList.remove('hidden');
+        }
+
+        function closeEditDataPermModal() {
+            document.getElementById('edit-data-perm-modal').classList.add('hidden');
+        }
+
+        function openFieldPermModal() {
+            document.getElementById('field-perm-modal').classList.remove('hidden');
+        }
+
+        function closeFieldPermModal() {
+            document.getElementById('field-perm-modal').classList.add('hidden');
+        }
+
+        function openEditFieldPermModal() {
+            document.getElementById('edit-field-perm-modal').classList.remove('hidden');
+        }
+
+        function closeEditFieldPermModal() {
+            document.getElementById('edit-field-perm-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

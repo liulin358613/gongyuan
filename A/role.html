@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table thead {
+            background: #f8fafc;
+        }
+        .table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .table td {
+            padding: 14px 20px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #3b82f6;
+            color: white;
+        }
+        .form-control {
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .page-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .action-edit {
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+        .action-delete {
+            color: #ef4444;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">添加角色</h1>
+            <p class="page-subtitle">创建新角色并配置权限</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <div style="display: flex; justify-content: flex-end; padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+                <button class="btn btn-primary">
+                    <i class="fa fa-plus"></i>
+                    添加
+                </button>
+            </div>
+            <div class="table-wrapper">
+                <div class="table-container">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>角色ID</th>
+                            <th>角色名称</th>
+                            <th>备注说明</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>超级管理员</td>
+                            <td>系统最高权限，可操作所有功能</td>
+                            <td>2026-03-11 10:00:00</td>
+                            <td>2026-03-11 10:00:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>管理员</td>
+                            <td>管理系统基础配置和用户</td>
+                            <td>2026-03-11 10:15:00</td>
+                            <td>2026-03-15 14:30:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>业务员</td>
+                            <td>-</td>
+                            <td>2026-03-11 10:19:23</td>
+                            <td>2026-03-20 09:15:30</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>运维人员</td>
+                            <td>负责系统维护和故障排查</td>
+                            <td>2026-03-12 08:30:00</td>
+                            <td>2026-03-18 16:45:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>审核人员</td>
+                            <td>-</td>
+                            <td>2026-03-12 09:00:00</td>
+                            <td>2026-03-19 11:20:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>财务人员</td>
+                            <td>负责财务结算和报表统计</td>
+                            <td>2026-03-13 10:00:00</td>
+                            <td>2026-03-21 14:00:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>仓库管理员</td>
+                            <td>管理库存和发货操作</td>
+                            <td>2026-03-13 10:30:00</td>
+                            <td>2026-03-22 08:30:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>客户服务</td>
+                            <td>-</td>
+                            <td>2026-03-14 09:00:00</td>
+                            <td>2026-03-23 15:45:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>数据分析</td>
+                            <td>负责数据报表和业务分析</td>
+                            <td>2026-03-15 11:00:00</td>
+                            <td>2026-03-24 10:30:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>访客</td>
+                            <td>仅查看权限，不可编辑操作</td>
+                            <td>2026-03-16 08:00:00</td>
+                            <td>2026-03-16 08:00:00</td>
+                            <td>
+                                <a href="#" class="action-edit">编辑</a>
+                                <a href="#" class="action-delete">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100">
+                <div class="pagination">
+                    <button class="pagination-btn">
+                        <i class="fa fa-angle-left"></i>
+                    </button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">4</button>
+                    <button class="pagination-btn">5</button>
+                    <button class="pagination-btn">6</button>
+                    <button class="pagination-btn">7</button>
+                    <button class="pagination-btn">8</button>
+                    <button class="pagination-btn">9</button>
+                    <button class="pagination-btn">
+                        <i class="fa fa-angle-right"></i>
+                    </button>
+                    <select class="form-control w-auto ml-2">
+                        <option>10条/页</option>
+                        <option>20条/页</option>
+                        <option>50条/页</option>
+                    </select>
+                    <span class="text-gray-500 text-sm ml-2">跳至</span>
+                    <input type="text" class="form-control w-16 ml-2" value="5">
+                    <span class="text-gray-500 text-sm ml-2">页</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

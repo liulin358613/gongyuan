@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RaaS.Dao平台运营中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100%;
+            overflow: hidden;
+        }
+        .sidebar {
+            height: calc(100vh - 70px);
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+            overflow-y: auto;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
+            border-left-color: rgba(99, 102, 241, 0.5);
+        }
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.2) 0%, transparent 100%);
+            color: #fff;
+            border-left-color: #6366f1;
+        }
+        .nav-item .fa {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        .nav-item.has-submenu .fa-angle-down {
+            position: absolute;
+            right: 20px;
+            transition: transform 0.3s ease;
+        }
+        .nav-item.has-submenu.expanded .fa-angle-down {
+            transform: rotate(180deg);
+        }
+        .submenu {
+            background: rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .submenu.expanded {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .nav-section {
+            padding: 0 16px;
+        }
+        .nav-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px 0 12px 0;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        .nav-divider {
+            height: 2px;
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.5) 0%, rgba(147, 51, 234, 0.3) 50%, rgba(99, 102, 241, 0.5) 100%);
+            margin: 16px;
+            border-radius: 1px;
+        }
+        .submenu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px 12px 56px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .submenu-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
+            padding-left: 60px;
+        }
+        .submenu-item.active {
+            color: #fff;
+            background: rgba(99, 102, 241, 0.15);
+            border-left: 2px solid #6366f1;
+        }
+        .submenu-item .fa {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+        .tabs-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 20px;
+            height: 48px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            overflow-x: auto;
+        }
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: #64748b;
+            white-space: nowrap;
+        }
+        .tab:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+        .tab .fa {
+            font-size: 14px;
+        }
+        .tab .tab-close {
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+        .tab:hover .tab-close {
+            opacity: 1;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 70px);
+        }
+        #content-wrapper {
+            flex: 1;
+            background-color: #fff;
+            /* padding: 24px; */
+            overflow-y: auto;
+        }
+        .header {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .header-title {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table thead {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        .table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .table td {
+            padding: 14px 20px;
+            color: #475569;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background-color 0.2s ease;
+        }
+        .table tbody tr {
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
+            transform: translateX(4px);
+        }
+        .expand-icon {
+            color: #6366f1;
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .expand-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        .child-row {
+            display: table-row;
+        }
+        .child-row.hidden {
+            display: none;
+        }
+        .child-name {
+            text-indent: 2em;
+        }
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #64748b;
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+        .btn-outline:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-edit {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: scale(1.1);
+        }
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: scale(1.1);
+        }
+        .btn-perm {
+            background: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+        }
+        .btn-perm:hover {
+            background: rgba(234, 179, 8, 0.2);
+            transform: scale(1.1);
+        }
+        .btn-reset {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+        .btn-reset:hover {
+            background: rgba(34, 197, 94, 0.2);
+            transform: scale(1.1);
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .badge {
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+        .badge-active {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-inactive {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+        .badge-login {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+        }
+        .badge-create {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+        }
+        .badge-update {
+            background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+            color: #ca8a04;
+        }
+        .badge-delete {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+        .badge-query {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #6366f1;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #f1f5f9;
+            position: relative;
+        }
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        .modal-body {
+            padding: 24px;
+        }
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 22px;
+            color: white;
+        }
+        .stat-icon-blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .stat-icon-green {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+        }
+        .stat-icon-yellow {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4);
+        }
+        .stat-icon-purple {
+            background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+            box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .nav-section-title {
+            padding: 12px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color:#fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+        .search-bar {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 0;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pagination-btn:hover:not(.active) {
+            background: #f8fafc;
+        }
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-color: #6366f1;
+            color: white;
+        }
+        .update-log-item {
+            border-left: 3px solid #6366f1;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                    <i class="fa fa-cubes text-white text-lg"></i>
+                </div>
+                <h1 class="header-title text-xl font-bold">RaaS.Dao平台运营中心</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-300 text-sm font-medium">管理员</span>
+                <div class="user-avatar">
+                    <i class="fa fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex">
+        <aside class="sidebar w-60">
+            <div class="nav-section">
+                <div class="nav-section-title">运营数据</div>
+                <div class="nav-item active" data-module="workbench" onclick="showModule('workbench')">
+                    <i class="fa fa-desktop"></i>
+                    <span>工作台</span>
+                </div>
+                
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('operation-submenu')">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>运营数据</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="operation-submenu" class="submenu">
+                    <div class="submenu-item" data-module="bi-center" onclick="showModule('bi-center'); event.stopPropagation()">
+                        <i class="fa fa-pie-chart"></i>
+                        <span>BI中心</span>
+                    </div>
+                    <div class="submenu-item" data-module="data-board" onclick="showModule('data-board'); event.stopPropagation()">
+                        <i class="fa fa-line-chart"></i>
+                        <span>数据看板</span>
+                    </div>
+                    <div class="submenu-item" data-module="my-todo" onclick="showModule('my-todo'); event.stopPropagation()">
+                        <i class="fa fa-list-alt"></i>
+                        <span>我的待办</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-divider"></div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">RaaS.Dao平台</div>
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('website-submenu')">
+                    <i class="fa fa-globe"></i>
+                    <span>网站设置</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="website-submenu" class="submenu">
+                    <div class="submenu-item" data-module="logo" onclick="showModule('logo'); event.stopPropagation()">
+                        <i class="fa fa-image"></i>
+                        <span>网站logo</span>
+                    </div>
+                    <div class="submenu-item" data-module="about" onclick="showModule('about'); event.stopPropagation()">
+                        <i class="fa fa-info"></i>
+                        <span>关于我们</span>
+                    </div>
+                </div>
+                
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('platform-submenu')">
+                    <i class="fa fa-shield"></i>
+                    <span>平台权限</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="platform-submenu" class="submenu">
+                    <div class="submenu-item" data-module="func-menu" onclick="showModule('func-menu'); event.stopPropagation()">
+                        <i class="fa fa-list"></i>
+                        <span>功能菜单</span>
+                    </div>
+                    <div class="submenu-item" data-module="data-perm" onclick="showModule('data-perm'); event.stopPropagation()">
+                        <i class="fa fa-database"></i>
+                        <span>数据权限</span>
+                    </div>
+                    <div class="submenu-item" data-module="field-perm" onclick="showModule('field-perm'); event.stopPropagation()">
+                        <i class="fa fa-columns"></i>
+                        <span>字段权限</span>
+                    </div>
+                </div>
+                
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('user-submenu')">
+                    <i class="fa fa-users"></i>
+                    <span>用户管理</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="user-submenu" class="submenu">
+                    <div class="submenu-item" data-module="user-list" onclick="showModule('user-list'); event.stopPropagation()">
+                        <i class="fa fa-user"></i>
+                        <span>用户列表</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-divider"></div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">运营中心基础信息</div>
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('basic-submenu')">
+                    <i class="fa fa-folder"></i>
+                    <span>基础信息</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="basic-submenu" class="submenu">
+                    <div class="submenu-item" data-module="menu" onclick="showModule('menu'); event.stopPropagation()">
+                        <i class="fa fa-list-ul"></i>
+                        <span>功能菜单</span>
+                    </div>
+                    <div class="submenu-item" data-module="role" onclick="showModule('role'); event.stopPropagation()">
+                        <i class="fa fa-users"></i>
+                        <span>角色管理</span>
+                    </div>
+                    <div class="submenu-item" data-module="account" onclick="showModule('account'); event.stopPropagation()">
+                        <i class="fa fa-user-circle"></i>
+                        <span>账号管理</span>
+                    </div>
+                </div>
+                
+                <div class="nav-item has-submenu" onclick="toggleSubmenu('system-submenu')">
+                    <i class="fa fa-cog"></i>
+                    <span>系统设置</span>
+                    <i class="fa fa-angle-down"></i>
+                </div>
+                <div id="system-submenu" class="submenu">
+                    <div class="submenu-item" data-module="log" onclick="showModule('log'); event.stopPropagation()">
+                        <i class="fa fa-file-text-o"></i>
+                        <span>操作日志</span>
+                    </div>
+                    <div class="submenu-item" data-module="version" onclick="showModule('version'); event.stopPropagation()">
+                        <i class="fa fa-info-circle"></i>
+                        <span>系统版本</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="tabs-container" class="tabs-container">
+                <div class="tab active" data-module="workbench" onclick="selectTabFromTab('workbench')">
+                    <i class="fa fa-desktop"></i>
+                    <span>工作台</span>
+                    <i class="fa fa-times tab-close" onclick="closeTab('workbench'); event.stopPropagation()"></i>
+                </div>
+            </div>
+            <div id="content-wrapper">
+                <div id="workbench-module" class="module">
+                    <h2 class="text-xl font-bold text-gray-800">工作台</h2>
+                    <p class="text-gray-500 text-sm mt-1">欢迎来到运营中心工作台</p>
+                </div>
+
+                <div id="menu-module" class="module hidden" style="padding: 0; height: calc(100vh - 120px);">
+                    <iframe src="menu.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="menu-modal" class="modal-overlay hidden" onclick="closeModal('menu-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>添加菜单</h3>
+                <button class="modal-close" onclick="closeModal('menu-modal')">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>菜单名称</label>
+                    <input type="text" class="form-control" placeholder="请输入菜单名称">
+                </div>
+                <div class="form-group">
+                    <label>菜单路径</label>
+                    <input type="text" class="form-control" placeholder="请输入菜单路径">
+                </div>
+                <div class="form-group">
+                    <label>排序</label>
+                    <input type="number" class="form-control" placeholder="请输入排序号">
+                </div>
+                <div class="form-group">
+                    <label>状态</label>
+                    <select class="form-control">
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('menu-modal')">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="role-modal" class="modal-overlay hidden" onclick="closeModal('role-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>添加角色</h3>
+                <button class="modal-close" onclick="closeModal('role-modal')">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>角色名称</label>
+                    <input type="text" class="form-control" placeholder="请输入角色名称">
+                </div>
+                <div class="form-group">
+                    <label>角色描述</label>
+                    <textarea class="form-control" rows="3" placeholder="请输入角色描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>状态</label>
+                    <select class="form-control">
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('role-modal')">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="account-modal" class="modal-overlay hidden" onclick="closeModal('account-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>添加账号</h3>
+                <button class="modal-close" onclick="closeModal('account-modal')">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>账号名</label>
+                    <input type="text" class="form-control" placeholder="请输入账号名">
+                </div>
+                <div class="form-group">
+                    <label>真实姓名</label>
+                    <input type="text" class="form-control" placeholder="请输入真实姓名">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" class="form-control" placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <label>角色</label>
+                    <select class="form-control">
+                        <option>超级管理员</option>
+                        <option>运营管理员</option>
+                        <option>普通用户</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>状态</label>
+                    <select class="form-control">
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('account-modal')">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const moduleInfo = {
+            workbench: { name: '工作台', icon: 'fa-desktop' },
+            'bi-center': { name: 'BI中心', icon: 'fa-pie-chart' },
+            'data-board': { name: '数据看板', icon: 'fa-line-chart' },
+            'my-todo': { name: '我的待办', icon: 'fa-list-alt' },
+            menu: { name: '功能菜单', icon: 'fa-list-ul' },
+            role: { name: '角色管理', icon: 'fa-users' },
+            account: { name: '账号管理', icon: 'fa-user-circle' },
+            log: { name: '操作日志', icon: 'fa-file-text-o' },
+            version: { name: '系统版本', icon: 'fa-info-circle' },
+            logo: { name: '网站logo', icon: 'fa-image' },
+            about: { name: '关于我们', icon: 'fa-info' },
+            'func-menu': { name: '功能菜单', icon: 'fa-list' },
+            'data-perm': { name: '数据权限', icon: 'fa-database' },
+            'field-perm': { name: '字段权限', icon: 'fa-columns' },
+            'user-list': { name: '用户列表', icon: 'fa-user' }
+        };
+
+        function showModule(moduleName) {
+            const tabsContainer = document.getElementById('tabs-container');
+            let targetTab = tabsContainer.querySelector(`[data-module="${moduleName}"]`);
+            
+            if (!targetTab) {
+                const info = moduleInfo[moduleName];
+                targetTab = document.createElement('div');
+                targetTab.className = 'tab';
+                targetTab.dataset.module = moduleName;
+                targetTab.innerHTML = `
+                    <i class="fa ${info.icon}"></i>
+                    <span>${info.name}</span>
+                    <i class="fa fa-times tab-close" onclick="closeTab('${moduleName}'); event.stopPropagation()"></i>
+                `;
+                targetTab.onclick = function() {
+                    selectTabFromTab(moduleName);
+                };
+                tabsContainer.appendChild(targetTab);
+            }
+            
+            selectTabFromNav(moduleName, event.target);
+        }
+
+        function selectTabFromNav(moduleName, navItem) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.submenu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.module').forEach(module => module.classList.add('hidden'));
+            
+            const targetTab = document.querySelector(`.tab[data-module="${moduleName}"]`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
+            const actualNavItem = navItem.closest('.submenu-item') || navItem;
+            actualNavItem.classList.add('active');
+            
+            document.getElementById(moduleName + '-module').classList.remove('hidden');
+        }
+
+        function selectTabFromTab(moduleName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.submenu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.module').forEach(module => module.classList.add('hidden'));
+            
+            const targetTab = document.querySelector(`.tab[data-module="${moduleName}"]`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
+            const submenuItem = document.querySelector(`.submenu-item[data-module="${moduleName}"]`);
+            if (submenuItem) {
+                submenuItem.classList.add('active');
+                
+                const parentSubmenu = submenuItem.closest('.submenu');
+                if (parentSubmenu && !parentSubmenu.classList.contains('expanded')) {
+                    parentSubmenu.classList.add('expanded');
+                    const navItem = parentSubmenu.previousElementSibling;
+                    if (navItem) {
+                        navItem.classList.add('expanded');
+                        const icon = navItem.querySelector('.fa-folder');
+                        if (icon) {
+                            icon.classList.remove('fa-folder');
+                            icon.classList.add('fa-folder-open');
+                        }
+                    }
+                }
+            } else {
+                const navItem = document.querySelector(`.nav-item[data-module="${moduleName}"]`);
+                if (navItem) {
+                    navItem.classList.add('active');
+                }
+            }
+            
+            document.getElementById(moduleName + '-module').classList.remove('hidden');
+        }
+
+        function closeTab(moduleName) {
+            const tabsContainer = document.getElementById('tabs-container');
+            const tab = tabsContainer.querySelector(`[data-module="${moduleName}"]`);
+            const tabs = tabsContainer.querySelectorAll('.tab');
+            
+            if (tabs.length <= 1) return;
+            
+            const isActive = tab.classList.contains('active');
+            tab.remove();
+            
+            if (isActive) {
+                const remainingTabs = tabsContainer.querySelectorAll('.tab');
+                if (remainingTabs.length > 0) {
+                    const lastTab = remainingTabs[remainingTabs.length - 1];
+                    selectTabFromTab(lastTab.dataset.module);
+                }
+            }
+        }
+
+        function toggleSubmenu(submenuId) {
+            const submenu = document.getElementById(submenuId);
+            const navItem = event.target.closest('.nav-item');
+            
+            submenu.classList.toggle('expanded');
+            navItem.classList.toggle('expanded');
+            
+            const icon = navItem.querySelector('.fa-folder-open, .fa-folder');
+            if (icon) {
+                icon.classList.toggle('fa-folder-open');
+                icon.classList.toggle('fa-folder');
+            }
+        }
+
+        function openMenuModal() {
+            document.getElementById('menu-modal').classList.remove('hidden');
+        }
+
+        function openRoleModal() {
+            document.getElementById('role-modal').classList.remove('hidden');
+        }
+
+        function openAccountModal() {
+            document.getElementById('account-modal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function editMenu() {
+            alert('编辑菜单功能');
+        }
+
+        function deleteMenu() {
+            alert('删除菜单功能');
+        }
+
+        function editRole() {
+            alert('编辑角色功能');
+        }
+
+        function toggleExpand(childClass) {
+            const icon = event.target;
+            const childRows = document.querySelectorAll(`tr[id="${childClass}"]`);
+            
+            childRows.forEach(row => {
+                row.classList.toggle('hidden');
+            });
+            
+            icon.classList.toggle('collapsed');
+        }
+
+        function deleteRole() {
+            alert('删除角色功能');
+        }
+
+        function setRolePerm() {
+            alert('设置角色权限功能');
+        }
+
+        function editAccount() {
+            alert('编辑账号功能');
+        }
+
+        function deleteAccount() {
+            alert('删除账号功能');
+        }
+
+        function resetPassword() {
+            alert('重置密码功能');
+        }
+
+        function exportLogs() {
+            alert('导出日志功能');
+        }
+    </script>
+</body>
+</html>
